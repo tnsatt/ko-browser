@@ -22,7 +22,7 @@ public class FileUtils {
                             "(?:;\\s*filename\\*\\s*=\\s*(utf-8|iso-8859-1)'[^']*'(\\S*))?",
                     Pattern.CASE_INSENSITIVE);
 
-    @Nullable
+
     public static String parseContentDisposition(String contentDisposition) {
         try {
             Matcher m = CONTENT_DISPOSITION_PATTERN.matcher(contentDisposition);

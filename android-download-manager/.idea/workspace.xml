@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="NONE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="487d1f76-1f75-47d7-9e8e-e05c7b4dfd2e" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../mb-browser/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../mb-browser/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../mb-browser/app/src/main/java/com/xlab/vbrowser/generated/LocaleList.java" beforeDir="false" afterPath="$PROJECT_DIR$/../mb-browser/app/src/main/java/com/xlab/vbrowser/generated/LocaleList.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../mb-browser/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../mb-browser/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../mb-browser/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../mb-browser/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../mb-browser/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../mb-browser/settings.gradle" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <projects_view>
+          <tree_state>
+            <expand />
+            <select />
+          </tree_state>
+        </projects_view>
+      </state>
+    </system>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectId" id="2t6zwe2nLUD1SkeQuW3mH46w62t" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../Libs/easypermissions/easypermissions" />
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="487d1f76-1f75-47d7-9e8e-e05c7b4dfd2e" name="Default Changelist" comment="" />
+      <created>1739687552293</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1739687552293</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="467" y="126" key="FileChooserDialogImpl" timestamp="1739691557676">
+      <screen x="0" y="0" width="1366" height="738" />
+    </state>
+    <state x="467" y="126" key="FileChooserDialogImpl/0.0.1366.738@0.0.1366.738" timestamp="1739691557676" />
+  </component>
+</project>

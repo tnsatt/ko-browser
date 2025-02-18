@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+<resources>
+    <!-- Primary color -->
+    <color name="colorPrimary">#1c1c1d</color>
+    <color name="colorPrimaryDark">#6c3b6e</color>
+    <color name="colorAccent">#007bff</color>
+    <color name="background">#0f0f0f</color>
+
+    <!-- Settings -->
+    <color name="darkColorPrimary">#ff453440</color>
+
+    <!-- Primary color for settings -->
+    <color name="colorAccentSettings">@color/photonBlue50</color>
+    <color name="preference_row_selected">@color/photonBlue40</color>
+
+
+    <!-- Primary color for progressbar -->
+    <color name="colorProgressGradientStart">@color/photonBlue50</color>
+    <color name="colorProgressGradientCenter">@color/photonBlue50</color>
+    <color name="colorProgressGradientEnd">@color/photonBlue50</color>
+
+
+    <!-- For TabManager -->
+    <color name="colorErase">#FFff0000</color>
+    <color name="colorErasePressed">@color/photonMagenta80</color>
+    <color name="selectedColorSheetSessionBackground">#1c1c1d</color>
+    <color name="normalColorSheetSessionBackground">#1c1c1d</color>
+    <color name="colorSheetSessionBackgroundPressed">#1c1c1d</color>
+    <color name="colorNormalSession">#ffffff</color>
+    <color name="colorSelectedSession">#007bff</color>
+
+
+    <!-- For UrlInputFragment -->
+    <color name="colorOverlay">#cc000000</color>
+    <color name="searchHintTextColor">#ffffffff</color>
+    <color name="urlbar_background">#1c1c1d</color>
+
+
+    <!-- For snackbar -->
+    <color name="snackbarBackground">#FF414146</color>
+    <color name="snackbarTextColor">#ffffffff</color>
+    <color name="snackbarActionText">@color/photonBlue50</color>
+
+
+    <!-- For dialog -->
+    <color name="dialogAccent">@color/photonBlue50</color>
+    <color name="overThemeButtonAccent">@color/photonBlue50</color>
+    <color name="positiveButtonAccent">@color/photonBlue50</color>
+    <color name="negativeButtonAccent">#ffffffff</color>
+    <color name="dialog_background">#1c1c1d</color>
+    <color name="add_to_homescreen_icon_background">#FF008000</color>
+
+    <!-- Dark dialog -->
+    <color name="dark_dialog_background">#424242</color>
+    <color name="darkPositiveButtonAccent">@color/photonBlue50</color>
+    <color name="darkNegativeButtonAccent">#ffffffff</color>
+
+    <!-- For scrollbar of WebView -->
+    <color name="scrollbarThumb">#323232</color>
+
+
+    <!-- For MostVisisted and QuickAccess -->
+    <color name="mostvisisited_text_color">#ffffff</color>
+    <color name="mostvisisited_fake_icon_text_color">#FFFFFF</color>
+    <color name="mostvisisited_fake_icon_background">#FF008000</color>
+
+
+    <!-- This 2 colors is used for ListViewItem, with a main text and a sub text-->
+    <color name="list_header_text_color">#FFFFFF</color>
+    <color name="list_title_text_color">#FFFFFF</color>
+    <color name="list_info_text_color">#FFFFFF</color>
+
+    <!-- For vector icon -->
+    <color name="colorEnabledIcon">#007bff</color>
+    <color name="colorDefaultIcon">#FFFFFF</color>
+    <color name="colorLightDefaultIcon">#ffffff</color>
+    <color name="colorDefaultDisabledIcon">#B3FFFFFF</color>
+
+
+    <!-- For text -->
+    <color name="colorTextInactive">#60ffffff</color>
+    <color name="colorTextActive">#FFFFFF</color>
+    <color name="colorControlHighlight">#FFFFFF</color>
+    <color name="colorLightTextActive">#ffffff</color>
+    <color name="colorLightTextInactive">#60ffffff</color>
+    <color name="colorRateText">#ff0000</color>
+
+
+    <!-- For blocking circle in topbar -->
+    <color name="colorBlockInfo">#FFA400</color >
+    <color name="color_blocking_menu">#1c1c1d</color>
+    <color name="dark_color_blocking_menu">#20ffffff</color>
+
+    <!-- Floating ads action button background -->
+    <color name="semi_transparent_color">#40000066</color>
+</resources>

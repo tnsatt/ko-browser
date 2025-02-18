@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="cardview_dark_background">#1c1c1d</color>
+    <style name="CardView">
+        <item name="cardBackgroundColor">@color/cardview_dark_background</item>
+    </style>
+</resources>
