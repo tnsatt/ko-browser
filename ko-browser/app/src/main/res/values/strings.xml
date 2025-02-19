@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- This Source Code Form is subject to the terms of the Mozilla Public
+<?xml version="1.0" encoding="utf-8"?><!-- This Source Code Form is subject to the terms of the Mozilla Public
    - License, v. 2.0. If a copy of the MPL was not distributed with this
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
 <resources>
@@ -313,7 +312,7 @@
     <string name="download_dialog_action_cancel">Cancel</string>
 
     <!-- Option in download dialogue to start a download -->
-     <string name="download_dialog_action_download">Download</string>
+    <string name="download_dialog_action_download">Download</string>
 
     <!-- The page html title (i.e. the <title> tag content) -->
     <string name="errorpage_title">Problem loading page</string>
@@ -578,9 +577,9 @@ be temporary, and you can try again later.</li>
     <string name="feedback_signout">You are logged out of all websites. But browsing history is not cleared, access History screen to clear.</string>
 
     <!-- Night mode -->
-    <string name= "night_mode">Night mode</string>
-    <string name= "exit_night_mode">Exit night mode</string>
-    <string name= "change_browser_brightness">Change brightness</string>
+    <string name="night_mode">Night mode</string>
+    <string name="exit_night_mode">Exit night mode</string>
+    <string name="change_browser_brightness">Change brightness</string>
 
     <!-- Preference -->
     <string name="preference_privacy_logout_when_removing_task">Logout</string>

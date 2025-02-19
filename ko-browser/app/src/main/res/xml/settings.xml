@@ -26,6 +26,18 @@
     </PreferenceCategory>
 
     <PreferenceCategory
+        android:title="PIN Lock">
+        <SwitchPreference
+            android:layout="@layout/focus_preference"
+            android:title="PIN Lock"
+            android:key="pinlock"/>
+        <EditTextPreference
+            android:layout="@layout/focus_preference"
+            android:title="PIN"
+            android:key="pin"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
         android:title="@string/preference_category_privacy">
 
         <!--
@@ -131,5 +143,6 @@
             android:key="@string/pref_key_privacy_notice"/>-->
 
     </PreferenceCategory>
+
 
 </PreferenceScreen>

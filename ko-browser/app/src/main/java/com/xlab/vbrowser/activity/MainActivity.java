@@ -137,6 +137,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements IabBro
 
         Z.setFloating(this);
         Z.setDrag(this, null);
+        Z.setLock(this);
 
         nightModeView = findViewById(R.id.nightModeView);
         loadSessionProgressView = findViewById(R.id.load_sessions_progress_view);
@@ -231,10 +232,23 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements IabBro
     public void applyLocale() {
         // We don't care here: all our fragments update themselves as appropriate
     }
-
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus) {
+            // allow screenshots when activity is focused
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_SECURE);
+        } else {
+//            Z.setLock(this);
+            // hide information (blank view) on app switcher
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
+        }
+    }
     @Override
     protected void onResume() {
         super.onResume();
+
+//        Z.setLock(this);
 
         if (Settings.getInstance(this).shouldUseSecureMode()) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);

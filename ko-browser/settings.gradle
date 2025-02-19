@@ -11,4 +11,5 @@ project(':utils').projectDir = new File('../../Utils/utils')
 include ':androidy'
 project(':androidy').projectDir = new File('../../AndroidY/android')
 
-
+include ':pin'
+project (":pin").projectDir = new File("../../Libs/PinLockView/pinlockview")

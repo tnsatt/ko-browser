@@ -3,9 +3,12 @@ package com.xlab.vbrowser.z;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.text.Layout;
 import android.util.DisplayMetrics;
@@ -17,6 +20,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.andrognito.pinlockview.IndicatorDots;
+import com.andrognito.pinlockview.PinLockListener;
+import com.andrognito.pinlockview.PinLockView;
 import com.android.y.dom.Drag;
 import com.xlab.vbrowser.R;
 import com.xlab.vbrowser.activity.MainActivity;
@@ -79,5 +85,52 @@ public class Z {
     }
     public static void setDrag(Activity context, View view){
         new DragView(context, view);
+    }
+    public static Boolean isLock(Activity context){
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+        Boolean lock = pref.getBoolean("pinlock", false);
+        return lock;
+    }
+    public static void setLock(Activity context){
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+        Boolean lock = pref.getBoolean("pinlock", false);
+        FrameLayout container = (FrameLayout) context.findViewById(R.id.pin_lock_container);
+        if(!lock) {
+            container.setVisibility(View.GONE);
+            return;
+        }
+        container.setVisibility(View.VISIBLE);
+        String pincode = pref.getString("pin", null);
+        if(pincode == null || !pincode.matches("^\\d+$")) pincode = PIN.PIN;
+        PinLockView pinLockView = (PinLockView) context.findViewById(R.id.pin_lock_view);
+        IndicatorDots mIndicatorDots = (IndicatorDots) context.findViewById(R.id.indicator_dots);
+        pinLockView.attachIndicatorDots(mIndicatorDots);
+        pinLockView.resetPinLockView();
+        String finalPincode = pincode;
+        pinLockView.setPinLockListener(new PinLockListener() {
+            @Override
+            public void onComplete(String pin) {
+                if(pin.equals(finalPincode)){
+                    container.setVisibility(View.GONE);
+                }else{
+                    (new Handler(context.getMainLooper())).postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+
+                        }
+                    }, 400);
+                }
+            }
+
+            @Override
+            public void onEmpty() {
+
+            }
+
+            @Override
+            public void onPinChange(int pinLength, String intermediatePin) {
+
+            }
+        });
     }
 }

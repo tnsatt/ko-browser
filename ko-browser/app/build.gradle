@@ -23,7 +23,7 @@ android {
     compileSdkVersion 28
     buildToolsVersion '28.0.3'
     defaultConfig {
-        applicationId "com.khong.mbbrowser"
+        applicationId "com.khong.kobrowser"
         minSdkVersion 21
         targetSdkVersion 28
         versionCode 1 // This versionCode is "frozen" for local builds. For "release" builds we
@@ -35,7 +35,7 @@ android {
 
         android.applicationVariants.all { variant ->
             variant.outputs.all {
-                outputFileName = "mb-browser-${variant.buildType.name}.apk"
+                outputFileName = "ko-browser-${variant.buildType.name}.apk"
             }
         }
     }
@@ -145,6 +145,7 @@ repositories {
 dependencies {
     implementation project(path: ":easypermissions")
     implementation project(path: ":androidy")
+    implementation project(path: ':pin')
 
 //    implementation 'pub.devrel:easypermissions:3.0.0'
 
@@ -170,6 +171,7 @@ dependencies {
 //    implementation 'pub.devrel:easypermissions:2.0.1'
     // Room (use 1.1.0-alpha2 for latest alpha)
     implementation 'android.arch.persistence.room:runtime:1.1.1'
+    implementation 'com.android.support.constraint:constraint-layout:2.0.4'
     annotationProcessor "android.arch.persistence.room:compiler:1.1.1"
     kapt "android.arch.persistence.room:compiler:1.1.1"
     //Android download manager
