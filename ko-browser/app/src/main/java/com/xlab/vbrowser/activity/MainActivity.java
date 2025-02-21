@@ -137,7 +137,9 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements IabBro
 
         Z.setFloating(this);
         Z.setDrag(this, null);
-        Z.setLock(this);
+        if(Z.isLock(this)){
+            Z.showLockScreen(this);
+        }
 
         nightModeView = findViewById(R.id.nightModeView);
         loadSessionProgressView = findViewById(R.id.load_sessions_progress_view);

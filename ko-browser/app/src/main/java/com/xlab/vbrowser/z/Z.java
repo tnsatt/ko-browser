@@ -27,6 +27,7 @@ import com.android.y.dom.Drag;
 import com.xlab.vbrowser.R;
 import com.xlab.vbrowser.activity.MainActivity;
 import com.xlab.vbrowser.utils.UrlConstants;
+import com.xlab.vbrowser.z.activity.PinLockActivity;
 import com.xlab.vbrowser.z.module.DragView;
 
 public class Z {
@@ -89,48 +90,24 @@ public class Z {
     public static Boolean isLock(Activity context){
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
         Boolean lock = pref.getBoolean("pinlock", false);
-        return lock;
+        String enc = pref.getString("encodedPin", null);
+        return lock && enc!=null;
     }
-    public static void setLock(Activity context){
-        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
-        Boolean lock = pref.getBoolean("pinlock", false);
-        FrameLayout container = (FrameLayout) context.findViewById(R.id.pin_lock_container);
-        if(!lock) {
-            container.setVisibility(View.GONE);
-            return;
-        }
-        container.setVisibility(View.VISIBLE);
-        String pincode = pref.getString("pin", null);
-        if(pincode == null || !pincode.matches("^\\d+$")) pincode = PIN.PIN;
-        PinLockView pinLockView = (PinLockView) context.findViewById(R.id.pin_lock_view);
-        IndicatorDots mIndicatorDots = (IndicatorDots) context.findViewById(R.id.indicator_dots);
-        pinLockView.attachIndicatorDots(mIndicatorDots);
-        pinLockView.resetPinLockView();
-        String finalPincode = pincode;
-        pinLockView.setPinLockListener(new PinLockListener() {
-            @Override
-            public void onComplete(String pin) {
-                if(pin.equals(finalPincode)){
-                    container.setVisibility(View.GONE);
-                }else{
-                    (new Handler(context.getMainLooper())).postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-
-                        }
-                    }, 400);
-                }
-            }
-
-            @Override
-            public void onEmpty() {
-
-            }
-
-            @Override
-            public void onPinChange(int pinLength, String intermediatePin) {
-
-            }
-        });
+    public static void showCreatePinScreen(Activity context){
+        showLockScreen(context, PinLockActivity.CREATE_PIN, 0);
     }
+    public static void showLockScreen(Activity context){
+        showLockScreen(context, 0);
+    }
+    public static void showLockScreen(Activity context, int code){
+        showLockScreen(context, null, code);
+    }
+    public static void showLockScreen(Activity context, String action, int code){
+        Intent intent = new Intent(context, PinLockActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        if(action!=null) intent.setAction(action);
+        if(code>0) context.startActivityForResult(intent, code);
+        else context.startActivity(intent);
+    }
+
 }

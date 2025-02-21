@@ -80,36 +80,5 @@
         </LinearLayout>
     </FrameLayout>
 
-    <FrameLayout
-        android:visibility="gone"
-        android:id="@+id/pin_lock_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/background_primary">
-        <LinearLayout
-            android:layout_gravity="center"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <ImageView
-                android:layout_marginBottom="40dp"
-                android:layout_gravity="center"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@mipmap/ic_app"/>
-            <com.andrognito.pinlockview.IndicatorDots
-                android:id="@+id/indicator_dots"
-                android:layout_gravity="center"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                app:indicatorType="fillWithAnimation"/>
-            <com.andrognito.pinlockview.PinLockView
-                android:id="@+id/pin_lock_view"
-                app:keypadTextSize="24dp"
-                android:layout_gravity="center"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-    </FrameLayout>
+
 </FrameLayout>

@@ -9,7 +9,7 @@
         <!-- We need to set this because this error https://issuetracker.google.com/issues/37008551#comment5 -->
         <item name="homeAsUpIndicator">@drawable/ic_back</item>
     </style>
-    <style name="Theme.Browser" parent="Theme.AppCompat.NoActionBar">
+    <style name="Theme.Browser" parent="Theme.AppCompat.DayNight.NoActionBar">
         <item name="android:windowFrame">@null</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowTitleStyle">@null</item>

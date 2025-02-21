@@ -146,6 +146,7 @@ dependencies {
     implementation project(path: ":easypermissions")
     implementation project(path: ":androidy")
     implementation project(path: ':pin')
+    implementation project(path: ':utils')
 
 //    implementation 'pub.devrel:easypermissions:3.0.0'
 

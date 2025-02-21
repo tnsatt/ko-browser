@@ -5,6 +5,7 @@ package com.xlab.vbrowser;
 
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
+import android.support.v7.app.AppCompatDelegate;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
@@ -29,6 +30,8 @@ public class UpApplication extends LocaleAwareApplication {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
 
         sAnalytics = GoogleAnalytics.getInstance(this);
 

@@ -31,10 +31,10 @@
             android:layout="@layout/focus_preference"
             android:title="PIN Lock"
             android:key="pinlock"/>
-        <EditTextPreference
+        <Preference
             android:layout="@layout/focus_preference"
-            android:title="PIN"
-            android:key="pin"/>
+            android:title="Create PIN"
+            android:key="create_pin"/>
     </PreferenceCategory>
 
     <PreferenceCategory

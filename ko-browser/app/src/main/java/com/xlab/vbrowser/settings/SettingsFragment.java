@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
+import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -27,6 +28,7 @@ import com.xlab.vbrowser.autocomplete.AutocompleteSettingsFragment;
 import com.xlab.vbrowser.locale.LocaleManager;
 import com.xlab.vbrowser.search.MultiselectSearchEngineListPreference;
 import com.xlab.vbrowser.search.RadioSearchEngineListPreference;
+import com.xlab.vbrowser.z.Z;
 
 import java.util.Locale;
 import java.util.Set;
@@ -155,6 +157,8 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
                     .replace(com.xlab.vbrowser.R.id.container, new AutocompleteSettingsFragment())
                     .addToBackStack(null)
                     .commit();
+        } else if(preference.getKey().equals("create_pin")){
+            Z.showCreatePinScreen(getActivity());
         }
 
         return super.onPreferenceTreeClick(preferenceScreen, preference);
@@ -185,6 +189,13 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         //updater.updateIcon(com.xlab.vbrowser.R.drawable.ic_back);
         if (settingsScreen == SettingsScreen.SEARCH_ENGINES || settingsScreen == SettingsScreen.REMOVE_ENGINES) {
             refetchSearchEngines();
+        }
+
+        Preference createPin = findPreference("create_pin");
+        if(createPin != null){
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+            String enc = sharedPreferences.getString("encodedPin", null);
+            createPin.setSummary(enc==null?"Not Set":"Pin Created");
         }
     }
 
