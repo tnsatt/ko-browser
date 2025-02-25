@@ -8,18 +8,20 @@ project(':easypermissions').projectDir = new File('../../Libs/easypermissions/ea
 
 include ':utils'
 project(':utils').projectDir = new File('../../Utils/utils')
+include ':android'
+project(':android').projectDir = new File('../../AndroidCore/android')
 include ':androidy'
 project(':androidy').projectDir = new File('../../AndroidY/android')
 
 include ':pin'
 project (":pin").projectDir = new File("../../Libs/PinLockView/pinlockview")
-include ':ad-filter'
-project (":ad-filter").projectDir = new File("../../Libs/AdblockAndroid/ad-filter")
-include ':adblock-client'
-project (":adblock-client").projectDir = new File("../../Libs/AdblockAndroid/adblock-client")
-include ':HttpRequest'
-project (":HttpRequest").projectDir = new File("../../Libs/Edsuns/HttpRequest")
-include ':mezzanine'
-project (":mezzanine").projectDir = new File("../../Libs/Edsuns/Mezzanine/mezzanine")
-include ':mezzanine-compiler'
-project (":mezzanine-compiler").projectDir = new File("../../Libs/Edsuns/Mezzanine/mezzanine-compiler")
+//include ':ad-filter'
+//project (":ad-filter").projectDir = new File("../../Libs/AdblockAndroid/ad-filter")
+//include ':adblock-client'
+//project (":adblock-client").projectDir = new File("../../Libs/AdblockAndroid/adblock-client")
+//include ':HttpRequest'
+//project (":HttpRequest").projectDir = new File("../../Libs/Edsuns/HttpRequest")
+//include ':mezzanine'
+//project (":mezzanine").projectDir = new File("../../Libs/Edsuns/Mezzanine/mezzanine")
+//include ':mezzanine-compiler'
+//project (":mezzanine-compiler").projectDir = new File("../../Libs/Edsuns/Mezzanine/mezzanine-compiler")

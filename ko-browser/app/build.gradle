@@ -143,13 +143,14 @@ repositories {
 }
 
 dependencies {
-    implementation project(path: ":easypermissions")
+//    implementation project(path: ":easypermissions")
     implementation project(path: ":androidy")
     implementation project(path: ':pin')
+    implementation project(path: ":android")
     implementation project(path: ':utils')
-    implementation project(path: ':ad-filter')
+//    implementation project(path: ':ad-filter')
 
-//    implementation 'pub.devrel:easypermissions:3.0.0'
+    implementation 'pub.devrel:easypermissions:3.0.0'
 
 //    implementation 'com.android.billingclient:billing:1.2'
     implementation "com.android.support:appcompat-v7:$support_libraries_version"
