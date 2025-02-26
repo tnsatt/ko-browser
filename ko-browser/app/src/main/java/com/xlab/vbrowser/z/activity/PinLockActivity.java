@@ -5,16 +5,18 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.support.v7.app.AppCompatActivity;
+
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import com.andrognito.pinlockview.IndicatorDots;
-import com.andrognito.pinlockview.PinLockListener;
-import com.andrognito.pinlockview.PinLockView;
+import androidx.appcompat.app.AppCompatActivity;
+
+//import com.andrognito.pinlockview.IndicatorDots;
+//import com.andrognito.pinlockview.PinLockListener;
+//import com.andrognito.pinlockview.PinLockView;
 import com.libs.module.AESEncryption;
 import com.libs.module.KeyHelper;
 import com.libs.module.PasswordUtil;
@@ -28,7 +30,7 @@ public class PinLockActivity extends AppCompatActivity {
     public final static int CREATE_MODE = 1;
     public final static String CREATE_PIN = "CREATE_PIN";
     FrameLayout container;
-    PinLockView pinLockView;
+//    PinLockView pinLockView;
     Button createPin;
     TextView titleView;
     TextView statusView;
@@ -47,10 +49,10 @@ public class PinLockActivity extends AppCompatActivity {
         createPin = (Button) findViewById(R.id.createPin);
         titleView = (TextView) findViewById(R.id.title);
         statusView = (TextView) findViewById(R.id.status);
-        pinLockView = (PinLockView) findViewById(R.id.pin_lock_view);
-        IndicatorDots mIndicatorDots = (IndicatorDots) findViewById(R.id.indicator_dots);
-        pinLockView.attachIndicatorDots(mIndicatorDots);
-        pinLockView.resetPinLockView();
+//        pinLockView = (PinLockView) findViewById(R.id.pin_lock_view);
+//        IndicatorDots mIndicatorDots = (IndicatorDots) findViewById(R.id.indicator_dots);
+//        pinLockView.attachIndicatorDots(mIndicatorDots);
+//        pinLockView.resetPinLockView();
 
         if(mode == CREATE_MODE){
             setCreateMode();
@@ -106,70 +108,70 @@ public class PinLockActivity extends AppCompatActivity {
     }
     public void setCreateMode(){
         titleView.setText("Create PIN");
-        pinLockView.setPinLockListener(new PinLockListener() {
-            @Override
-            public void onComplete(String pin) {
-                showCreatePinButton(pin);
-            }
-
-            @Override
-            public void onEmpty() {
-                createPin.setVisibility(View.INVISIBLE);
-                stat(null);
-            }
-
-            @Override
-            public void onPinChange(int pinLength, String intermediatePin) {
-                if (pinLength >= 4) {
-                    showCreatePinButton(intermediatePin);
-                }else{
-                    createPin.setVisibility(View.INVISIBLE);
-                    stat(null);
-                }
-            }
-        });
+//        pinLockView.setPinLockListener(new PinLockListener() {
+//            @Override
+//            public void onComplete(String pin) {
+//                showCreatePinButton(pin);
+//            }
+//
+//            @Override
+//            public void onEmpty() {
+//                createPin.setVisibility(View.INVISIBLE);
+//                stat(null);
+//            }
+//
+//            @Override
+//            public void onPinChange(int pinLength, String intermediatePin) {
+//                if (pinLength >= 4) {
+//                    showCreatePinButton(intermediatePin);
+//                }else{
+//                    createPin.setVisibility(View.INVISIBLE);
+//                    stat(null);
+//                }
+//            }
+//        });
     }
     public void setLock(Activity context){
         titleView.setText("Auth");
 //        String pincode = pref.getString("pin", null);
 //        if(pincode == null || !pincode.matches("^\\d+$")) pincode = PIN.PIN;
 //        String finalPincode = pincode;
-        pinLockView.setPinLockListener(new PinLockListener() {
-            @Override
-            public void onComplete(String pin) {
-                try {
-                    if (isMatchPin(pin)) {
-                        setResult(RESULT_OK);
-                        finish();
-                    } else {
-                        stat("Not Match", Color.RED);
-                        (new Handler(context.getMainLooper())).postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-
-                            }
-                        }, 400);
-                    }
-                }catch (Exception e){
-                    e.printStackTrace();
-                    stat("Failed", Color.RED);
-                }
-            }
-
-            @Override
-            public void onEmpty() {
-                stat(null);
-            }
-
-            @Override
-            public void onPinChange(int pinLength, String intermediatePin) {
-                if(pinLength >= 4){
-
-                }else{
-                    stat(null);
-                }
-            }
-        });
+//        pinLockView.setPinLockListener(new PinLockListener() {
+//            @Override
+//            public void onComplete(String pin) {
+//                try {
+//                    if (isMatchPin(pin)) {
+//                        setResult(RESULT_OK);
+//                        finish();
+//                    } else {
+//                        stat("Not Match", Color.RED);
+//                        (new Handler(context.getMainLooper())).postDelayed(new Runnable() {
+//                            @Override
+//                            public void run() {
+//
+//                            }
+//                        }, 400);
+//                    }
+//                }catch (Exception e){
+//                    e.printStackTrace();
+//                    stat("Failed", Color.RED);
+//                }
+//            }
+//
+//            @Override
+//            public void onEmpty() {
+//                stat(null);
+//            }
+//
+//            @Override
+//            public void onPinChange(int pinLength, String intermediatePin) {
+//                if(pinLength >= 4){
+//
+//                }else{
+//                    stat(null);
+//                }
+//            }
+//        });
     }
     @Override
     public void onBackPressed() {

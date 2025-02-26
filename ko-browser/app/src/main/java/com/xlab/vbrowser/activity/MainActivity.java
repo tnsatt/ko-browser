@@ -489,22 +489,22 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements IabBro
     public void onBackPressed() {
         final FragmentManager fragmentManager = getSupportFragmentManager();
 
-//        final SessionsSheetFragment sessionsSheetFragment = (SessionsSheetFragment) fragmentManager.findFragmentByTag(SessionsSheetFragment.FRAGMENT_TAG);
-//        if (sessionsSheetFragment != null &&
-//                sessionsSheetFragment.isVisible() &&
-//                sessionsSheetFragment.onBackPressed()) {
-//            // SessionsSheetFragment handles back presses itself (custom animations).
-//            return;
-//        }
-//
-//        final UrlInputFragment urlInputFragment = (UrlInputFragment) fragmentManager.findFragmentByTag(UrlInputFragment.FRAGMENT_TAG);
-//        if (urlInputFragment != null &&
-//                urlInputFragment.isVisible() &&
-//                urlInputFragment.onBackPressed()) {
-//            // The URL input fragment has handled the back press. It does its own animations so
-//            // we do not try to remove it from outside.
-//            return;
-//        }
+        final SessionsSheetFragment sessionsSheetFragment = (SessionsSheetFragment) fragmentManager.findFragmentByTag(SessionsSheetFragment.FRAGMENT_TAG);
+        if (sessionsSheetFragment != null &&
+                sessionsSheetFragment.isVisible() &&
+                sessionsSheetFragment.onBackPressed()) {
+            // SessionsSheetFragment handles back presses itself (custom animations).
+            return;
+        }
+
+        final UrlInputFragment urlInputFragment = (UrlInputFragment) fragmentManager.findFragmentByTag(UrlInputFragment.FRAGMENT_TAG);
+        if (urlInputFragment != null &&
+                urlInputFragment.isVisible() &&
+                urlInputFragment.onBackPressed()) {
+            // The URL input fragment has handled the back press. It does its own animations so
+            // we do not try to remove it from outside.
+            return;
+        }
 
         final BrowserFragment browserFragment = (BrowserFragment) fragmentManager.findFragmentByTag(BrowserFragment.FRAGMENT_TAG);
         if (browserFragment != null &&
@@ -515,7 +515,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements IabBro
             return;
         }
 
-//        super.onBackPressed();
+        super.onBackPressed();
     }
 
     public void processNightmode() {

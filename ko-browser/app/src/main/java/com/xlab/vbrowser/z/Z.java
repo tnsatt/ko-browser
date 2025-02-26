@@ -20,10 +20,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.andrognito.pinlockview.IndicatorDots;
-import com.andrognito.pinlockview.PinLockListener;
-import com.andrognito.pinlockview.PinLockView;
-import com.android.y.dom.Drag;
 import com.xlab.vbrowser.R;
 import com.xlab.vbrowser.activity.MainActivity;
 import com.xlab.vbrowser.utils.UrlConstants;

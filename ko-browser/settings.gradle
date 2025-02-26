@@ -1,6 +1,6 @@
-include ':app', ':fetch2', ':fetch2downloaders', ':js', ':test-hls-downloader'
-project(':fetch2').projectDir = new File('../android-download-manager/fetch2')
-project(':fetch2downloaders').projectDir = new File('../android-download-manager/fetch2downloaders')
+include ':app', ':js', ':test-hls-downloader'
+//project(':fetch2').projectDir = new File('../android-download-manager/fetch2')
+//project(':fetch2downloaders').projectDir = new File('../android-download-manager/fetch2downloaders')
 project(':js').projectDir = new File('../js')
 
 include ':easypermissions'
@@ -13,8 +13,13 @@ project(':android').projectDir = new File('../../AndroidCore/android')
 include ':androidy'
 project(':androidy').projectDir = new File('../../AndroidY/android')
 
-include ':pin'
-project (":pin").projectDir = new File("../../Libs/PinLockView/pinlockview")
+include ':fetch2'
+project (":fetch2").projectDir = new File("../../Libs/Fetch-3.0.12/fetch2")
+include ':fetch2core'
+project (":fetch2core").projectDir = new File("../../Libs/Fetch-3.0.12/fetch2core")
+
+//include ':pin'
+//project (":pin").projectDir = new File("../../Libs/PinLockView/pinlockview")
 //include ':ad-filter'
 //project (":ad-filter").projectDir = new File("../../Libs/AdblockAndroid/ad-filter")
 //include ':adblock-client'
