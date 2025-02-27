@@ -1,6 +1,7 @@
 package com.tonyodev.fetch2.database
 
-import android.arch.persistence.room.TypeConverter
+
+import androidx.room.TypeConverter
 import com.tonyodev.fetch2.Error
 import com.tonyodev.fetch2.NetworkType
 import com.tonyodev.fetch2.Priority
