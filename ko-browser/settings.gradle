@@ -1,4 +1,6 @@
-include ':app', ':js', ':test-hls-downloader'
+include ':app'
+include ':js'
+include':test-hls-downloader'
 include ':fetch2'
 include ':fetch2downloaders'
 project(':fetch2').projectDir = new File('../android-download-manager/fetch2')
@@ -6,8 +8,8 @@ project(':fetch2downloaders').projectDir = new File('../android-download-manager
 project(':js').projectDir = new File('../js')
 
 
-//include ':easypermissions'
-//project(':easypermissions').projectDir = new File('../../Libs/easypermissions/easypermissions')
+include ':easypermissions'
+project(':easypermissions').projectDir = new File('../../Libs/easypermissions/easypermissions')
 
 include ':utils'
 project(':utils').projectDir = new File('../../Utils/utils')

@@ -4,7 +4,7 @@ buildscript {
     ext.support_libraries_version = '28.0.0'
     ext.architecture_components_version = '1.1.1'
     ext.espresso_version = '3.0.1'
-    ext.kotlin_version = '1.8.0'
+    ext.kotlin_version = '1.2.30'
 
     repositories {
         google()
@@ -28,8 +28,8 @@ buildscript {
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
 
-        classpath "org.jetbrains.kotlin.android.extensions:org.jetbrains.kotlin.android.extensions.gradle.plugin:1.7.0"
-        classpath("com.google.devtools.ksp:com.google.devtools.ksp.gradle.plugin:2.1.0-1.0.29")
+        classpath "org.jetbrains.kotlin.android.extensions:org.jetbrains.kotlin.android.extensions.gradle.plugin:1.2.30"
+//        classpath("com.google.devtools.ksp:com.google.devtools.ksp.gradle.plugin:2.1.0-1.0.29")
     }
 }
 
@@ -49,10 +49,10 @@ ext{
     baseArtifactId = "mezzanine"
     publishGroupId = 'com.anthonycr.mezzanine'
     versionName = '1.1.1'
-    kotlinVersion = '1.6.0'
+    kotlinVersion = '1.2.30'
     dokkaVersion = '0.9.15'
 
-    kotlin_version = '1.8.0'
+    kotlin_version = '1.2.30'
     okhttp_version = '3.10.0'
     android_support_version = '27.1.0'
     constraint_layout_version = "1.1.0-beta5"

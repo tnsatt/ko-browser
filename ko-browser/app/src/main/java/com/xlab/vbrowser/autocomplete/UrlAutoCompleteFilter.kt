@@ -13,8 +13,8 @@ import com.xlab.vbrowser.utils.BackgroundTask
 import com.xlab.vbrowser.utils.IBackgroundTask
 import com.xlab.vbrowser.utils.Settings
 import com.xlab.vbrowser.widget.InlineAutocompleteEditText
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.android.UI
+import kotlinx.coroutines.launch
 import java.io.IOException
 import java.util.*
 

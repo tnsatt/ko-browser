@@ -1,6 +1,9 @@
 package com.tonyodev.fetch2.database
 
-import androidx.room.*
+import android.arch.persistence.room.ColumnInfo
+import android.arch.persistence.room.Entity
+import android.arch.persistence.room.Index
+import android.arch.persistence.room.PrimaryKey
 import com.tonyodev.fetch2.Download
 import com.tonyodev.fetch2.Priority
 import com.tonyodev.fetch2.Status
