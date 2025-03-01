@@ -4,7 +4,7 @@ buildscript {
     ext.support_libraries_version = '28.0.0'
     ext.architecture_components_version = '1.1.1'
     ext.espresso_version = '3.0.1'
-    ext.kotlin_version = '1.2.30'
+    ext.kotlin_version = '1.3.31'
 
     repositories {
         google()
@@ -28,7 +28,7 @@ buildscript {
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
 
-        classpath "org.jetbrains.kotlin.android.extensions:org.jetbrains.kotlin.android.extensions.gradle.plugin:1.2.30"
+//        classpath "org.jetbrains.kotlin.android.extensions:org.jetbrains.kotlin.android.extensions.gradle.plugin:1.7.0"
 //        classpath("com.google.devtools.ksp:com.google.devtools.ksp.gradle.plugin:2.1.0-1.0.29")
     }
 }
@@ -46,13 +46,13 @@ task clean(type: Delete) {
 }
 
 ext{
-    baseArtifactId = "mezzanine"
-    publishGroupId = 'com.anthonycr.mezzanine'
-    versionName = '1.1.1'
-    kotlinVersion = '1.2.30'
-    dokkaVersion = '0.9.15'
+//    baseArtifactId = "mezzanine"
+//    publishGroupId = 'com.anthonycr.mezzanine'
+//    versionName = '1.1.1'
+//    kotlinVersion = '1.2.61'
+//    dokkaVersion = '0.9.15'
 
-    kotlin_version = '1.2.30'
+    kotlin_version = '1.2.61'
     okhttp_version = '3.10.0'
     android_support_version = '27.1.0'
     constraint_layout_version = "1.1.0-beta5"
@@ -71,4 +71,20 @@ ext{
     novoda_bintray_version = "0.8.0"
     library_version = "2.0.0-RC10"
     library_version_code = 11
+
+    kotlinVersion = '1.3.20'
+    minSdkVersion = 21
+    targetSdkVersion = 28
+    compileSdkVersion = 28
+    buildToolsVersion = '28.0.3'
+    androidSupportLibraryVersion = '28.0.0'
+    sourceCompatibilityVersion = JavaVersion.VERSION_1_7
+    targetCompatibilityVersion = JavaVersion.VERSION_1_7
+    easyListDefaultUpdateUrl = 'https://easylist-downloads.adblockplus.org/easylist.txt'
+    easyListChinaUpdateUrl = 'https://easylist-downloads.adblockplus.org/easylistchina+easylistchina_compliance+easylist.txt'
+    exceptionRulesUpdateUrl = 'https://easylist-downloads.adblockplus.org/exceptionrules.txt'
+    easyListFilePath = file('adblockplussbrowser/src/main/res/raw/easylist.txt').absolutePath
+    exceptionRulesFilePath = file('adblockplussbrowser/src/main/res/raw/exceptionrules.txt').absolutePath
+    translationsSourceFilePath = file('adblockplussbrowser/src/main/res/values/strings.xml').absolutePath
+    localPropertiesPath = file('local.properties').absolutePath
 }

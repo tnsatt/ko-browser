@@ -23,15 +23,7 @@ project(':androidy').projectDir = new File('../../AndroidY/android')
 //include ':fetch2core'
 //project (":fetch2core").projectDir = new File("../../Libs/Fetch-3.0.12/fetch2core")
 
-//include ':pin'
-//project (":pin").projectDir = new File("../../Libs/PinLockView/pinlockview")
-//include ':ad-filter'
-//project (":ad-filter").projectDir = new File("../../Libs/AdblockAndroid/ad-filter")
-//include ':adblock-client'
-//project (":adblock-client").projectDir = new File("../../Libs/AdblockAndroid/adblock-client")
-//include ':HttpRequest'
-//project (":HttpRequest").projectDir = new File("../../Libs/Edsuns/HttpRequest")
-//include ':mezzanine'
-//project (":mezzanine").projectDir = new File("../../Libs/Edsuns/Mezzanine/mezzanine")
-//include ':mezzanine-compiler'
-//project (":mezzanine-compiler").projectDir = new File("../../Libs/Edsuns/Mezzanine/mezzanine-compiler")
+include ':pin'
+project (":pin").projectDir = new File("../../Libs/PinLockView/pinlockview")
+include ':android-adblock'
+project (":android-adblock").projectDir = new File("../../Libs/android-adblock/app")

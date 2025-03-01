@@ -13,8 +13,8 @@ import com.xlab.vbrowser.utils.BackgroundTask
 import com.xlab.vbrowser.utils.IBackgroundTask
 import com.xlab.vbrowser.utils.Settings
 import com.xlab.vbrowser.widget.InlineAutocompleteEditText
-import kotlinx.coroutines.android.UI
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.experimental.android.UI
+import kotlinx.coroutines.experimental.launch
 import java.io.IOException
 import java.util.*
 
@@ -152,11 +152,11 @@ class UrlAutoCompleteFilter : InlineAutocompleteEditText.OnFilterListener {
                 var settingCountries = Locales.getCountriesFromLanguage(context, currentLocale.language?.toLowerCase(Locale.US));
 
                 settingCountries
-                        .asSequence()
-                        .filter { availableLists.contains(it) }
-                        .forEach {
-                            loadDomainsForLanguage(context, domains, it)
-                        }
+                    .asSequence()
+                    .filter { availableLists.contains(it) }
+                    .forEach {
+                        loadDomainsForLanguage(context, domains, it)
+                    }
             }
         } catch(e: Exception) {}
 
@@ -185,7 +185,7 @@ class UrlAutoCompleteFilter : InlineAutocompleteEditText.OnFilterListener {
 
         try {
             domains.addAll(
-                    assetManager.open("domains/" + country).bufferedReader().readLines())
+                assetManager.open("domains/" + country).bufferedReader().readLines())
         } catch (e: IOException) {
             Log.w(LOG_TAG, "Could not load domain list: " + country)
         }
@@ -198,5 +198,5 @@ class UrlAutoCompleteFilter : InlineAutocompleteEditText.OnFilterListener {
      * that exactly matches the search text - which is what this method is for:
      */
     private fun prepareAutocompleteResult(rawSearchText: String, lowerCaseResult: String) =
-            rawSearchText + lowerCaseResult.substring(rawSearchText.length)
+        rawSearchText + lowerCaseResult.substring(rawSearchText.length)
 }
