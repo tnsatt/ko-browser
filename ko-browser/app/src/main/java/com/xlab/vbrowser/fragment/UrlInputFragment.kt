@@ -575,7 +575,7 @@ class UrlInputFragment : LocaleAwareFragment(), View.OnClickListener, InlineAuto
         // Replace all fragments with a fresh browser fragment. This means we either remove the
         // HomeFragment with an UrlInputFragment on top or an old BrowserFragment with an
         // UrlInputFragment.
-        val browserFragment = fragmentManager.findFragmentByTag(BrowserFragment.FRAGMENT_TAG)
+        val browserFragment = fragmentManager.findFragmentByTag(session?.uuid)
 
         if (browserFragment != null && browserFragment is BrowserFragment && browserFragment.isVisible) {
             // Reuse existing visible fragment - in this case we know the user is already browsing.

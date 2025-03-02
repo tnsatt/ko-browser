@@ -12,6 +12,7 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -59,6 +60,7 @@ import com.tonyodev.fetch2.Download;
 import com.tonyodev.fetch2.Fetch;
 import com.tonyodev.fetch2.FetchListener;
 import com.xlab.vbrowser.z.Z;
+import com.xlab.vbrowser.z.module.Adblock;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -140,7 +142,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements IabBro
         if(Z.isLock(this)){
             Z.showLockScreen(this);
         }
-
+        Adblock.init(this);
         nightModeView = findViewById(R.id.nightModeView);
         loadSessionProgressView = findViewById(R.id.load_sessions_progress_view);
         ThemeUtils.loadNightmode(nightModeView, settings, this);
@@ -163,6 +165,11 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements IabBro
                         } else {
                             showBrowserScreenForCurrentSession();
                         }
+                        SessionHistoryService.save(MainActivity.this, new ISessionHistoryListener() {
+                            @Override
+                            public void onDone() {
+                            }
+                        });
                     }
                 });
             }
@@ -421,28 +428,63 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements IabBro
     private void openFirstBlankTab() {
         SessionManager.getInstance().createSession(Source.FIRST_BLANK_TAB, UrlConstants.getHomeUrl());
     }
+    private Fragment getSessionSheetFragment(FragmentManager fragmentManager){
+        Fragment fragment = fragmentManager.findFragmentByTag(SessionsSheetFragment.FRAGMENT_TAG);
+        if(fragment == null) return null;
+        return fragment.isVisible()?fragment:null;
+    }
+    private void showBrowserScreen(Boolean allowStateLoss){
+        final Session currentSession = sessionManager.getCurrentSession();
+
+        if (currentSession == null) {
+            return;
+        }
+        boolean show = false;
+        final FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        big:
+        for(Fragment f: fragmentManager.getFragments()){
+            if(!(f instanceof BrowserFragment)) {
+                transaction.hide(f);
+                continue;
+            }
+            for(Session s: SessionManager.getInstance().getSessions().getValue()){
+                if(s.getUUID().equals(((BrowserFragment) f).getSession().getUUID())){
+                    transaction.hide(f);
+                    continue big;
+                }
+            }
+            transaction.remove(f);
+            show = true;
+        }
+        final BrowserFragment fragment = (BrowserFragment) fragmentManager.findFragmentByTag(currentSession.getUUID());
+        if (fragment != null && fragment.getSession().isSameAs(currentSession)) {
+            // There's already a BrowserFragment displaying this session.
+            if(show) {
+                Fragment f = getSessionSheetFragment(fragmentManager);
+                if (f != null) transaction.show(f);
+            }
+            transaction.show(fragment);
+            transaction.commit();
+            return;
+        }
+
+        transaction
+                .add(com.xlab.vbrowser.R.id.container,
+                        BrowserFragment.createForSession(currentSession), currentSession.getUUID());
+        if(show) {
+            transaction.add(com.xlab.vbrowser.R.id.container, new SessionsSheetFragment(), SessionsSheetFragment.FRAGMENT_TAG);
+        }
+        if(allowStateLoss){
+            transaction.commitAllowingStateLoss();
+            return;
+        }
+        transaction.commit();
+    }
 
     private void showBrowserScreenForCurrentSession() {
         try {
-            final Session currentSession = sessionManager.getCurrentSession();
-
-            if (currentSession == null) {
-                return;
-            }
-
-            final FragmentManager fragmentManager = getSupportFragmentManager();
-
-            final BrowserFragment fragment = (BrowserFragment) fragmentManager.findFragmentByTag(BrowserFragment.FRAGMENT_TAG);
-            if (fragment != null && fragment.getSession().isSameAs(currentSession)) {
-                // There's already a BrowserFragment displaying this session.
-                return;
-            }
-
-            fragmentManager
-                    .beginTransaction()
-                    .replace(com.xlab.vbrowser.R.id.container,
-                            BrowserFragment.createForSession(currentSession), BrowserFragment.FRAGMENT_TAG)
-                    .commit();
+            showBrowserScreen(false);
         }
         catch (IllegalStateException e) {
             //This exception raised when share a website from this browser to this browser on Android 5.1
@@ -454,25 +496,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements IabBro
     }
 
     private void showBrowserScreenForCurrentSessionAfterSavingSate() {
-        final Session currentSession = sessionManager.getCurrentSession();
-
-        if (currentSession == null) {
-            return;
-        }
-
-        final FragmentManager fragmentManager = getSupportFragmentManager();
-
-        final BrowserFragment fragment = (BrowserFragment) fragmentManager.findFragmentByTag(BrowserFragment.FRAGMENT_TAG);
-        if (fragment != null && fragment.getSession().isSameAs(currentSession)) {
-            // There's already a BrowserFragment displaying this session.
-            return;
-        }
-
-        fragmentManager
-                .beginTransaction()
-                .replace(com.xlab.vbrowser.R.id.container,
-                        BrowserFragment.createForSession(currentSession), BrowserFragment.FRAGMENT_TAG)
-                .commitAllowingStateLoss();
+        showBrowserScreen(true);
     }
 
     @Override
@@ -505,14 +529,16 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements IabBro
             // we do not try to remove it from outside.
             return;
         }
-
-        final BrowserFragment browserFragment = (BrowserFragment) fragmentManager.findFragmentByTag(BrowserFragment.FRAGMENT_TAG);
-        if (browserFragment != null &&
-                browserFragment.isVisible() &&
-                browserFragment.onBackPressed()) {
-            // The Browser fragment handles back presses on its own because it might just go back
-            // in the browsing history.
-            return;
+        Session session = SessionManager.getInstance().getCurrentSession();
+        if(session!=null) {
+            final BrowserFragment browserFragment = (BrowserFragment) fragmentManager.findFragmentByTag(session.getUUID());
+            if (browserFragment != null &&
+                    browserFragment.isVisible() &&
+                    browserFragment.onBackPressed()) {
+                // The Browser fragment handles back presses on its own because it might just go back
+                // in the browsing history.
+                return;
+            }
         }
 
         super.onBackPressed();

@@ -25,5 +25,5 @@ project(':androidy').projectDir = new File('../../AndroidY/android')
 
 include ':pin'
 project (":pin").projectDir = new File("../../Libs/PinLockView/pinlockview")
-include ':android-adblock'
-project (":android-adblock").projectDir = new File("../../Libs/android-adblock/app")
+include ':adblock-parser'
+project (":adblock-parser").projectDir = new File("../../Module/adblock-parser-android/adblock-parser")

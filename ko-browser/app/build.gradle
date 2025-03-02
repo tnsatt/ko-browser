@@ -149,9 +149,10 @@ dependencies {
     implementation project(path: ':pin')
 //    implementation project(path: ":android")
     implementation project(path: ':utils')
-    implementation project(path: ':android-adblock')
-
+    implementation project(path: ':adblock-parser')
 //    implementation 'pub.devrel:easypermissions:3.0.0'
+
+    implementation 'org.jsoup:jsoup:1.18.3'
 
 //    implementation 'com.android.billingclient:billing:1.2'
 

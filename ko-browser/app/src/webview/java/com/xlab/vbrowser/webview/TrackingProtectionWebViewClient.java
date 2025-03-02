@@ -12,8 +12,24 @@ import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.novacloud.data.adblock.RuleSet;
 import com.xlab.vbrowser.webview.matcher.UrlMatcher;
 import com.xlab.vbrowser.web.IWebView;
+import com.xlab.vbrowser.z.module.AdblockRuleSet;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
+import java.nio.CharBuffer;
+import java.nio.charset.StandardCharsets;
+import java.util.Map;
 
 public class TrackingProtectionWebViewClient extends WebViewClient {
     private static volatile UrlMatcher MATCHER;
@@ -65,6 +81,20 @@ public class TrackingProtectionWebViewClient extends WebViewClient {
         return blockingEnabled;
     }
 
+//    @Override
+//    public boolean shouldOverrideUrlLoading(WebView view, String url) {
+//        if (!blockingEnabled) {
+//            return super.shouldOverrideUrlLoading(view, url);
+//        }
+//        AdblockRuleSet rulesetAdBlocker = AdblockRuleSet.getInstance();
+//        RuleSet ruleSet = rulesetAdBlocker.getRuleSet();
+//        if(!ruleSet.matchesWhitelist(url) && ruleSet.matchesBlacklist(url)){
+//            view.loadUrl("file:///android_asset/www/adblock.html?url="+url);
+//            return true;
+//        }
+//        return super.shouldOverrideUrlLoading(view, url);
+//    }
+
     @Override
     public WebResourceResponse shouldInterceptRequest(final WebView view, final WebResourceRequest request) {
         if (!blockingEnabled) {
@@ -103,22 +133,81 @@ public class TrackingProtectionWebViewClient extends WebViewClient {
             return new WebResourceResponse(null, null, null);
         }*/
 
-        final UrlMatcher matcher = getMatcher(view.getContext());
+//        final UrlMatcher matcher = getMatcher(view.getContext());
+//
+//        // Don't block the main frame from being loaded. This also protects against cases where we
+//        // open a link that redirects to another app (e.g. to the play store).
+//        final Uri pageUri = Uri.parse(currentPageURL);
+//        if ((!request.isForMainFrame()) &&
+//                matcher.matches(resourceUri, pageUri)) {
+//            if (callback != null) {
+//                callback.countBlockedTracker();
+//            }
+//            return new WebResourceResponse(null, null, null);
+//        }
 
-        // Don't block the main frame from being loaded. This also protects against cases where we
-        // open a link that redirects to another app (e.g. to the play store).
-        final Uri pageUri = Uri.parse(currentPageURL);
-        if ((!request.isForMainFrame()) &&
-                matcher.matches(resourceUri, pageUri)) {
+//        final Uri pageUri = Uri.parse(currentPageURL);
+
+        String url = resourceUri.toString();
+        AdblockRuleSet rulesetAdBlocker = AdblockRuleSet.getInstance();
+        RuleSet ruleSet = rulesetAdBlocker.getRuleSet();
+        if(!ruleSet.matchesWhitelist(url) && ruleSet.matchesBlacklist(url)) {
             if (callback != null) {
                 callback.countBlockedTracker();
             }
+            if (request.isForMainFrame()) {
+                try {
+                    InputStream inputStream = view.getContext().getAssets().open("www/adblock.html"); // Load local file
+                    return new WebResourceResponse("text/html", "UTF-8", inputStream);
+                } catch (IOException e) {
+
+                }
+            }
             return new WebResourceResponse(null, null, null);
         }
+//        if (request.isForMainFrame()) { // Only modify the main HTML document
+//            try {
+//                // Open a connection to the original URL
+//                URLConnection connection = new URL(url).openConnection();
+//
+//                Map<String, String> headers = request.getRequestHeaders();
+//                for (Map.Entry<String, String> entry : headers.entrySet()) {
+//                    connection.addRequestProperty(entry.getKey(), entry.getValue());
+//                }
+//                InputStream inputStream = connection.getInputStream();
+//
+//                // Read the original HTML
+//                String html = readStream(inputStream);
+//
+//                Document doc = Jsoup.parse(html, url);
+//                // Modify the HTML (Example: Inject a script)
+//                String modifiedHtml = rulesetAdBlocker.removeAd(doc).html();
+//
+//                // Return the modified HTML
+//                return new WebResourceResponse("text/html", "UTF-8",
+//                        new ByteArrayInputStream(modifiedHtml.getBytes(StandardCharsets.UTF_8)));
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
 
         return super.shouldInterceptRequest(view, request);
     }
-
+    private String readStream(InputStream inputStream) throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
+        StringBuilder stringBuilder = new StringBuilder();
+        String line;
+        while ((line = reader.readLine()) != null) {
+            stringBuilder.append(line).append("\n");
+        }
+//        byte[] buffer = new byte[8192];
+//        while(inputStream.read(buffer)!=-1) {
+//            stringBuilder.append(buffer);
+//            buffer = new byte[8192];
+//        }
+        reader.close();
+        return stringBuilder.toString();
+    }
     /**
      * Notify that the user has requested a new URL. This MUST be called before loading a new URL
      * into the webview: sometimes content requests might begin before the WebView itself notifies

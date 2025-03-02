@@ -14,6 +14,7 @@ import android.support.v7.app.AlertDialog;
 import com.xlab.vbrowser.web.IWebView;
 
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class IntentUtils {
@@ -21,7 +22,7 @@ public class IntentUtils {
     private static String MARKET_INTENT_URI_PACKAGE_PREFIX = "market://details?id=";
     private static String MARKET_WEBSITE_PREFIX = "https://play.google.com/store/apps/details?id=";
     private static String EXTRA_BROWSER_FALLBACK_URL = "browser_fallback_url";
-
+    private static List<String> alreadyPopup = new ArrayList<>();
     /**
      * Find and open the appropriate app for a given Uri. If appropriate, let the user select between
      * multiple supported apps. Returns a boolean indicating whether the URL was handled. A fallback
@@ -69,7 +70,10 @@ public class IntentUtils {
                 info = packageManager.resolveActivity(intent, 0);
             }
             final CharSequence externalAppTitle = info.loadLabel(packageManager);
-
+            if(alreadyPopup.contains(uri.toString())){
+                return true;
+            }
+            alreadyPopup.add(uri.toString());
             showConfirmationDialog(context, intent, context.getString(com.xlab.vbrowser.R.string.external_app_prompt_title), com.xlab.vbrowser.R.string.external_app_prompt, externalAppTitle);
             return true;
         } else { // matchingActivities.size() > 1
@@ -147,6 +151,9 @@ public class IntentUtils {
             @Override
             public void onClick(final DialogInterface dialog, final int which) {
                 context.startActivity(targetIntent);
+                if(alreadyPopup.contains(targetIntent.getDataString())){
+                    alreadyPopup.remove(targetIntent.getDataString());
+                }
             }
         });
 
@@ -154,6 +161,9 @@ public class IntentUtils {
             @Override
             public void onClick(final DialogInterface dialog, final int which) {
                 dialog.dismiss();
+                if(alreadyPopup.contains(targetIntent.getDataString())){
+                    alreadyPopup.remove(targetIntent.getDataString());
+                }
             }
         });
 

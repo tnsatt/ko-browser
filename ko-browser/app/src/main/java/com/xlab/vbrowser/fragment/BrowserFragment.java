@@ -99,6 +99,7 @@ import com.tonyodev.fetch2.Fetch;
 import com.tonyodev.fetch2.FetchListener;
 import com.tonyodev.fetch2.Func;
 import com.tonyodev.fetch2.Request;
+import com.xlab.vbrowser.z.module.Back;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -133,7 +134,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
 
         return fragment;
     }
-
+    private View mainView;
     private TextView urlView;
     private AnimatedProgressBar progressView;
     private FrameLayout blockView;
@@ -273,6 +274,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
 
     @Override
     public View inflateLayout(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
         final View view = inflater.inflate(com.xlab.vbrowser.R.layout.fragment_browser, container, false);
 
         videoContainer = view.findViewById(com.xlab.vbrowser.R.id.video_container);
@@ -301,7 +303,8 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
             @Override
             public void onChanged(@Nullable String url) {
                 String text = UrlUtils.getHost(url);
-                urlView.setText(TextUtils.isEmpty(text) ? "" : url);
+                String title = session.getTitle().getValue();
+                urlView.setText(TextUtils.isEmpty(text) ? "" : title.isEmpty()?url:title);
 
                 if (TextUtils.isEmpty(text)) {
                     final Drawable leftDrawable = AppCompatResources.getDrawable(getContext(), R.drawable.ic_urlview_search);
@@ -315,6 +318,20 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                 if (TextUtils.isEmpty(url) || !UrlUtils.isHttpOrHttps(url)) {
                     bookmarkView.setVisibility(View.GONE);
                     earthView.setVisibility(View.GONE);
+                }
+            }
+        });
+        session.getTitle().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(@Nullable @org.jetbrains.annotations.Nullable String s) {
+                String url = session.getUrl().getValue();
+                String text = UrlUtils.getHost(url);
+                if(TextUtils.isEmpty(text)) return;
+                if(s!=null){
+                    s = s.trim();
+                    if(!s.isEmpty()){
+                        urlView.setText(s);
+                    }
                 }
             }
         });
@@ -864,7 +881,8 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         } else {
             // Just go back to the home screen or remove current tab
             if (session == null) {
-                showExitDialog();
+//                showExitDialog();
+                Back.back(getActivity());
                 return true;
             }
 
@@ -874,7 +892,13 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                 SessionManager.getInstance().removeCurrentSessionAndSelectSession(previousSessionUUID);
             }
             else {
-                showExitDialog();
+                SessionManager sessionManager = SessionManager.getInstance();
+                if(sessionManager.getSessions().getValue().size()<=1) {
+//                    showExitDialog();
+                    Back.back(getActivity());
+                }else{
+                    sessionManager.removeCurrentSession();
+                }
             }
         }
 
@@ -1171,6 +1195,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
 
     public void goBack() {
         final IWebView webView = getWebView();
+        session.setTitle("");
         if (webView != null && canGoBack()) {
             webView.goBack();
         }
@@ -1178,6 +1203,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
 
     public void goForward() {
         final IWebView webView = getWebView();
+        session.setTitle("");
         if (webView != null && canGoForward()) {
             webView.goForward();
         }
@@ -1185,6 +1211,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
 
     public void loadUrl(String url) {
         final IWebView webView = getWebView();
+        session.setTitle("");
         if (webView != null && !TextUtils.isEmpty(url)) {
             url = UrlUtils.normalize(url);
             webView.loadUrl(url);

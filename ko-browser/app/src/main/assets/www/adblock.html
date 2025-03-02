@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Adblocker</title>
+    <style>
+        body { text-align: center; font-family: Arial, sans-serif; }
+        h1 { font-size: 48px; color: red; }
+    </style>
+</head>
+<body>
+    <h1>Blocked</h1>
+    <p id="url"></p>
+    <script>
+        let o = new URL(location);
+        url.innerText = o.searchParams.get("url")||location.href;
+    </script>
+</body>
+</html>
