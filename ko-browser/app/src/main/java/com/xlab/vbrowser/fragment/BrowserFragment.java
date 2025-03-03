@@ -1100,7 +1100,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                 closeQuickAccessActionMode();
                 getActivity().getSupportFragmentManager()
                         .beginTransaction()
-                        .add(com.xlab.vbrowser.R.id.container, new SessionsSheetFragment(), SessionsSheetFragment.FRAGMENT_TAG)
+                        .add(com.xlab.vbrowser.R.id.overlay_container, new SessionsSheetFragment(), SessionsSheetFragment.FRAGMENT_TAG)
                         .commit();
                 GaReport.sendReportEvent(getContext(), "bottomBarOpenTabsManager", "ACTION_" + BrowserFragment.class.getName());
                 break;

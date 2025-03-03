@@ -104,6 +104,8 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements IabBro
     private Fetch fetch;
     private SafeIntent newIntent;
 
+    private int prevTabsCount = 0;
+
     private FragmentManager.FragmentLifecycleCallbacks fragmentLifecycleCallbacks =
             new FragmentManager.FragmentLifecycleCallbacks() {
                 @Override
@@ -439,11 +441,17 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements IabBro
         if (currentSession == null) {
             return;
         }
-        boolean show = false;
+        int tabsCount = sessionManager.getSessions().getValue().size();
+        boolean show = tabsCount < prevTabsCount;
+        prevTabsCount = tabsCount;
         final FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         big:
         for(Fragment f: fragmentManager.getFragments()){
+            if(f instanceof SessionsSheetFragment){
+
+                continue;
+            }
             if(!(f instanceof BrowserFragment)) {
                 transaction.hide(f);
                 continue;
@@ -455,15 +463,10 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements IabBro
                 }
             }
             transaction.remove(f);
-            show = true;
         }
         final BrowserFragment fragment = (BrowserFragment) fragmentManager.findFragmentByTag(currentSession.getUUID());
         if (fragment != null && fragment.getSession().isSameAs(currentSession)) {
             // There's already a BrowserFragment displaying this session.
-            if(show) {
-                Fragment f = getSessionSheetFragment(fragmentManager);
-                if (f != null) transaction.show(f);
-            }
             transaction.show(fragment);
             transaction.commit();
             return;
@@ -472,9 +475,6 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements IabBro
         transaction
                 .add(com.xlab.vbrowser.R.id.container,
                         BrowserFragment.createForSession(currentSession), currentSession.getUUID());
-        if(show) {
-            transaction.add(com.xlab.vbrowser.R.id.container, new SessionsSheetFragment(), SessionsSheetFragment.FRAGMENT_TAG);
-        }
         if(allowStateLoss){
             transaction.commitAllowingStateLoss();
             return;

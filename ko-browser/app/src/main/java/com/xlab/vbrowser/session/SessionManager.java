@@ -362,7 +362,7 @@ public class SessionManager {
             currentSessionUUID = null;
         } else {
             final Session currentSession = sessions.get(
-                    Math.min(removedFromPosition, sessions.size() - 1));
+                    Math.max(removedFromPosition-1, 0));
             currentSessionUUID = currentSession.getUUID();
         }
 
