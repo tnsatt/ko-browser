@@ -62,7 +62,7 @@ public class QSBrowserService extends TileService {
         tile.updateTile();
     }
     public void update(Boolean on, String title, String desc){
-        update(on, title, desc, R.drawable.ic_wave);
+        update(on, title, desc, R.drawable.ic_ghost_blue);
     }
     public void updateServiceState(){
 //        updateState();

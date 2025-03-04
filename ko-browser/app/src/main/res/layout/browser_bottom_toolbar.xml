@@ -23,7 +23,7 @@
             android:layout_width="50dp"
             android:layout_height="match_parent"
             android:adjustViewBounds="true"
-            android:src="@drawable/ic_arrow_back"
+            android:src="@drawable/ic_arrow_left_s"
             android:background="?android:attr/selectableItemBackgroundBorderless"
             android:enabled="false"/>
     </LinearLayout>
@@ -38,7 +38,7 @@
             android:layout_width="50dp"
             android:layout_height="match_parent"
             android:adjustViewBounds="true"
-            android:src="@drawable/ic_arrow_forward"
+            android:src="@drawable/ic_arrow_right_s"
             android:layout_gravity="center_vertical"
             android:background="?android:attr/selectableItemBackgroundBorderless"
             android:enabled="false"/>
@@ -54,7 +54,7 @@
             android:layout_width="40dp"
             android:layout_height="match_parent"
             android:adjustViewBounds="true"
-            android:src="@drawable/ic_home"
+            android:src="@drawable/ic_home_modern"
             android:layout_gravity="center_vertical"
             android:background="?android:attr/selectableItemBackgroundBorderless"/>
     </LinearLayout>
@@ -127,7 +127,7 @@
             android:layout_width="50dp"
             android:layout_height="match_parent"
             android:adjustViewBounds="true"
-            android:src="@drawable/ic_settings"
+            android:src="@drawable/ic_setting_alt_line"
             android:layout_gravity="center_vertical"
             android:background="?android:attr/selectableItemBackgroundBorderless"
             android:enabled="false" />

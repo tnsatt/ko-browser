@@ -24,6 +24,7 @@ import android.webkit.WebBackForwardList;
 import android.webkit.WebChromeClient;
 import android.webkit.WebStorage;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.webkit.WebViewDatabase;
 
 import com.xlab.vbrowser.BuildConfig;
@@ -307,12 +308,12 @@ public class SystemWebView extends NestedWebView implements IWebView, SharedPref
                 //for example: accessing phimnhanh.com, it opens 2 webpages parralelly, so app crashed due to
                 //one webview is destroyed before some actions.
 
-                /*if (isDialog || !isUserGesture) {
+                if (isDialog || !isUserGesture) {
                     //(thuan): Prevent popup.
                     return false;
                 }
 
-                final WebView newView = new WebView(baseContext);
+                final WebView newView = new WebView(getContext());
                 newView.setWebViewClient(new WebViewClient() {
                     @Override
                     public void onPageStarted(WebView view, String url, Bitmap favicon) {
@@ -330,7 +331,7 @@ public class SystemWebView extends NestedWebView implements IWebView, SharedPref
 
                 WebView.WebViewTransport transport = (WebView.WebViewTransport) resultMsg.obj;
                 transport.setWebView(newView);
-                resultMsg.sendToTarget();*/
+                resultMsg.sendToTarget();
 
                 return true;
             }

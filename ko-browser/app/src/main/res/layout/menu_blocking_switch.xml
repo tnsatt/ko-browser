@@ -10,7 +10,8 @@
     android:gravity="center_vertical"
     android:orientation="horizontal"
     android:paddingEnd="0dp"
-    android:paddingStart="21dp">
+    android:paddingStart="21dp"
+    android:paddingTop="10dp">
 
     <LinearLayout
         android:layout_width="0dp"

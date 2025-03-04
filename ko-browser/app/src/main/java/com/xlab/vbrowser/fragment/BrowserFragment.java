@@ -150,6 +150,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     private ImageButton bookmarkView;
     private ImageView earthView;
     private TextView mostVisistedSeperatorHeader;
+    private ImageView webIcon;
 
     /**
      * Container for custom video views shown in fullscreen mode.
@@ -298,6 +299,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         quickDialView = view.findViewById(R.id.quickDialView);
         appBar = view.findViewById(com.xlab.vbrowser.R.id.appbar);
         mostVisistedSeperatorHeader = view.findViewById(R.id.mostVisistedSeperatorHeader);
+        webIcon = view.findViewById(R.id.webIcon);
 
         session.getUrl().observe(this, new Observer<String>() {
             @Override
@@ -319,6 +321,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                     bookmarkView.setVisibility(View.GONE);
                     earthView.setVisibility(View.GONE);
                 }
+                webIcon.setVisibility(View.GONE);
             }
         });
         session.getTitle().observe(this, new Observer<String>() {
@@ -788,6 +791,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
             @Override
             public void onReceivedIcon(Bitmap bitmap) {
                 if (bitmap == null) {
+                    webIcon.setVisibility(View.GONE);
                     return;
                 }
 
@@ -796,6 +800,9 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                 FaviconService.writeFavicon(getContext(), url, bitmap);
 
                 session.setReceivedFavicon(System.nanoTime());
+
+                webIcon.setVisibility(View.VISIBLE);
+                webIcon.setImageBitmap(bitmap);
             }
 
             @Override
@@ -1195,7 +1202,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
 
     public void goBack() {
         final IWebView webView = getWebView();
-        session.setTitle("");
+        reset();
         if (webView != null && canGoBack()) {
             webView.goBack();
         }
@@ -1203,15 +1210,18 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
 
     public void goForward() {
         final IWebView webView = getWebView();
-        session.setTitle("");
+        reset();
         if (webView != null && canGoForward()) {
             webView.goForward();
         }
     }
-
+    public void reset(){
+        session.setTitle("");
+        webIcon.setVisibility(View.GONE);
+    }
     public void loadUrl(String url) {
         final IWebView webView = getWebView();
-        session.setTitle("");
+        reset();
         if (webView != null && !TextUtils.isEmpty(url)) {
             url = UrlUtils.normalize(url);
             webView.loadUrl(url);
@@ -1230,6 +1240,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         // chrome return a empty page.
         //loadUrl(getInitialUrl());
         final IWebView webView = getWebView();
+        reset();
         if (webView != null) {
             webView.reload();
         }

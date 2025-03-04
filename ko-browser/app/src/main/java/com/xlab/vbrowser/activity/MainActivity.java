@@ -442,14 +442,16 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements IabBro
             return;
         }
         int tabsCount = sessionManager.getSessions().getValue().size();
-        boolean show = tabsCount < prevTabsCount;
+        boolean show = tabsCount < prevTabsCount || (prevTabsCount==0&&tabsCount<=1);
         prevTabsCount = tabsCount;
         final FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         big:
         for(Fragment f: fragmentManager.getFragments()){
             if(f instanceof SessionsSheetFragment){
-
+                if(!show && f.isVisible()){
+                    transaction.hide(f);
+                }
                 continue;
             }
             if(!(f instanceof BrowserFragment)) {

@@ -3,12 +3,25 @@
 
     <!-- Empty default: we use an empty string to indicate "system default" language being selected -->
     <!--suppress AndroidDomInspection -->
-    <com.xlab.vbrowser.widget.LocaleListPreference
-        android:layout="@layout/focus_preference"
-        android:key="@string/pref_key_locale"
-        android:title="@string/preference_language"
-        android:defaultValue=""/>
 
+    <PreferenceCategory
+        android:title="Adblock">
+        <Preference
+            android:layout="@layout/focus_preference"
+            android:title="Adblock"
+            android:key="adblocks"/>
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:title="PIN Lock">
+        <SwitchPreference
+            android:layout="@layout/focus_preference"
+            android:title="PIN Lock"
+            android:key="pinlock"/>
+        <Preference
+            android:layout="@layout/focus_preference"
+            android:title="Create PIN"
+            android:key="create_pin"/>
+    </PreferenceCategory>
     <PreferenceCategory
         android:title="@string/preference_category_search">
 
@@ -24,19 +37,6 @@
             android:title="@string/preference_subitem_autocomplete" />-->
 
     </PreferenceCategory>
-
-    <PreferenceCategory
-        android:title="PIN Lock">
-        <SwitchPreference
-            android:layout="@layout/focus_preference"
-            android:title="PIN Lock"
-            android:key="pinlock"/>
-        <Preference
-            android:layout="@layout/focus_preference"
-            android:title="Create PIN"
-            android:key="create_pin"/>
-    </PreferenceCategory>
-
     <PreferenceCategory
         android:title="@string/preference_category_privacy">
 
@@ -143,6 +143,10 @@
             android:key="@string/pref_key_privacy_notice"/>-->
 
     </PreferenceCategory>
-
+    <com.xlab.vbrowser.widget.LocaleListPreference
+        android:layout="@layout/focus_preference"
+        android:key="@string/pref_key_locale"
+        android:title="@string/preference_language"
+        android:defaultValue=""/>
 
 </PreferenceScreen>

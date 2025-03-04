@@ -19,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import com.novacloud.data.adblock.RuleSet;
 import com.xlab.vbrowser.locale.Locales;
 import com.xlab.vbrowser.search.SearchEngineManager;
 import com.xlab.vbrowser.utils.AppConstants;
@@ -29,6 +30,9 @@ import com.xlab.vbrowser.locale.LocaleManager;
 import com.xlab.vbrowser.search.MultiselectSearchEngineListPreference;
 import com.xlab.vbrowser.search.RadioSearchEngineListPreference;
 import com.xlab.vbrowser.z.Z;
+import com.xlab.vbrowser.z.activity.AdblockActivity;
+import com.xlab.vbrowser.z.module.AdblockRuleSet;
+import com.xlab.vbrowser.z.module.ZEasyListRuleSet;
 
 import java.util.Locale;
 import java.util.Set;
@@ -159,6 +163,9 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
                     .commit();
         } else if(preference.getKey().equals("create_pin")){
             Z.showCreatePinScreen(getActivity());
+        } else if(preference.getKey().equals("adblocks")){
+            Intent intent = new Intent(getActivity(), AdblockActivity.class);
+            getActivity().startActivity(intent);
         }
 
         return super.onPreferenceTreeClick(preferenceScreen, preference);
@@ -196,6 +203,11 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
             String enc = sharedPreferences.getString("encodedPin", null);
             createPin.setSummary(enc==null?"Not Set":"Pin Created");
+        }
+        Preference adblocks = findPreference("adblocks");
+        if(adblocks!=null) {
+            ZEasyListRuleSet r = (ZEasyListRuleSet) AdblockRuleSet.getInstance().getRuleSet();
+            adblocks.setSummary(r.getInternetUrls().size()+" filters, "+r.getRuleCount()+" rules");
         }
     }
 

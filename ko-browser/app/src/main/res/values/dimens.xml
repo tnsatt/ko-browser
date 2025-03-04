@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- This Source Code Form is subject to the terms of the Mozilla Public
+<?xml version="1.0" encoding="utf-8"?><!-- This Source Code Form is subject to the terms of the Mozilla Public
    - License, v. 2.0. If a copy of the MPL was not distributed with this
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
 <resources xmlns:tools="http://schemas.android.com/tools">
@@ -30,7 +29,8 @@
 
     <dimen name="floating_action_button_size">56dp</dimen>
 
-    <dimen name="adaptive_icon_drawable_dimen">108dp</dimen> <!-- Specified in AdaptiveIconDrawable docs. -->
+    <dimen name="adaptive_icon_drawable_dimen">108dp
+    </dimen> <!-- Specified in AdaptiveIconDrawable docs. -->
 
     <dimen name="dialogHorizontalPadding">24dp</dimen>
 
@@ -61,4 +61,5 @@
     <dimen name="mostvisisited_icon_size">24dp</dimen>
     <dimen name="mostvisisited_fake_icon_font_size">16sp</dimen>
     <dimen name="mostvisited_icon_padding">10dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
 </resources>

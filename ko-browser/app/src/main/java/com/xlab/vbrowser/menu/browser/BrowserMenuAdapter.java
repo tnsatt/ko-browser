@@ -94,29 +94,29 @@ public class BrowserMenuAdapter extends RecyclerView.Adapter<BrowserMenuViewHold
 
         this.items = new ArrayList<>();
 
-        items.add(new MenuItem(context.getDrawable(R.drawable.ic_download_popup_menu)
+        items.add(new MenuItem(context.getDrawable(R.drawable.ic_download_s)
                 ,R.id.download_manager, resources.getString(R.string.download_manager)));
 
-        items.add(new MenuItem(context.getDrawable(R.drawable.ic_history),
+        items.add(new MenuItem(context.getDrawable(R.drawable.ic_history_s),
                 R.id.history, resources.getString(R.string.history)));
 
-        items.add(new MenuItem(context.getDrawable(R.drawable.ic_bookmark_menu_popup),
+        items.add(new MenuItem(context.getDrawable(R.drawable.ic_bookmark_s),
                 R.id.bookmarkActivity, resources.getString(R.string.bookmark)));
 
         Session currentSession = SessionManager.getInstance().getCurrentSession();
         boolean wasNotAddedToQuickAccess = currentSession != null && !currentSession.wasAddedToQuickAccess();
 
         if(wasNotAddedToQuickAccess) {
-            items.add(new MenuItem(context.getDrawable(R.drawable.ic_add_to_quick_access)
+            items.add(new MenuItem(context.getDrawable(R.drawable.ic_shortcut_s)
                     , R.id.addToQuickAccess, resources.getString(R.string.add_to_quick_access)));
         }
 
-        items.add(new MenuItem(context.getDrawable(R.drawable.ic_home_menu_popup),
+        items.add(new MenuItem(context.getDrawable(R.drawable.ic_home_smile),
                 R.id.add_to_homescreen, resources.getString(R.string.menu_add_to_home_screen)));
 
         boolean enableSpeedmode = settings.shouldEnterSpeedMode();
         Drawable speedModeDrawbale = enableSpeedmode ? context.getDrawable(R.drawable.ic_speedmode_off)
-                                        :  context.getDrawable(R.drawable.ic_speedmode_on);
+                                        :  context.getDrawable(R.drawable.ic_speed_alt_s);
         items.add(new MenuItem(speedModeDrawbale, R.id.speedMode, enableSpeedmode ? resources.getString(R.string.exit_speed_mode) :
                 resources.getString(R.string.speed_mode) ));
 
@@ -135,17 +135,17 @@ public class BrowserMenuAdapter extends RecyclerView.Adapter<BrowserMenuViewHold
 
 
         if (customTabConfig == null || customTabConfig.showShareMenuItem) {
-            items.add(new MenuItem(context.getDrawable(R.drawable.ic_share), R.id.share, resources.getString(R.string.menu_share)));
+            items.add(new MenuItem(context.getDrawable(R.drawable.ic_share_s), R.id.share, resources.getString(R.string.menu_share)));
         }
 
         //Request Desktop Site
         boolean isRequestingDesktopSite = settings.shouldRequestDesktopSite();
-        Drawable requestDesktopDrawable = isRequestingDesktopSite ? context.getDrawable(R.drawable.ic_mobile)
-                :  context.getDrawable(R.drawable.ic_desktop);
+        Drawable requestDesktopDrawable = isRequestingDesktopSite ? context.getDrawable(R.drawable.ic_mobile_s)
+                :  context.getDrawable(R.drawable.ic_desktop_s);
         items.add(new MenuItem(requestDesktopDrawable, R.id.requestDesktopSite, isRequestingDesktopSite ? resources.getString(R.string.request_mobile_site)
                 : resources.getString(R.string.request_desktop_site)));
 
-        items.add(new MenuItem(context.getDrawable(R.drawable.ic_settings),
+        items.add(new MenuItem(context.getDrawable(R.drawable.ic_setting_modern),
                 R.id.settings, resources.getString(R.string.menu_settings)));
 
 //        items.add(new MenuItem(context.getDrawable(R.drawable.ic_rate),

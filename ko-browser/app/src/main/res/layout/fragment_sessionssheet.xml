@@ -19,7 +19,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_marginBottom="@dimen/floating_action_button_margin"
         android:clickable="true"
         android:focusable="true"
         android:elevation="16dp"
@@ -50,7 +49,7 @@
                     android:layout_width="50dp"
                     android:layout_height="match_parent"
                     android:adjustViewBounds="true"
-                    android:src="@drawable/ic_signout"
+                    android:src="@drawable/ic_exit_s"
                     android:background="?android:attr/selectableItemBackgroundBorderless"
                     android:contentDescription="@string/tabs_tray_action_signout"/>
             </RelativeLayout>
@@ -65,7 +64,7 @@
                     android:layout_width="50dp"
                     android:layout_height="match_parent"
                     android:adjustViewBounds="true"
-                    android:src="@drawable/ic_newtab"
+                    android:src="@drawable/ic_new_report_s"
                     android:background="?android:attr/selectableItemBackgroundBorderless"
                     android:contentDescription="@string/tabs_tray_action_newtab"/>
             </RelativeLayout>

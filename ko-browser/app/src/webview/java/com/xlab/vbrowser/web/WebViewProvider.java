@@ -121,7 +121,7 @@ public class WebViewProvider {
         settings.setCacheMode(WebSettings.LOAD_DEFAULT);
 
         // (thuan)We don't allow multiple tabs now
-        settings.setSupportMultipleWindows(false);
+        settings.setSupportMultipleWindows(true);
         settings.setJavaScriptCanOpenWindowsAutomatically(false);
 
         // We do not implement the callbacks - So let's disable it.
