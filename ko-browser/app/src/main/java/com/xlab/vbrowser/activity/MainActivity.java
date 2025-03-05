@@ -13,6 +13,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatDelegate;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -105,6 +106,8 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements IabBro
     private SafeIntent newIntent;
 
     private int prevTabsCount = 0;
+    private long lastTabsSync = 0;
+    private boolean lastTabsSyncPost = false;
 
     private FragmentManager.FragmentLifecycleCallbacks fragmentLifecycleCallbacks =
             new FragmentManager.FragmentLifecycleCallbacks() {
@@ -136,6 +139,12 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements IabBro
         }
 
         //getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+        boolean enableDarkMode = Settings.getInstance(this).isEnabledDarkMode();
+        if(enableDarkMode){
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        }else{
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
 
         setContentView(com.xlab.vbrowser.R.layout.activity_main);
 
@@ -167,11 +176,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements IabBro
                         } else {
                             showBrowserScreenForCurrentSession();
                         }
-                        SessionHistoryService.save(MainActivity.this, new ISessionHistoryListener() {
-                            @Override
-                            public void onDone() {
-                            }
-                        });
+                        syncTabs();
                     }
                 });
             }
@@ -200,6 +205,27 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements IabBro
         GaReport.sendReportScreen(getBaseContext(), MainActivity.class.getName());
     }
 
+    public void syncTabs(){
+        long time = System.currentTimeMillis();
+        if(time - lastTabsSync < 500){
+            if(lastTabsSyncPost) return;
+            lastTabsSyncPost = true;
+            (new Handler(getMainLooper())).postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    lastTabsSyncPost = false;
+                    syncTabs();
+                }
+            }, 500);
+            return;
+        }
+        lastTabsSync = time;
+        SessionHistoryService.save(this, new ISessionHistoryListener() {
+            @Override
+            public void onDone() {
+            }
+        });
+    }
     @Override
     protected void onNewIntent(Intent unsafeIntent) {
         newIntent = new SafeIntent(unsafeIntent);

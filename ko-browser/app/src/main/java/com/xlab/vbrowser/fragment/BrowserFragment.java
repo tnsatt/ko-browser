@@ -21,6 +21,8 @@ import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.content.res.AppCompatResources;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -41,7 +43,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
-import android.widget.Toast;
+import com.xlab.vbrowser.z.Toast;
 import com.xlab.vbrowser.R;
 import com.xlab.vbrowser.UpApplication;
 import com.xlab.vbrowser.activity.MainActivity;
@@ -99,6 +101,7 @@ import com.tonyodev.fetch2.Fetch;
 import com.tonyodev.fetch2.FetchListener;
 import com.tonyodev.fetch2.Func;
 import com.tonyodev.fetch2.Request;
+import com.xlab.vbrowser.z.fragment.menu.GridBrowserMenu;
 import com.xlab.vbrowser.z.module.Back;
 
 import org.jetbrains.annotations.NotNull;
@@ -322,6 +325,8 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                     earthView.setVisibility(View.GONE);
                 }
                 webIcon.setVisibility(View.GONE);
+
+                ((MainActivity) getActivity()).syncTabs();
             }
         });
         session.getTitle().observe(this, new Observer<String>() {
@@ -954,7 +959,10 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     public void onClick(View view) {
         switch (view.getId()) {
             case com.xlab.vbrowser.R.id.menuView:
-                BrowserMenu menu = new BrowserMenu(getActivity(), this, session.getCustomTabConfig());
+                BrowserMenu menu;
+//                menu = new BrowserMenu(getActivity(), this, session.getCustomTabConfig());
+
+                menu = new GridBrowserMenu(getActivity(), this, session.getCustomTabConfig());
                 menu.show(menuView);
 
                 menuWeakReference = new WeakReference<>(menu);
@@ -1112,6 +1120,18 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                 GaReport.sendReportEvent(getContext(), "bottomBarOpenTabsManager", "ACTION_" + BrowserFragment.class.getName());
                 break;
             }
+
+            case R.id.darkMode:
+                boolean enableDarkMode = settings.isEnabledDarkMode();
+                if(enableDarkMode){
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                    ((AppCompatActivity)getActivity()).getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                }else{
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                    ((AppCompatActivity)getActivity()).getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                }
+                settings.setEnabledDarkMode(!enableDarkMode);
+                break;
 
             default:
                 throw new IllegalArgumentException("Unhandled menu item in BrowserFragment");

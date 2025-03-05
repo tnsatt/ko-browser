@@ -22,7 +22,7 @@
         android:clickable="true"
         android:focusable="true"
         android:elevation="16dp"
-        android:background="@color/colorPrimary"
+        android:background="?attr/colorPrimary"
         style="@style/CardView">
 
         <android.support.v7.widget.RecyclerView

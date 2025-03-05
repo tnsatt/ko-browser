@@ -19,7 +19,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
+import com.xlab.vbrowser.z.Toast;
 
 import com.xlab.vbrowser.R;
 import com.xlab.vbrowser.extensions.MediaDownloader.MediaItem;

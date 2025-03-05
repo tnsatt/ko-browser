@@ -290,4 +290,7 @@
   <string name="exit">Thoát</string>
 
   <string name="file_chooser">Chọn file</string>
+
+  <string name="dark_mode">Chế độ tối</string>
+  <string name="light_mode">Chế độ sáng</string>
 </resources>

@@ -10,6 +10,7 @@ import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -133,6 +134,11 @@ public class BrowserMenuAdapter extends RecyclerView.Adapter<BrowserMenuViewHold
 //        items.add(new MenuItem(nightModeDrawable, R.id.nightMode, enableNightMode ? resources.getString(R.string.exit_night_mode)
 //                    : resources.getString(R.string.night_mode) , enableNightMode ? actionNightMode : null));
 
+        boolean enableDarkMode = settings.isEnabledDarkMode();
+        Drawable darkModeDrawable = enableDarkMode ? context.getDrawable(R.drawable.ic_sun_s)
+                :  context.getDrawable(R.drawable.ic_moon_s);
+        items.add(new MenuItem(darkModeDrawable, R.id.darkMode, enableDarkMode ? resources.getString(R.string.light_mode)
+                    : resources.getString(R.string.dark_mode) ));
 
         if (customTabConfig == null || customTabConfig.showShareMenuItem) {
             items.add(new MenuItem(context.getDrawable(R.drawable.ic_share_s), R.id.share, resources.getString(R.string.menu_share)));

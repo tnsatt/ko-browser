@@ -64,7 +64,7 @@
         android:id="@+id/webIcon"
         android:background="?android:attr/selectableItemBackgroundBorderless"
         android:layout_width="36dp"
-        android:layout_height="28dp"
+        android:layout_height="24dp"
         android:layout_gravity="center_vertical"
         android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"

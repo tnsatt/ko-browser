@@ -640,4 +640,7 @@ be temporary, and you can try again later.</li>
     <string name="exit">Quit</string>
 
     <string name="file_chooser">Choose file</string>
+
+    <string name="dark_mode">Dark mode</string>
+    <string name="light_mode">Light mode</string>
 </resources>

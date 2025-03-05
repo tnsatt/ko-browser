@@ -23,4 +23,6 @@
     <attr name="inactiveTextColor" format="reference"/>
     <attr name="blockingMenuColor" format="reference"/>
 
+    <attr name="colorDefaultIcon" format="color"/>
+
 </resources>

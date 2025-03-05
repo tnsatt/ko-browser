@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tool="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:clickable="true"
+    android:background="?android:attr/selectableItemBackground">
+    <LinearLayout
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_gravity="center"
+            android:textAlignment="center"
+            android:layout_width="24dp"
+            android:layout_height="48dp"/>
+        <TextView
+            android:id = "@+id/titleView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="2dp"
+            android:paddingEnd="2dp"
+            android:textSize="14dp"
+            android:layout_gravity="center"
+            android:gravity="center_horizontal"
+            android:lines="2"
+            android:ellipsize="end"
+            tool:text="text"
+            android:layout_toStartOf="@+id/actionButtonView"
+            android:layout_alignParentStart="true"
+            style="@android:style/TextAppearance.Material.Menu"
+            android:drawablePadding="10dp"
+            android:textColor="?attr/activeTextColor"
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+        <ImageButton
+            android:layout_gravity="center"
+            android:id = "@+id/actionButtonView"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:layout_width="16dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:src="@drawable/ic_settings"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="5dp"/>
+    </LinearLayout>
+</LinearLayout>

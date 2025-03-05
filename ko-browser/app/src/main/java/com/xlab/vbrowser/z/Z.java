@@ -18,7 +18,7 @@ import android.view.Window;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
+import com.xlab.vbrowser.z.Toast;
 
 import com.xlab.vbrowser.R;
 import com.xlab.vbrowser.activity.MainActivity;

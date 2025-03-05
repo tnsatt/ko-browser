@@ -151,20 +151,22 @@ public class TrackingProtectionWebViewClient extends WebViewClient {
         String url = resourceUri.toString();
         AdblockRuleSet rulesetAdBlocker = AdblockRuleSet.getInstance();
         RuleSet ruleSet = rulesetAdBlocker.getRuleSet();
-        if(!ruleSet.matchesWhitelist(url) && ruleSet.matchesBlacklist(url)) {
-            if (callback != null) {
-                callback.countBlockedTracker();
-            }
-            if (request.isForMainFrame()) {
-                try {
-                    InputStream inputStream = view.getContext().getAssets().open("www/adblock.html"); // Load local file
-                    return new WebResourceResponse("text/html", "UTF-8", inputStream);
-                } catch (IOException e) {
-
+        try {
+            if (!ruleSet.matchesWhitelist(url) && ruleSet.matchesBlacklist(url)) {
+                if (callback != null) {
+                    callback.countBlockedTracker();
                 }
+                if (request.isForMainFrame()) {
+                    try {
+                        InputStream inputStream = view.getContext().getAssets().open("www/adblock.html"); // Load local file
+                        return new WebResourceResponse("text/html", "UTF-8", inputStream);
+                    } catch (IOException e) {
+
+                    }
+                }
+                return new WebResourceResponse(null, null, null);
             }
-            return new WebResourceResponse(null, null, null);
-        }
+        }catch (Exception e){}
 //        if (request.isForMainFrame()) { // Only modify the main HTML document
 //            try {
 //                // Open a connection to the original URL

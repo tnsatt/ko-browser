@@ -160,7 +160,7 @@ class UrlInputFragment : LocaleAwareFragment(), View.OnClickListener, InlineAuto
             inflater.inflate(R.layout.fragment_urlinput, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        listOf(dismissView, clearView, searchView, voiceView).forEach { it.setOnClickListener(this) }
+        listOf(dismissView, clearView, searchView, voiceView, closeView).forEach { it.setOnClickListener(this) }
 
         urlView.setOnFilterListener(this)
         urlView.imeOptions = urlView.imeOptions or ViewUtils.IME_FLAG_NO_PERSONALIZED_LEARNING
@@ -316,6 +316,10 @@ class UrlInputFragment : LocaleAwareFragment(), View.OnClickListener, InlineAuto
             R.id.voiceView -> {
                 startVoiceRecord()
             }
+            
+            R.id.closeView -> {
+                animateAndDismiss()
+            }
 
             else -> throw IllegalStateException("Unhandled view in onClick()")
         }
@@ -402,6 +406,7 @@ class UrlInputFragment : LocaleAwareFragment(), View.OnClickListener, InlineAuto
             voiceView.alpha = 0f
             searchEnginesView.alpha = 0f
             searchViewContainer.alpha = 0f
+            closeView.alpha = 0f
         }
 
         // Let the URL input use the full width/height and then shrink to the actual size
@@ -420,6 +425,7 @@ class UrlInputFragment : LocaleAwareFragment(), View.OnClickListener, InlineAuto
                                 voiceView.alpha = 0f
                                 searchEnginesView.alpha = 0f
                                 searchViewContainer.alpha = 0f
+                                closeView.alpha = 0f
                             }
                         }
                         catch(ex: IllegalStateException) {
@@ -438,6 +444,7 @@ class UrlInputFragment : LocaleAwareFragment(), View.OnClickListener, InlineAuto
                                 voiceView?.alpha = 1f
                                 searchEnginesView?.alpha = 1f
                                 searchViewContainer?.alpha = 1f
+                                closeView?.alpha = 1f
                             }
 
                             isAnimating = false
@@ -473,6 +480,7 @@ class UrlInputFragment : LocaleAwareFragment(), View.OnClickListener, InlineAuto
             voiceView.alpha = 0f
             searchEnginesView.alpha = 0f
             searchViewContainer.alpha = 0f
+            closeView.alpha = 0f
         }
 
         // The darker background appears with an alpha animation

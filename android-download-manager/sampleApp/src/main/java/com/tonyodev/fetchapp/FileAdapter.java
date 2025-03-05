@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
+import com.xlab.vbrowser.z.Toast;
 
 import com.tonyodev.fetch2.Download;
 import com.tonyodev.fetch2.Status;

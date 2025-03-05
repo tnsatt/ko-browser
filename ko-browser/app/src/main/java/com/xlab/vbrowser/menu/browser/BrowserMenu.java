@@ -46,6 +46,9 @@ public class BrowserMenu extends PopupWindow {
         setElevation(context.getResources().getDimension(com.xlab.vbrowser.R.dimen.menu_elevation));
     }
 
+    public BrowserMenu() {
+    }
+
     public void updateTrackers(int trackers) {
         adapter.updateTrackers(trackers);
     }

@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.xlab.vbrowser.R;
 import com.xlab.vbrowser.utils.UrlUtils;
 
-/* package-private */ class MenuItemViewHolder extends BrowserMenuViewHolder {
+/* package-private */ public class MenuItemViewHolder extends BrowserMenuViewHolder {
     /* package-private */ static final int LAYOUT_ID = com.xlab.vbrowser.R.layout.menu_item;
 
     private View entireView;
@@ -46,7 +46,7 @@ import com.xlab.vbrowser.utils.UrlUtils;
 
             titleView.setTextColor(color);
             titleView.setCompoundDrawablesWithIntrinsicBounds(
-                    context.getDrawable(R.drawable.ic_home_disable), null, null, null);
+                    context.getDrawable(R.drawable.ic_home_s_disabled), null, null, null);
             entireView.setEnabled(false);
             wasSetIcon = true;
         } else {
@@ -58,7 +58,7 @@ import com.xlab.vbrowser.utils.UrlUtils;
             color = color == -1 ? browserFragment.getResources().getColor(com.xlab.vbrowser.R.color.colorTextInactive) : color;
             titleView.setTextColor(color);
             titleView.setCompoundDrawablesWithIntrinsicBounds(
-                    context.getDrawable(R.drawable.ic_share_disable), null, null, null);
+                    context.getDrawable(R.drawable.ic_share_s_disabled), null, null, null);
             entireView.setEnabled(false);
             wasSetIcon = true;
         }

@@ -4,6 +4,7 @@ package com.xlab.vbrowser.utils
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.content.res.Configuration
 import android.content.res.Resources
 import android.preference.PreferenceManager
 
@@ -201,5 +202,20 @@ class Settings private constructor(context: Context?) {
         preferences.edit()
                 .putBoolean(Constants.PREF_IS_RATED_KEY, isRated)
                 .apply()
+    }
+
+    fun isEnabledDarkMode(): Boolean {
+        if (resources != null) {
+            return preferences.getBoolean(Constants.PREF_DARKMODE_ENABLED_KEY,
+                resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES)
+        }
+        return false;
+    }
+
+
+    fun setEnabledDarkMode(isEnabled: Boolean) {
+        preferences.edit()
+            .putBoolean(Constants.PREF_DARKMODE_ENABLED_KEY, isEnabled)
+            .apply()
     }
 }

@@ -3,7 +3,7 @@ package com.xlab.vbrowser.z.module;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
-import android.widget.Toast;
+import com.xlab.vbrowser.z.Toast;
 
 import com.novacloud.data.adblock.EasyListRuleSet;
 

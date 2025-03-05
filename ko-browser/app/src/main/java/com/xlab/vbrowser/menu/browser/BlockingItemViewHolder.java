@@ -14,14 +14,15 @@ import com.xlab.vbrowser.utils.ThreadUtils;
 import com.xlab.vbrowser.fragment.BrowserFragment;
 import com.xlab.vbrowser.z.module.Adblock;
 
-/* package */ class BlockingItemViewHolder extends BrowserMenuViewHolder implements CompoundButton.OnCheckedChangeListener {
+/* package */ public class BlockingItemViewHolder extends BrowserMenuViewHolder implements CompoundButton.OnCheckedChangeListener {
     /* package */ static final int LAYOUT_ID = com.xlab.vbrowser.R.layout.menu_blocking_switch;
 
     private TextView trackerCounter;
     private TextView trackerTitle;
     private BrowserFragment fragment;
 
-    /* package */ BlockingItemViewHolder(View itemView, final BrowserFragment fragment) {
+    /* package */
+    public BlockingItemViewHolder(View itemView, final BrowserFragment fragment) {
         super(itemView);
 
         this.fragment = fragment;
@@ -36,7 +37,8 @@ import com.xlab.vbrowser.z.module.Adblock;
         updateTrackers(fragment.getSession().getBlockedTrackers().getValue());
     }
 
-    /* package */ void updateTrackers(int trackers) {
+    /* package */
+    public void updateTrackers(int trackers) {
         if (fragment.getSession().isBlockingEnabled()) {
             updateTrackingCount(trackers);
         } else {

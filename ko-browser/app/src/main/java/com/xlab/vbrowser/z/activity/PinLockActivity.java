@@ -133,7 +133,7 @@ public class PinLockActivity extends AppCompatActivity {
         });
     }
     public void setLock(Activity context){
-        titleView.setText("Auth");
+        titleView.setText("Locked");
         String pincode = pref.getString("pin", null);
         if(pincode == null || !pincode.matches("^\\d+$")) pincode = PIN.PIN;
         String finalPincode = pincode;
@@ -142,8 +142,13 @@ public class PinLockActivity extends AppCompatActivity {
             public void onComplete(String pin) {
                 try {
                     if (isMatchPin(pin)) {
-                        setResult(RESULT_OK);
-                        finish();
+                        (new Handler(getMainLooper())).postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                setResult(RESULT_OK);
+                                finish();
+                            }
+                        }, 50);
                     } else {
                         stat("Not Match", Color.RED);
                         (new Handler(context.getMainLooper())).postDelayed(new Runnable() {
