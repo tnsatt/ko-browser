@@ -41,6 +41,7 @@ import android.webkit.WebView;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
 import com.xlab.vbrowser.z.Toast;
@@ -294,6 +295,14 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
             @Override
             public void onRefresh() {
                 reload();
+            }
+        });
+
+        LinearLayout bottomBar = view.findViewById(R.id.bottomBar);
+        bottomBar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
             }
         });
 

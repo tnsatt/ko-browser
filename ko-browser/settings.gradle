@@ -9,7 +9,7 @@ project(':js').projectDir = new File('../js')
 
 
 include ':easypermissions'
-project(':easypermissions').projectDir = new File('../../Libs/easypermissions/easypermissions')
+project(':easypermissions').projectDir = new File('../../Module/easypermissions/easypermissions')
 
 include ':utils'
 project(':utils').projectDir = new File('../../Utils/utils')
@@ -24,6 +24,6 @@ project(':androidy').projectDir = new File('../../AndroidY/android')
 //project (":fetch2core").projectDir = new File("../../Libs/Fetch-3.0.12/fetch2core")
 
 include ':pin'
-project (":pin").projectDir = new File("../../Libs/PinLockView/pinlockview")
+project (":pin").projectDir = new File("../../Module/PinLockView/pinlockview")
 include ':adblock-parser'
 project (":adblock-parser").projectDir = new File("../../Module/adblock-parser-android/adblock-parser")

@@ -68,10 +68,6 @@ import com.xlab.vbrowser.z.module.Adblock;
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         fragment.setBlockingEnabled(isChecked);
 
-        if(isChecked){
-            Adblock.reload(fragment.getActivity());
-        }
-
         // Delay closing the menu and reloading the website a bit so that the user can actually see
         // the switch change its state.
 //        ThreadUtils.postToMainThreadDelayed(new Runnable() {

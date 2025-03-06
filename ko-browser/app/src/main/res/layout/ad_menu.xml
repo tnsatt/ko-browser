@@ -11,8 +11,22 @@
     android:orientation="horizontal"
     android:paddingEnd="0dp"
     android:paddingStart="21dp"
-    android:paddingTop="10dp">
-
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp">
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+        <ImageButton
+            android:id="@+id/adIcon"
+            android:layout_marginEnd="21dp"
+            android:scaleType="centerCrop"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:adjustViewBounds="true"
+            android:src="@drawable/ic_shield_check_s"
+            android:layout_gravity="center_vertical"
+            android:background="?android:attr/selectableItemBackgroundBorderless"/>
+    </FrameLayout>
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"

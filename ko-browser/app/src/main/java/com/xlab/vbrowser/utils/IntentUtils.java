@@ -22,7 +22,7 @@ public class IntentUtils {
     private static String MARKET_INTENT_URI_PACKAGE_PREFIX = "market://details?id=";
     private static String MARKET_WEBSITE_PREFIX = "https://play.google.com/store/apps/details?id=";
     private static String EXTRA_BROWSER_FALLBACK_URL = "browser_fallback_url";
-    private static List<String> alreadyPopup = new ArrayList<>();
+    private static AlertDialog dialog;
     /**
      * Find and open the appropriate app for a given Uri. If appropriate, let the user select between
      * multiple supported apps. Returns a boolean indicating whether the URL was handled. A fallback
@@ -70,10 +70,6 @@ public class IntentUtils {
                 info = packageManager.resolveActivity(intent, 0);
             }
             final CharSequence externalAppTitle = info.loadLabel(packageManager);
-            if(alreadyPopup.contains(uri.toString())){
-                return true;
-            }
-            alreadyPopup.add(uri.toString());
             showConfirmationDialog(context, intent, context.getString(com.xlab.vbrowser.R.string.external_app_prompt_title), com.xlab.vbrowser.R.string.external_app_prompt, externalAppTitle);
             return true;
         } else { // matchingActivities.size() > 1
@@ -139,6 +135,9 @@ public class IntentUtils {
     // end up needing more or a variable number we can change this, but java varargs are a bit messy
     // so let's try to avoid that seeing as it's not needed right now.
     private static void showConfirmationDialog(final Context context, final Intent targetIntent, final String title, final @StringRes int messageResource, final CharSequence param) {
+        if(dialog!=null){
+            dialog.dismiss();
+        }
         final AlertDialog.Builder builder = new AlertDialog.Builder(context, com.xlab.vbrowser.R.style.DialogStyle);
 
         final CharSequence ourAppName = context.getString(com.xlab.vbrowser.R.string.app_name);
@@ -151,9 +150,6 @@ public class IntentUtils {
             @Override
             public void onClick(final DialogInterface dialog, final int which) {
                 context.startActivity(targetIntent);
-                if(alreadyPopup.contains(targetIntent.getDataString())){
-                    alreadyPopup.remove(targetIntent.getDataString());
-                }
             }
         });
 
@@ -161,9 +157,6 @@ public class IntentUtils {
             @Override
             public void onClick(final DialogInterface dialog, final int which) {
                 dialog.dismiss();
-                if(alreadyPopup.contains(targetIntent.getDataString())){
-                    alreadyPopup.remove(targetIntent.getDataString());
-                }
             }
         });
 
@@ -179,8 +172,9 @@ public class IntentUtils {
 //                    }
 //                });
 //            }
-
-        builder.show();
+        dialog = builder.create();
+        dialog.show();
+//        builder.show();
     }
 
     public static boolean activitiesFoundForIntent(Context context, Intent intent) {

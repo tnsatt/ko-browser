@@ -15,8 +15,10 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Switch;
 
 import com.xlab.vbrowser.R;
 import com.xlab.vbrowser.customtabs.CustomTabConfig;
@@ -30,6 +32,7 @@ import com.xlab.vbrowser.z.Z;
 import com.xlab.vbrowser.z.activity.AdblockActivity;
 import com.xlab.vbrowser.z.adapter.CardMenuAdapter;
 import com.xlab.vbrowser.z.adapter.GridBrowserMenuAdapter;
+import com.xlab.vbrowser.z.module.Adblock;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -69,8 +72,32 @@ public class GridBrowserMenu extends BrowserMenu {
         setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
 
         setElevation(context.getResources().getDimension(com.xlab.vbrowser.R.dimen.menu_elevation));
+
+        final Switch switchView = view.findViewById(com.xlab.vbrowser.R.id.blocking_switch);
+        switchView.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                blockingItemViewHolder.onCheckedChanged(compoundButton, isChecked);
+                if(isChecked){
+                    Adblock.reload(fragment.getActivity());
+                }
+                updateAd(view);
+            }
+        });
+    }
+    public void updateAd(View view){
+        ImageView adIcon = view.findViewById(R.id.adIcon);
+        if(fragment.getSession().isBlockingEnabled()){
+            adIcon.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_shield_check_full_s));
+            adIcon.setColorFilter(Color.GREEN);
+        }else {
+            adIcon.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_shield_cross_full_s));
+            adIcon.setColorFilter(Color.RED);
+        }
     }
     public void setup(View view){
+        updateAd(view);
+
         ImageView lockButton = view.findViewById(R.id.lockButton);
         lockButton.setVisibility(Z.isLock(context)?View.VISIBLE:View.GONE);
         lockButton.setOnClickListener(new View.OnClickListener() {
@@ -143,9 +170,6 @@ public class GridBrowserMenu extends BrowserMenu {
     }
 
     public void show(View anchor) {
-        final int xOffset = ViewUtils.isRTL(anchor) ? -anchor.getWidth() : 0;
-
-//        super.showAsDropDown(anchor, xOffset, -(anchor.getHeight() + anchor.getPaddingBottom()));
-        super.showAtLocation(anchor, Gravity.BOTTOM|Gravity.RIGHT, 0, anchor.getHeight());
+        super.showAtLocation(anchor, Gravity.BOTTOM|Gravity.RIGHT, 0, 0);
     }
 }
