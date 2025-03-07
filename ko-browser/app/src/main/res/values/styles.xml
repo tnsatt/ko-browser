@@ -43,6 +43,12 @@
 
         <!-- menu -->
         <item name="blockingMenuColor">@color/color_blocking_menu</item>
+
+        <item name="alertDialogTheme">@style/AlertDialogCustom</item>
+    </style>
+    <style name="AlertDialogCustom" parent="android:Theme.Material.Light.Dialog.Alert">
+        <item name="android:colorPrimary">#00397F</item>
+        <item name="android:colorAccent">#0AAEEF</item>
     </style>
 
     <style name="AppTheme.Dark" parent="AppTheme">

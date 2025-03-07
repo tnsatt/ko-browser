@@ -17,7 +17,7 @@
         android:icon="@mipmap/ic_app"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/MainTheme">
+        android:theme="@style/AppTheme">
         <activity
             android:name=".z.activity.AdblockActivity"
             android:label="Adblocker"
