@@ -127,7 +127,7 @@
             android:layout_width="50dp"
             android:layout_height="match_parent"
             android:adjustViewBounds="true"
-            android:src="@drawable/ic_setting_alt_line"
+            android:src="@drawable/ic_menu_s"
             android:layout_gravity="center_vertical"
             android:background="?android:attr/selectableItemBackgroundBorderless"
             android:enabled="false" />

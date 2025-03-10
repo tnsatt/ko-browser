@@ -110,4 +110,5 @@
     <color name="searchHintTextColor">#000000</color>
 
     <color name="colorEnabledIcon">#007bff</color>
+    <color name="yellow">#FFA400</color>
 </resources>

@@ -122,7 +122,7 @@ public class BookmarkService {
                 if (session != null && session.getUrl() != null && url.equals(session.getUrl().getValue())) {
                     //This tag is used when user press the button to know bookmark is added or not yet.
                     bookmarkView.setTag(mResult > 0);
-                    bookmarkView.setImageResource(mResult > 0 ? R.drawable.ic_bookmark_added : R.drawable.ic_bookmark);
+                    bookmarkView.setImageResource(mResult > 0 ? R.drawable.ic_star_s_enabled : R.drawable.ic_star_s);
                     bookmarkView.setVisibility(View.VISIBLE);
                     bookmarkView.setEnabled(true);
                     earthView.setVisibility(View.GONE);
@@ -162,7 +162,7 @@ public class BookmarkService {
 
                 bookmarkView.setTag(!isAdded);
                 bookmarkView.setEnabled(true);
-                bookmarkView.setImageResource(!isAdded ? R.drawable.ic_bookmark_added : R.drawable.ic_bookmark);
+                bookmarkView.setImageResource(!isAdded ? R.drawable.ic_star_s_enabled : R.drawable.ic_star_s);
                 Toast.makeText(bookmarkView.getContext(),
                         !isAdded ? bookmarkView.getContext().getString(R.string.bookmarkAddedInfo)
                         : bookmarkView.getContext().getString(R.string.bookmarkRemovedInfo), Toast.LENGTH_SHORT).show();

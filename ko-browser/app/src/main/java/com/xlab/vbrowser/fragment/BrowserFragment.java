@@ -492,7 +492,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                 //If bookmark is cleared
                 if (bookmarkView != null) {
                     bookmarkView.setTag(false);
-                    bookmarkView.setImageResource(R.drawable.ic_bookmark);
+                    bookmarkView.setImageResource(R.drawable.ic_star_s);
                 }
             }
         });
@@ -503,7 +503,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                 //If bookmark is cleared
                 if (bookmarkView != null && !TextUtils.isEmpty(str) && str.equals(getUrl())) {
                     bookmarkView.setTag(false);
-                    bookmarkView.setImageResource(R.drawable.ic_bookmark);
+                    bookmarkView.setImageResource(R.drawable.ic_star_s);
                 }
             }
         });

@@ -101,7 +101,7 @@ public class BrowserMenuAdapter extends RecyclerView.Adapter<BrowserMenuViewHold
         items.add(new MenuItem(context.getDrawable(R.drawable.ic_history_s),
                 R.id.history, resources.getString(R.string.history)));
 
-        items.add(new MenuItem(context.getDrawable(R.drawable.ic_bookmark_s),
+        items.add(new MenuItem(context.getDrawable(R.drawable.ic_star_fall_s),
                 R.id.bookmarkActivity, resources.getString(R.string.bookmark)));
 
         Session currentSession = SessionManager.getInstance().getCurrentSession();
