@@ -120,7 +120,7 @@ public class GridBrowserMenuAdapter extends RecyclerView.Adapter<BrowserMenuView
                     , R.id.addToQuickAccess, resources.getString(R.string.add_to_quick_access), true));
         }
 
-        items.add(new MenuItem(context.getDrawable(R.drawable.ic_star_fall_s),
+        items.add(new MenuItem(context.getDrawable(R.drawable.ic_star_bookmark_s),
                 R.id.bookmarkActivity, resources.getString(R.string.bookmark)));
 
         items.add(new MenuItem(context.getDrawable(R.drawable.ic_history_s),
