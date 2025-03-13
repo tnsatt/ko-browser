@@ -136,9 +136,10 @@ public class GridBrowserMenu extends BrowserMenu {
         exitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(fragment.getContext());
+                AlertDialog.Builder builder = new AlertDialog.Builder(fragment.getContext(), R.style.DialogStyle);
                 builder.setTitle(fragment.getResources().getString(R.string.app_name))
                         .setMessage("Want to close app?")
+                        .setIcon(context.getResources().getDrawable(R.drawable.ic_power_off_s))
                         .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {

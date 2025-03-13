@@ -225,9 +225,10 @@ public class SessionsSheetFragment extends LocaleAwareFragment implements View.O
                 animateAndDismiss().addListener(new AnimatorListenerAdapter() {
                     @Override
                     public void onAnimationEnd(Animator animator) {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                        AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.DialogStyle);
                         builder.setTitle("Signout all websites?")
                                 .setMessage("Do you want to sign out all websites?")
+                                .setIcon(context.getResources().getDrawable(R.drawable.ic_exit_s))
                                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
