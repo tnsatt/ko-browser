@@ -233,7 +233,7 @@ public class WebViewProvider {
         }
 
         StringBuilder sb = new StringBuilder(existingWebViewUA);
-        sb.append(" " + appName);
+        if(appName!=null && !appName.isEmpty()) sb.append(" " + appName);
 
         String newUA = sb.toString();
 

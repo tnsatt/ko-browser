@@ -576,6 +576,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                 //Swipe Refresh is disabled by default, if WebView's scrollbar is activated and scroll to top, then Swipe Refresh is enabled.
                 //This fix a bug with some sites as https://gatenotes.com when topbar is sticky.
                 swipeRefresh.setEnabled(false);
+                reset();
 
                 showAppbar(true);
                 hideHomepage(url);
@@ -686,6 +687,8 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                      */
                     HistoryService.updateHistoryAsync(getTitle(), url, getContext());
                 }
+
+                session.setTitle(getWebView().getTitle());
             }
 
             @Override
@@ -1231,7 +1234,6 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
 
     public void goBack() {
         final IWebView webView = getWebView();
-        reset();
         if (webView != null && canGoBack()) {
             webView.goBack();
         }
@@ -1239,7 +1241,6 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
 
     public void goForward() {
         final IWebView webView = getWebView();
-        reset();
         if (webView != null && canGoForward()) {
             webView.goForward();
         }
@@ -1250,7 +1251,6 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     }
     public void loadUrl(String url) {
         final IWebView webView = getWebView();
-        reset();
         if (webView != null && !TextUtils.isEmpty(url)) {
             url = UrlUtils.normalize(url);
             webView.loadUrl(url);
@@ -1269,7 +1269,6 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         // chrome return a empty page.
         //loadUrl(getInitialUrl());
         final IWebView webView = getWebView();
-        reset();
         if (webView != null) {
             webView.reload();
         }
