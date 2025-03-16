@@ -22,6 +22,9 @@ import com.xlab.vbrowser.utils.Settings;
 import com.xlab.vbrowser.utils.UrlUtils;
 import com.xlab.vbrowser.web.IWebView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * WebViewClient layer that handles browser specific WebViewClient functionality, such as error pages
  * and external URL handling.
@@ -34,6 +37,7 @@ import com.xlab.vbrowser.web.IWebView;
     private String restoredUrl;
     private SslCertificate restoredCertificate;
     private boolean errorReceived;
+    public static final List<String> sslErrorDomains = new ArrayList<>();
 
     private SystemWebView mSystemWebView;
 
@@ -176,6 +180,10 @@ import com.xlab.vbrowser.web.IWebView;
             errorReceived = false;
         } else if (callback != null) {
             callback.onPageStarted(url);
+            String host = Uri.parse(url).getHost();
+            if(host!=null && sslErrorDomains.contains(host)){
+                callback.onReceivedSslError();
+            }
         }
 
         super.onPageStarted(view, url, favicon);
@@ -229,7 +237,8 @@ import com.xlab.vbrowser.web.IWebView;
         }
 
         if (callback != null) {
-            callback.onPageFinished(certificate != null);
+            String host = Uri.parse(view.getUrl()).getHost();
+            callback.onPageFinished(certificate != null && (host==null || !sslErrorDomains.contains(host)));
             // The URL which is supplied in onPageFinished() could be fake (see #301), but webview's
             // URL is always correct _except_ for error pages
             final String viewURL = view.getUrl();
@@ -289,23 +298,31 @@ import com.xlab.vbrowser.web.IWebView;
 
     @Override
     public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
-        handler.cancel();
+        handler.proceed();
+        String url = error.getUrl();
+        Uri uri = Uri.parse(url);
+        String host = uri.getHost();
+        if(host!=null && !sslErrorDomains.contains(host)) sslErrorDomains.add(host);
 
-        // WebView can try to load the favicon for a bad page when you set a new URL. If we then
-        // loadErrorPage() again, WebView tries to load the favicon again. We end up in onReceivedSSlError()
-        // again, and we get an infinite loop of reloads (we also erroneously show the favicon URL
-        // in the toolbar, but that's less noticeable). Hence we check whether this error is from
-        // the desired page, or a page resource:
-        if (currentPageURL == null || error.getUrl().equals(currentPageURL)) {
-            ErrorPage.loadErrorPage(view, error.getUrl(), WebViewClient.ERROR_FAILED_SSL_HANDSHAKE);
-        }
+//        handler.cancel();
+//
+//        // WebView can try to load the favicon for a bad page when you set a new URL. If we then
+//        // loadErrorPage() again, WebView tries to load the favicon again. We end up in onReceivedSSlError()
+//        // again, and we get an infinite loop of reloads (we also erroneously show the favicon URL
+//        // in the toolbar, but that's less noticeable). Hence we check whether this error is from
+//        // the desired page, or a page resource:
+//        if (currentPageURL == null || error.getUrl().equals(currentPageURL)) {
+//            ErrorPage.loadErrorPage(view, error.getUrl(), WebViewClient.ERROR_FAILED_SSL_HANDSHAKE);
+//        }
     }
 
     @Override
     public void onReceivedError(final WebView webView, int errorCode, final String description, String failingUrl) {
         errorReceived = true;
 
-        // This is a hack: onReceivedError(WebView, WebResourceRequest, WebResourceError) is API 23+ only,
+        if(callback!=null) callback.onReceivedError(errorCode, description, failingUrl);
+
+            // This is a hack: onReceivedError(WebView, WebResourceRequest, WebResourceError) is API 23+ only,
         // - the WebResourceRequest would let us know if the error affects the main frame or not. As a workaround
         // we just check whether the failing URL is the current URL, which is enough to detect an error
         // in the main frame.
@@ -314,35 +331,35 @@ import com.xlab.vbrowser.web.IWebView;
         // shouldOverrideUrlLoading), so we need to handle special pages here:
         // about: urls are even more odd: webview doesn't tell us _anything_, hence the use of
         // a different prefix:
-        if (failingUrl.startsWith(ERROR_PROTOCOL)) {
-            // format: error:<error_code>
-            final int errorCodePosition = ERROR_PROTOCOL.length();
-            final String errorCodeString = failingUrl.substring(errorCodePosition);
-
-            int desiredErrorCode;
-            try {
-                desiredErrorCode = Integer.parseInt(errorCodeString);
-
-                if (!ErrorPage.supportsErrorCode(desiredErrorCode)) {
-                    // I don't think there's any good way of showing an error if there's an error
-                    // in requesting an error page?
-                    desiredErrorCode = WebViewClient.ERROR_BAD_URL;
-                }
-            } catch (final NumberFormatException e) {
-                desiredErrorCode = WebViewClient.ERROR_BAD_URL;
-            }
-            ErrorPage.loadErrorPage(webView, failingUrl, desiredErrorCode);
-            return;
-        }
-
-
-        // The API 23+ version also return a *slightly* more usable description, via WebResourceError.getError();
-        // e.g.. "There was a network error.", whereas this version provides things like "net::ERR_NAME_NOT_RESOLVED"
-        if (currentPageURL != null && failingUrl.equals(currentPageURL) &&
-                ErrorPage.supportsErrorCode(errorCode)) {
-            ErrorPage.loadErrorPage(webView, currentPageURL, errorCode);
-            return;
-        }
+//        if (failingUrl.startsWith(ERROR_PROTOCOL)) {
+//            // format: error:<error_code>
+//            final int errorCodePosition = ERROR_PROTOCOL.length();
+//            final String errorCodeString = failingUrl.substring(errorCodePosition);
+//
+//            int desiredErrorCode;
+//            try {
+//                desiredErrorCode = Integer.parseInt(errorCodeString);
+//
+//                if (!ErrorPage.supportsErrorCode(desiredErrorCode)) {
+//                    // I don't think there's any good way of showing an error if there's an error
+//                    // in requesting an error page?
+//                    desiredErrorCode = WebViewClient.ERROR_BAD_URL;
+//                }
+//            } catch (final NumberFormatException e) {
+//                desiredErrorCode = WebViewClient.ERROR_BAD_URL;
+//            }
+//            ErrorPage.loadErrorPage(webView, failingUrl, desiredErrorCode);
+//            return;
+//        }
+//
+//
+//        // The API 23+ version also return a *slightly* more usable description, via WebResourceError.getError();
+//        // e.g.. "There was a network error.", whereas this version provides things like "net::ERR_NAME_NOT_RESOLVED"
+//        if (currentPageURL != null && failingUrl.equals(currentPageURL) &&
+//                ErrorPage.supportsErrorCode(errorCode)) {
+//            ErrorPage.loadErrorPage(webView, currentPageURL, errorCode);
+//            return;
+//        }
 
         super.onReceivedError(webView, errorCode, description, failingUrl);
     }

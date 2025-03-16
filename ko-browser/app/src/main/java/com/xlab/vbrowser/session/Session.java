@@ -31,6 +31,7 @@ public class Session {
     private String searchUrl;
     private boolean isRecorded;
     private boolean isBlockingEnabled;
+    private boolean isSslError = false;
 
     //This flag to know current URL is added to quick access not not. This is used for checking to show/hide "Add to Quick access" in Menu
     private boolean wasAddedToQuickAccess;
@@ -210,5 +211,11 @@ public class Session {
 
     public void setReceivedFavicon(Long receivedFavicon) {
         this.receivedFavicon.setValue(receivedFavicon);
+    }
+    public boolean getSslError(){
+        return isSslError;
+    }
+    public void setSslError(Boolean isSslError){
+        this.isSslError = isSslError;
     }
 }

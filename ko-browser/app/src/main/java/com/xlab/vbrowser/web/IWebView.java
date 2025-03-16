@@ -5,9 +5,11 @@ package com.xlab.vbrowser.web;
 
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.net.http.SslError;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.webkit.SslErrorHandler;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
@@ -39,6 +41,9 @@ public interface IWebView {
     }
 
     interface Callback {
+        void onReceivedSslError();
+        void onReceivedError(int errorCode, final String description, String failingUrl);
+
         void onRequest(final boolean isTriggeredByUserGesture);
 
         void onPageStarted(String url);

@@ -60,6 +60,21 @@
         android:visibility="gone"
         tools:visibility="visible"
         android:contentDescription="@string/content_description_lock" />
+
+    <ImageView
+        android:id="@+id/warning"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="5dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_warning_http"
+        android:visibility="gone"
+        tools:visibility="visible"
+        android:contentDescription="Warning" />
+
     <ImageButton
         android:id="@+id/webIcon"
         android:background="?android:attr/selectableItemBackgroundBorderless"

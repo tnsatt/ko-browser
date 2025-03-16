@@ -4,9 +4,11 @@ package com.xlab.vbrowser.session;
 
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.net.http.SslError;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.webkit.SslErrorHandler;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
@@ -69,6 +71,16 @@ public class SessionCallbackProxy implements IWebView.Callback {
     public void onURLChanged(String url, boolean isPageFinised) {
         session.setUrl(url);
         delegate.onURLChanged(url, isPageFinised);
+    }
+
+    @Override
+    public void onReceivedSslError() {
+        delegate.onReceivedSslError();
+    }
+
+    @Override
+    public void onReceivedError(int errorCode, String description, String failingUrl) {
+        delegate.onReceivedError(errorCode, description, failingUrl);
     }
 
     @Override

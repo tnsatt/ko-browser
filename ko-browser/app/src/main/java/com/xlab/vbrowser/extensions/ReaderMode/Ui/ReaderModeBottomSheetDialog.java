@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.net.http.SslError;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
@@ -12,6 +13,7 @@ import android.support.design.widget.CoordinatorLayout;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.SslErrorHandler;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
@@ -139,6 +141,16 @@ public class ReaderModeBottomSheetDialog extends BottomSheetDialogFragment{
 
             @Override
             public void onURLChanged(String url, boolean isPageFinised) {}
+
+            @Override
+            public void onReceivedSslError() {
+
+            }
+
+            @Override
+            public void onReceivedError(int errorCode, String description, String failingUrl) {
+
+            }
 
             @Override
             public void onRequest(boolean isTriggeredByUserGesture) {}

@@ -4,7 +4,10 @@ package com.xlab.vbrowser.fragment;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.arch.lifecycle.Observer;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,6 +16,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.net.http.SslError;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
@@ -35,6 +39,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.webkit.CookieManager;
+import android.webkit.SslErrorHandler;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
@@ -143,6 +148,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     private AnimatedProgressBar progressView;
     private FrameLayout blockView;
     private ImageView lockView;
+    private ImageView warningView;
     private ImageButton menuView;
     private SwipeRefreshLayout swipeRefresh;
     private View homePageView;
@@ -155,6 +161,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     private ImageView earthView;
     private TextView mostVisistedSeperatorHeader;
     private ImageView webIcon;
+    private View infoView;
 
     /**
      * Container for custom video views shown in fullscreen mode.
@@ -390,6 +397,19 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                 lockView.setVisibility(secure ? View.VISIBLE : View.GONE);
             }
         });
+        lockView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showInfoView();
+            }
+        });
+        warningView = view.findViewById(com.xlab.vbrowser.R.id.warning);
+        warningView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showInfoView();
+            }
+        });
 
         session.getProgress().observe(this, new Observer<Integer>() {
             @Override
@@ -405,6 +425,12 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         bookmarkView.setOnClickListener(this);
 
         earthView = view.findViewById(R.id.earthView);
+        earthView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showInfoView();
+            }
+        });
 
         if (!session.isCustomTab()) {
             initialiseNormalBrowserUi(view);
@@ -572,11 +598,15 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
 
             @Override
             public void onPageStarted(final String url) {
+                session.setSslError(false);
                 session.setAddedToQuickAccess(true);
                 //Swipe Refresh is disabled by default, if WebView's scrollbar is activated and scroll to top, then Swipe Refresh is enabled.
                 //This fix a bug with some sites as https://gatenotes.com when topbar is sticky.
                 swipeRefresh.setEnabled(false);
-                reset();
+
+                session.setTitle("");
+                warningView.setVisibility(View.GONE);
+                webIcon.setVisibility(View.GONE);
 
                 showAppbar(true);
                 hideHomepage(url);
@@ -599,6 +629,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                 for (BaseExtension extension: getExtensions()) {
                     extension.onPageStarted();
                 }
+
             }
 
             @Override
@@ -696,7 +727,21 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
             }
 
             @Override
+            public void onReceivedSslError() {
+                session.setSslError(true);
+                warningView.setVisibility(View.VISIBLE);
+                earthView.setVisibility(View.GONE);
+                lockView.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onReceivedError(int errorCode, String description, String failingUrl) {
+                warningView.setVisibility(View.VISIBLE);
+            }
+
+            @Override
             public void onRequest(boolean isTriggeredByUserGesture) {
+                session.setTitle("");
                 if (bookmarkView == null || earthView == null) {
                     return;
                 }
@@ -832,6 +877,61 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                return webViewUpload.onShowFileChooser(webView, filePathCallback, fileChooserParams);
             }
         });
+    }
+
+    private void copy(String text){
+        ClipboardManager clipboardManager = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData clipData = ClipData.newPlainText("Browser", text);
+        clipboardManager.setPrimaryClip(clipData);
+    }
+
+    private void showInfoView(){
+//        if(infoView==null) return;
+//        infoView.setVisibility(View.VISIBLE);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        LayoutInflater inf = getActivity().getLayoutInflater();
+        View view = inf.inflate(R.layout.info_bar, null);
+        builder.setView(view);
+        TextView webTitle = view.findViewById(R.id.webTitle);
+        TextView webUrl = view.findViewById(R.id.webUrl);
+        ImageButton copyTitle = view.findViewById(R.id.copyTitle);
+        ImageButton copyUrl = view.findViewById(R.id.copyURL);
+        ImageButton clearCookie = view.findViewById(R.id.clearCookie);
+        ImageView webStatusIcon = view.findViewById(R.id.webStatusIcon);
+
+        webTitle.setText(session.getTitle().getValue());
+        webUrl.setText(session.getUrl().getValue());
+        int icon;
+        if(session.getSecure().getValue()){
+            icon = R.drawable.ic_lock;
+        }else if(session.getSslError()){
+            icon = R.drawable.ic_warning_http;
+        }else{
+            icon = R.drawable.ic_earth_s;
+        }
+        webStatusIcon.setImageDrawable(getResources().getDrawable(icon));
+        copyTitle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                copy(session.getTitle().getValue());
+                Toast.makeText(getContext(), "Copied title to clipboard", Toast.LENGTH_LONG).show();
+            }
+        });
+        copyUrl.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                copy(session.getUrl().getValue());
+                Toast.makeText(getContext(), "Copied URL to clipboard", Toast.LENGTH_LONG).show();
+            }
+        });
+        clearCookie.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     private void loadBookmark(String url) {
@@ -1244,10 +1344,6 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         if (webView != null && canGoForward()) {
             webView.goForward();
         }
-    }
-    public void reset(){
-        session.setTitle("");
-        webIcon.setVisibility(View.GONE);
     }
     public void loadUrl(String url) {
         final IWebView webView = getWebView();
