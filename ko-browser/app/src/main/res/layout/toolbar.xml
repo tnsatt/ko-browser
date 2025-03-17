@@ -20,7 +20,7 @@
         android:contentDescription="@string/content_description_customtab_exit"
         android:visibility="gone"/>
 
-    <ImageView
+    <ImageButton
         android:id="@+id/earthView"
         android:layout_width="36dp"
         android:layout_height="48dp"
@@ -31,6 +31,7 @@
         android:scaleType="centerInside"
         android:src="@drawable/ic_earth_s"
         android:visibility="gone"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
         tools:visibility="visible"/>
 
     <ImageButton
@@ -47,7 +48,7 @@
         tools:visibility="visible"
         android:contentDescription="@string/content_description_bookmark" />
 
-    <ImageView
+    <ImageButton
         android:id="@+id/lock"
         android:layout_width="24dp"
         android:layout_height="24dp"
@@ -59,9 +60,10 @@
         android:src="@drawable/ic_lock"
         android:visibility="gone"
         tools:visibility="visible"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
         android:contentDescription="@string/content_description_lock" />
 
-    <ImageView
+    <ImageButton
         android:id="@+id/warning"
         android:layout_width="24dp"
         android:layout_height="24dp"
@@ -73,6 +75,7 @@
         android:src="@drawable/ic_warning_http"
         android:visibility="gone"
         tools:visibility="visible"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
         android:contentDescription="Warning" />
 
     <ImageButton

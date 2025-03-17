@@ -1,8 +1,10 @@
 package com.xlab.vbrowser.bookmark.adapter;
 
+import android.app.AlertDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
@@ -10,7 +12,9 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.xlab.vbrowser.R;
@@ -21,6 +25,7 @@ import com.xlab.vbrowser.favicon.FaviconService;
 import com.xlab.vbrowser.menu.context.HistoryContextMenu;
 import com.xlab.vbrowser.trackers.GaReport;
 import com.xlab.vbrowser.utils.UrlUtils;
+import com.xlab.vbrowser.z.module.BookmarkContextMenu;
 
 import java.io.File;
 import java.text.DateFormat;
@@ -98,7 +103,7 @@ public class BookmarkAdapter extends RecyclerView.Adapter<BookmarkAdapter.ViewHo
         holder.dataView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                HistoryContextMenu.show(context, bookmarkData.bookmark.url,  new HistoryContextMenu.IActionMenu() {
+                BookmarkContextMenu.show(context, bookmarkData.bookmark.url,  new BookmarkContextMenu.IActionMenu() {
                     @Override
                     public void onOpen() {
                         holder.dataView.performClick();
@@ -159,6 +164,44 @@ public class BookmarkAdapter extends RecyclerView.Adapter<BookmarkAdapter.ViewHo
 
                         final ClipData clip = ClipData.newUri(context.getContentResolver(), "URI", uri);
                         clipboard.setPrimaryClip(clip);
+                    }
+
+                    @Override
+                    public void onEdit() {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                        builder.setTitle(bookmarkData.bookmark.title);
+                        LinearLayout lila1= new LinearLayout(context);
+                        lila1.setOrientation(LinearLayout.VERTICAL);
+                        final EditText input = new EditText(context);
+                        final EditText input1 = new EditText(context);
+                        lila1.addView(input);
+                        lila1.addView(input1);
+                        input.setText(bookmarkData.bookmark.title);
+                        input1.setText(bookmarkData.bookmark.url);
+                        builder.setView(lila1);
+                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                String title = input.getText().toString();
+                                String url = input1.getText().toString();
+                                bookmarkData.bookmark.title = title;
+                                bookmarkData.bookmark.url = url;
+                                BookmarkService.updateBookmarkData(context, bookmarkData.bookmark, new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        BookmarkAdapter.this.notifyDataSetChanged();
+                                    }
+                                });
+                            }
+                        });
+                        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                            }
+                        });
+                        AlertDialog dialog = builder.create();
+                        dialog.show();
                     }
                 });
                 return true;

@@ -1,10 +1,15 @@
 package com.xlab.vbrowser.bookmark.service;
 
 import android.content.Context;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+
+import com.xlab.vbrowser.fragment.BrowserFragment;
 import com.xlab.vbrowser.z.Toast;
 
 import com.xlab.vbrowser.R;
@@ -47,6 +52,16 @@ public class BookmarkService {
         }
 
         return bookmarkDb.bookmarkDao().insertBookmark(bookmark);
+    }
+
+    private static void updateBookmark(Context context, Bookmark bookmark) {
+        BookmarkDb bookmarkDb = BookmarkDb.getInstance(context);
+
+        if (bookmarkDb == null) {
+            return;
+        }
+
+        bookmarkDb.bookmarkDao().updateBookmark(bookmark);
     }
 
     private static void deleteByUrl(Context context, String url) {
@@ -166,8 +181,44 @@ public class BookmarkService {
                 Toast.makeText(bookmarkView.getContext(),
                         !isAdded ? bookmarkView.getContext().getString(R.string.bookmarkAddedInfo)
                         : bookmarkView.getContext().getString(R.string.bookmarkRemovedInfo), Toast.LENGTH_SHORT).show();
+                updateAllBookmarks(context, url);
             }
         }).execute();
+    }
+
+    public static void updateAllBookmarks(Context context, String url){
+        new BackgroundTask(new IBackgroundTask() {
+            long mResult = -1;
+
+            @Override
+            public void run() {
+                mResult = loadBookmarkByUrl(context, url);
+            }
+
+            @Override
+            public void onComplete() {
+                if (mResult == BookmarkService.ERROR_RESULT) {
+                    return;
+                }
+                updateAllFragment(context, url, mResult > 0);
+            }
+        }).execute();
+    }
+
+    public static void updateAllFragment(Context context, String url, Boolean isAdded){
+        if(url==null || !(context instanceof FragmentActivity)) return;
+        url = url.trim();
+        FragmentManager fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
+        for(Fragment f: fragmentManager.getFragments()){
+            if(!(f instanceof BrowserFragment)) continue;
+            BrowserFragment bf = (BrowserFragment) f;
+            String furl = bf.getUrl();
+            if(furl==null || !url.equals(furl.trim())) continue;
+            ImageButton bookmarkView = bf.getBookmarkView();
+            bookmarkView.setTag(isAdded);
+            bookmarkView.setEnabled(true);
+            bookmarkView.setImageResource(isAdded ? R.drawable.ic_star_s_enabled : R.drawable.ic_star_s);
+        }
     }
 
     public static void notifyClearBookmarkEvent(String url) {
@@ -184,5 +235,19 @@ public class BookmarkService {
 
     public static NonNullLiveData<Long> getClearAllBookmarksEvent() {
         return clearAllBookmarksEvent;
+    }
+
+    public static void updateBookmarkData(Context context, Bookmark bookmark, Runnable runnable){
+        new BackgroundTask(new IBackgroundTask() {
+            @Override
+            public void run() {
+                updateBookmark(context, bookmark);
+            }
+
+            @Override
+            public void onComplete() {
+                if(runnable!=null) runnable.run();
+            }
+        });
     }
 }

@@ -395,6 +395,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
             @Override
             public void onChanged(Boolean secure) {
                 lockView.setVisibility(secure ? View.VISIBLE : View.GONE);
+                if(secure) warningView.setVisibility(View.GONE);
             }
         });
         lockView.setOnClickListener(new View.OnClickListener() {
@@ -637,6 +638,12 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                 //This event is raised after onRequest or onPageStarted, and then before onPageFinished
                 //It is called one time, it is diffenrence to onPageFinished, which may be called manytimes
                 //for example: amazon.com
+                if(url == null || UrlUtils.isBlankUrl(url.trim().toLowerCase())) {
+                    showHomepage(url);
+                }else{
+                    hideHomepage(url);
+                }
+
                 loadBookmark(url);
 
                 if (readerModeButton != null) {
@@ -737,11 +744,12 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
             @Override
             public void onReceivedError(int errorCode, String description, String failingUrl) {
                 warningView.setVisibility(View.VISIBLE);
+                earthView.setVisibility(View.GONE);
+                lockView.setVisibility(View.GONE);
             }
 
             @Override
             public void onRequest(boolean isTriggeredByUserGesture) {
-                session.setTitle("");
                 if (bookmarkView == null || earthView == null) {
                     return;
                 }
@@ -1156,7 +1164,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                 break;
 
             case R.id.bookmarkView:
-                BookmarkService.addOrRemoveBookmark(getContext(), getTitle(), getInitialUrl(), bookmarkView);
+                BookmarkService.addOrRemoveBookmark(getActivity(), getTitle(), getInitialUrl(), bookmarkView);
                 GaReport.sendReportEvent(getContext(), "addOrRemoveBookmark", "ACTION_" + BrowserFragment.class.getName());
                 break;
 
@@ -1332,9 +1340,16 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         return webView != null && webView.canGoBack();
     }
 
+    private void reset(){
+        session.setTitle("");
+        webIcon.setVisibility(View.GONE);
+        warningView.setVisibility(View.GONE);
+    }
+
     public void goBack() {
         final IWebView webView = getWebView();
         if (webView != null && canGoBack()) {
+            reset();
             webView.goBack();
         }
     }
@@ -1342,12 +1357,14 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     public void goForward() {
         final IWebView webView = getWebView();
         if (webView != null && canGoForward()) {
+            reset();
             webView.goForward();
         }
     }
     public void loadUrl(String url) {
         final IWebView webView = getWebView();
         if (webView != null && !TextUtils.isEmpty(url)) {
+            reset();
             url = UrlUtils.normalize(url);
             webView.loadUrl(url);
         }
@@ -1904,5 +1921,8 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         tabsCountView.setBackground(settings.isIncognitoEnabled() ? getContext().getDrawable(R.drawable.tabs_background_incognito_on)
                                         : getContext().getDrawable(R.drawable.tabs_background_incognito_off));
         incognitoImageView.setVisibility(settings.isIncognitoEnabled() ? View.VISIBLE : View.GONE);
+    }
+    public ImageButton getBookmarkView(){
+        return bookmarkView;
     }
 }

@@ -643,4 +643,6 @@ be temporary, and you can try again later.</li>
 
     <string name="dark_mode">Dark mode</string>
     <string name="light_mode">Light mode</string>
+
+    <string name="contextmenu_edit">Edit</string>
 </resources>
