@@ -16,6 +16,7 @@ import com.xlab.vbrowser.utils.AppConstants;
 import com.tonyodev.fetch2.Downloader;
 import com.tonyodev.fetch2.Fetch;
 import com.tonyodev.fetch2downloaders.OkHttpDownloader;
+import com.xlab.vbrowser.utils.Settings;
 
 import okhttp3.OkHttpClient;
 
@@ -31,7 +32,12 @@ public class UpApplication extends LocaleAwareApplication {
     public void onCreate() {
         super.onCreate();
 
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        boolean enableDarkMode = Settings.getInstance(this).isEnabledDarkMode();
+        if(enableDarkMode){
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        }else{
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
 
         sAnalytics = GoogleAnalytics.getInstance(this);
 

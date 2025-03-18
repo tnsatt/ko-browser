@@ -72,7 +72,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="5dp"
         android:scaleType="centerInside"
-        android:src="@drawable/ic_warning_http"
+        android:src="@drawable/ic_warning_yellow"
         android:visibility="gone"
         tools:visibility="visible"
         android:background="?android:attr/selectableItemBackgroundBorderless"
@@ -81,8 +81,8 @@
     <ImageButton
         android:id="@+id/webIcon"
         android:background="?android:attr/selectableItemBackgroundBorderless"
-        android:layout_width="36dp"
-        android:layout_height="24dp"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:layout_gravity="center_vertical"
         android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
@@ -90,7 +90,7 @@
         android:padding="4dp"
         android:src="@drawable/ic_browser_s"
         android:visibility="gone"
-        android:scaleType="centerCrop" />
+        android:scaleType="fitCenter" />
     <!-- lint: We need to use singleLine=true for the fading edge to work (which is officially deprecated,
          but still needed), hence we ignore deprecated warnings here.. -->
     <TextView

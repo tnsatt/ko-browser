@@ -37,6 +37,7 @@ import java.util.List;
     private String restoredUrl;
     private SslCertificate restoredCertificate;
     private boolean errorReceived;
+    private boolean isError;
     public static final List<String> sslErrorDomains = new ArrayList<>();
 
     private SystemWebView mSystemWebView;
@@ -183,6 +184,7 @@ import java.util.List;
             String host = Uri.parse(url).getHost();
             if(host!=null && sslErrorDomains.contains(host)){
                 callback.onReceivedSslError();
+                Log.d("onSslError", host);
             }
         }
 
@@ -206,6 +208,7 @@ import java.util.List;
 
     @Override
     public void onPageCommitVisible(WebView view, String url) {
+        isError = false;
         if (callback == null) {
             return;
         }
@@ -238,7 +241,7 @@ import java.util.List;
 
         if (callback != null) {
             String host = Uri.parse(view.getUrl()).getHost();
-            callback.onPageFinished(certificate != null && (host==null || !sslErrorDomains.contains(host)));
+            callback.onPageFinished(certificate != null && !isError && (host==null || !sslErrorDomains.contains(host)));
             // The URL which is supplied in onPageFinished() could be fake (see #301), but webview's
             // URL is always correct _except_ for error pages
             final String viewURL = view.getUrl();
@@ -247,6 +250,8 @@ import java.util.List;
                 callback.onURLChanged(viewURL, true);
             }
         }
+        isError = false;
+        errorReceived = false;
         super.onPageFinished(view, url);
 
         //(thuan): We don't need this now
@@ -303,7 +308,7 @@ import java.util.List;
         Uri uri = Uri.parse(url);
         String host = uri.getHost();
         if(host!=null && !sslErrorDomains.contains(host)) sslErrorDomains.add(host);
-
+        Log.d("onReceivedSslError", url);
 //        handler.cancel();
 //
 //        // WebView can try to load the favicon for a bad page when you set a new URL. If we then
@@ -319,9 +324,10 @@ import java.util.List;
     @Override
     public void onReceivedError(final WebView webView, int errorCode, final String description, String failingUrl) {
         errorReceived = true;
+        isError = true;
 
         if(callback!=null) callback.onReceivedError(errorCode, description, failingUrl);
-
+        Log.d("onReceivedError", failingUrl);
             // This is a hack: onReceivedError(WebView, WebResourceRequest, WebResourceError) is API 23+ only,
         // - the WebResourceRequest would let us know if the error affects the main frame or not. As a workaround
         // we just check whether the failing URL is the current URL, which is enough to detect an error

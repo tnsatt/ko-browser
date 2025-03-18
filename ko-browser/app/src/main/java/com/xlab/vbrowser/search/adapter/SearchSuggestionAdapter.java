@@ -6,11 +6,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.xlab.vbrowser.R;
 import com.xlab.vbrowser.events.IItemClickListener;
 import com.xlab.vbrowser.search.data.SearchSuggestionItem;
+import com.xlab.vbrowser.utils.UrlUtils;
 
 /**
  * Created by nguyenducthuan on 3/7/18.
@@ -40,6 +42,8 @@ public class SearchSuggestionAdapter extends RecyclerView.Adapter<SearchSuggesti
         public View searchItemView ;
         public TextView text1View;
         public TextView text2View;
+        public ImageView searchIcon;
+        public ImageView linkIcon;
 
         public ViewHolder(View view) {
             super(view);
@@ -47,6 +51,8 @@ public class SearchSuggestionAdapter extends RecyclerView.Adapter<SearchSuggesti
             selectSearchView = (ImageButton) view.findViewById(com.xlab.vbrowser.R.id.selectSearchView);
             text1View = (TextView) view.findViewById(com.xlab.vbrowser.R.id.text1View);
             text2View = (TextView) view.findViewById(com.xlab.vbrowser.R.id.text2View);
+            searchIcon = (ImageView) view.findViewById(R.id.searchIcon);
+            linkIcon = (ImageView) view.findViewById(R.id.linkIcon);
         }
     }
 
@@ -71,11 +77,22 @@ public class SearchSuggestionAdapter extends RecyclerView.Adapter<SearchSuggesti
             holder.text1View.setText(searchSuggestionItem.urlTitle);
             holder.text2View.setVisibility(View.VISIBLE);
             holder.text1View.setVisibility(View.VISIBLE);
+
+            holder.searchIcon.setVisibility(View.GONE);
+            holder.linkIcon.setVisibility(View.VISIBLE);
         }
         else {
             holder.text2View.setVisibility(View.GONE);
             holder.text1View.setVisibility(View.VISIBLE);
             holder.text1View.setText(searchSuggestionItem.searchTerm);
+
+            if(UrlUtils.isHttpOrHttps(searchSuggestionItem.searchTerm)){
+                holder.searchIcon.setVisibility(View.GONE);
+                holder.linkIcon.setVisibility(View.VISIBLE);
+            }else{
+                holder.searchIcon.setVisibility(View.VISIBLE);
+                holder.linkIcon.setVisibility(View.GONE);
+            }
         }
 
         holder.searchItemView.setOnClickListener(new View.OnClickListener(){

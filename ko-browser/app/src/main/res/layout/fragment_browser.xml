@@ -24,6 +24,19 @@
             android:orientation="vertical"
             android:clipChildren="false">
 
+            <FrameLayout
+                android:id="@+id/iconHintView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <ImageView
+                    android:id="@+id/iconHint"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_earth_s"
+                    android:layout_width="72sp"
+                    android:layout_height="72sp"
+                    android:scaleType="fitCenter"/>
+            </FrameLayout>
+
             <android.support.v4.widget.SwipeRefreshLayout
                 android:id="@+id/swipe_refresh"
                 android:background="@android:color/transparent"

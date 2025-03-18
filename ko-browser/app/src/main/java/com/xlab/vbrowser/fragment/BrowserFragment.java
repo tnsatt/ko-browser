@@ -16,7 +16,6 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.net.http.SslError;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
@@ -39,7 +38,6 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.webkit.CookieManager;
-import android.webkit.SslErrorHandler;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
@@ -112,6 +110,7 @@ import com.xlab.vbrowser.z.module.Back;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -161,7 +160,8 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     private ImageView earthView;
     private TextView mostVisistedSeperatorHeader;
     private ImageView webIcon;
-    private View infoView;
+    private View iconHintView;
+    private ImageView iconHint;
 
     /**
      * Container for custom video views shown in fullscreen mode.
@@ -312,6 +312,8 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
 
             }
         });
+        iconHintView = view.findViewById(R.id.iconHintView);
+        iconHint = view.findViewById(R.id.iconHint);
 
         homePageView = view.findViewById(com.xlab.vbrowser.R.id.homePageView);
         mostVisitedView = view.findViewById(com.xlab.vbrowser.R.id.mostVisitedView);
@@ -461,7 +463,30 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         //Incognito
         updateTabsButtonView();
 
+        task();
+
         return view;
+    }
+
+    private void task(){
+        (new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String url = session.getUrl().getValue();
+                if(url==null || !UrlUtils.isHttpOrHttps(url)) return;
+                String icon = FaviconService.getFavicon(getContext(), url);
+                iconHintView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(icon == null){
+                            iconHint.setImageDrawable(getResources().getDrawable(R.drawable.ic_earth_s));
+                        }else{
+                            iconHint.setImageURI(Uri.fromFile(new File(icon)));
+                        }
+                    }
+                });
+            }
+        })).start();
     }
 
     public AnimatedProgressBar getProgressView() {
@@ -727,6 +752,14 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                 }
 
                 session.setTitle(getWebView().getTitle());
+
+                if(url != null && UrlUtils.isHttpOrHttps(url)){
+                    String icon = FaviconService.getFavicon(getContext(), url);
+                    if(icon!=null){
+                        webIcon.setImageURI(Uri.fromFile(new File(icon)));
+                        webIcon.setVisibility(View.VISIBLE);
+                    }
+                }
             }
 
             @Override
@@ -736,6 +769,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
             @Override
             public void onReceivedSslError() {
                 session.setSslError(true);
+                warningView.setImageDrawable(getResources().getDrawable(R.drawable.ic_lock_error_s));
                 warningView.setVisibility(View.VISIBLE);
                 earthView.setVisibility(View.GONE);
                 lockView.setVisibility(View.GONE);
@@ -743,6 +777,8 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
 
             @Override
             public void onReceivedError(int errorCode, String description, String failingUrl) {
+                session.setSslError(false);
+                warningView.setImageDrawable(getResources().getDrawable(R.drawable.ic_warning_red));
                 warningView.setVisibility(View.VISIBLE);
                 earthView.setVisibility(View.GONE);
                 lockView.setVisibility(View.GONE);
@@ -913,7 +949,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         if(session.getSecure().getValue()){
             icon = R.drawable.ic_lock;
         }else if(session.getSslError()){
-            icon = R.drawable.ic_warning_http;
+            icon = R.drawable.ic_lock_error_s;
         }else{
             icon = R.drawable.ic_earth_s;
         }
@@ -1585,6 +1621,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         if (UrlUtils.isBlankUrl(currentUrl.trim().toLowerCase())) {
             swipeRefresh.setVisibility(View.GONE);
             homePageView.setVisibility(View.VISIBLE);
+            iconHintView.setVisibility(View.GONE);
 
             if (mostVisitedView.getAdapter() == null || quickDialView.getAdapter() == null) {
                 loadHomeData(false);
@@ -1601,6 +1638,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
 
         swipeRefresh.setVisibility(View.VISIBLE);
         homePageView.setVisibility(View.GONE);
+        iconHintView.setVisibility(View.VISIBLE);
     }
 
     private boolean isShowingHomepage() {
