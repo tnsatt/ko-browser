@@ -47,6 +47,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
+
+import com.xlab.vbrowser.z.ZColor;
 import com.xlab.vbrowser.z.Toast;
 import com.xlab.vbrowser.R;
 import com.xlab.vbrowser.UpApplication;
@@ -895,13 +897,13 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
             public void onReceivedTitle(String title) { }
 
             @Override
-            public void onReceivedIcon(Bitmap bitmap) {
+            public void onReceivedIcon(WebView webView, Bitmap bitmap) {
                 if (bitmap == null) {
                     webIcon.setVisibility(View.GONE);
                     return;
                 }
 
-                String url = getUrl();
+                String url = webView.getUrl();
 
                 FaviconService.writeFavicon(getContext(), url, bitmap);
 
@@ -1040,6 +1042,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         if (fetch != null) {
             fetch.addListener(fetchListener);
         }
+        refreshHomePage();
     }
 
     public boolean onBackPressed() {
@@ -1289,8 +1292,13 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                 settings.setEnabledDarkMode(!enableDarkMode);
                 break;
 
+            case R.id.themeMenu:
+                ZColor.showThemePicker(getActivity());
+                break;
+
             default:
-                throw new IllegalArgumentException("Unhandled menu item in BrowserFragment");
+                Toast.makeText(getContext(), "Unhandled menu item in BrowserFragment", Toast.LENGTH_LONG).show();
+//                throw new IllegalArgumentException("Unhandled menu item in BrowserFragment");
         }
     }
 
@@ -1623,7 +1631,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
             homePageView.setVisibility(View.VISIBLE);
             iconHintView.setVisibility(View.GONE);
 
-            if (mostVisitedView.getAdapter() == null || quickDialView.getAdapter() == null) {
+            if (true || mostVisitedView.getAdapter() == null || quickDialView.getAdapter() == null) {
                 loadHomeData(false);
             }
 
@@ -1646,10 +1654,17 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                 && (swipeRefresh.getVisibility() == View.GONE);
     }
 
+    public void refreshHomePage(){
+        if(isShowingHomepage()){
+            quickDialView.setAdapter(null);
+            loadHomeData(false);
+        }
+    }
+
     private void loadHomeData(boolean onlyLoadMostVisisted) {
         final int numberOfColumns = calcNumberOfMostVisitedColumns();
         final int numberOfRows = numberOfColumns * MOST_VISISTED_NUMBER_ROWS;
-        mostVisistedSeperatorHeader.setVisibility(View.GONE);
+//        mostVisistedSeperatorHeader.setVisibility(View.GONE);
 
         final IItemClickListener itemClickListener = new IItemClickListener() {
             @Override
@@ -1712,7 +1727,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
 
         quickDialView.setLayoutManager(new GridLayoutManager(getContext(),numberOfColumns));
 
-        if (quickDialView.getAdapter() == null && !onlyLoadMostVisisted) {
+        if (!onlyLoadMostVisisted) { // quickDialView.getAdapter() == null &&
             loadQuickDials(getContext(), quickDialView, quickDialgItemClickListener, new IActionDone() {
                 @Override
                 public void done() {
@@ -1758,10 +1773,11 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                 itemTouchHelper = new ItemTouchHelper(callback);
                 itemTouchHelper.attachToRecyclerView(quickDialView);
 
+                quickDialView.setAlpha(1.0f);
                 //animate this
-                quickDialView.animate()
-                        .alpha(1.0f)
-                        .setDuration(500);
+//                quickDialView.animate()
+//                        .alpha(1.0f)
+//                        .setDuration(500);
 
                 actionDone.done();
             }

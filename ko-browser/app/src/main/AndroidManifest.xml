@@ -42,7 +42,7 @@
             android:launchMode="singleTask"
             android:theme="@style/FloatingTheme"
             android:windowIsTranslucent="true"
-            android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
+            android:windowSoftInputMode="adjustPan|stateAlwaysHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

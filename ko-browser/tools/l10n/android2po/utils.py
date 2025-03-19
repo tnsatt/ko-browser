@@ -111,7 +111,7 @@ class Writer():
     always the child of an action. There is a limited set of action
     types (we call them events). Each event and each message may have a
     "severity". The severity can determine how a message or event is
-    rendered (if the terminals supports colors), and will also affect
+    rendered (if the terminals supports colorItem), and will also affect
     whether a action or message is rendered at all, depending on verbosity
     settings.
 
@@ -276,7 +276,7 @@ class Writer():
     def _get_style_for_level(self, severity):
         """Return a dict that can be passed as **kwargs to colored().
         """
-        # Other colors that work moderately well on both dark and
+        # Other colorItem that work moderately well on both dark and
         # light backgrounds and aren't yet used: cyan, green
         return {
             'default': {'color': 'blue'},

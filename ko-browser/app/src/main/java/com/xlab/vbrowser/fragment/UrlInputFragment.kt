@@ -9,9 +9,12 @@ import android.Manifest
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.app.Activity.RESULT_OK
+import android.app.Dialog
 import android.content.ActivityNotFoundException
 import android.content.Intent
+import android.graphics.Color
 import android.graphics.Typeface
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.speech.RecognizerIntent
 import android.support.v7.widget.LinearLayoutManager
@@ -21,7 +24,9 @@ import android.text.style.StyleSpan
 import android.view.*
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
+import android.widget.EditText
 import android.widget.FrameLayout
+import android.widget.ImageView
 import com.xlab.vbrowser.R
 import com.xlab.vbrowser.autocomplete.UrlAutoCompleteFilter
 import com.xlab.vbrowser.events.IItemClickListener
@@ -160,7 +165,7 @@ class UrlInputFragment : LocaleAwareFragment(), View.OnClickListener, InlineAuto
             inflater.inflate(R.layout.fragment_urlinput, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        listOf(dismissView, clearView, searchView, voiceView, closeView).forEach { it.setOnClickListener(this) }
+        listOf(dismissView, clearView, searchView, voiceView, closeView, expandInput).forEach { it.setOnClickListener(this) }
 
         urlView.setOnFilterListener(this)
         urlView.imeOptions = urlView.imeOptions or ViewUtils.IME_FLAG_NO_PERSONALIZED_LEARNING
@@ -321,8 +326,48 @@ class UrlInputFragment : LocaleAwareFragment(), View.OnClickListener, InlineAuto
                 animateAndDismiss()
             }
 
+            R.id.expandInput -> {
+                expandInput();
+            }
+
             else -> throw IllegalStateException("Unhandled view in onClick()")
         }
+    }
+
+    private fun transferInput(editText: EditText){
+        val text = editText.text
+        val pos = editText.selectionStart
+        urlView.text = text
+        urlView.setSelection(pos)
+    }
+
+    private fun expandInput(){
+        val dialog = Dialog(context)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(R.layout.dialog_input_multiline)
+        dialog.setCancelable(true)
+        dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+//        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        val editText = dialog.findViewById<EditText>(R.id.editText)
+        val text = urlView.text
+        val pos = urlView.selectionStart
+        editText.text = text
+        editText.setSelection(pos)
+
+        val closeButton = dialog.findViewById<ImageView>(R.id.close)
+        closeButton.setOnClickListener{
+            dialog.dismiss();
+        }
+        dialog.setOnCancelListener{
+            transferInput(editText)
+        }
+        dialog.setOnDismissListener{
+            transferInput(editText)
+        }
+        dialog.show()
+        editText.requestFocus()
+        dialog.window?.setSoftInputMode(android.view.WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
     }
 
     private fun clear() {
@@ -407,6 +452,7 @@ class UrlInputFragment : LocaleAwareFragment(), View.OnClickListener, InlineAuto
             searchEnginesView.alpha = 0f
             searchViewContainer.alpha = 0f
             closeView.alpha = 0f
+            expandInput.alpha = 0f
         }
 
         // Let the URL input use the full width/height and then shrink to the actual size
@@ -426,6 +472,7 @@ class UrlInputFragment : LocaleAwareFragment(), View.OnClickListener, InlineAuto
                                 searchEnginesView.alpha = 0f
                                 searchViewContainer.alpha = 0f
                                 closeView.alpha = 0f
+                                expandInput.alpha = 0f
                             }
                         }
                         catch(ex: IllegalStateException) {
@@ -445,6 +492,7 @@ class UrlInputFragment : LocaleAwareFragment(), View.OnClickListener, InlineAuto
                                 searchEnginesView?.alpha = 1f
                                 searchViewContainer?.alpha = 1f
                                 closeView?.alpha = 1f
+                                expandInput?.alpha = 1f
                             }
 
                             isAnimating = false
@@ -481,6 +529,7 @@ class UrlInputFragment : LocaleAwareFragment(), View.OnClickListener, InlineAuto
             searchEnginesView.alpha = 0f
             searchViewContainer.alpha = 0f
             closeView.alpha = 0f
+            expandInput.alpha = 0f
         }
 
         // The darker background appears with an alpha animation

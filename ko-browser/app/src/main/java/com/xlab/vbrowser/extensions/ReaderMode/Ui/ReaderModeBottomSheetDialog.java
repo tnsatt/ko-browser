@@ -204,7 +204,7 @@ public class ReaderModeBottomSheetDialog extends BottomSheetDialogFragment{
             public void onReceivedTitle(String title) {}
 
             @Override
-            public void onReceivedIcon(Bitmap bitmap) {}
+            public void onReceivedIcon(WebView webView, Bitmap bitmap) {}
 
             @Override
             public void onScrollChanged(final int l, final int t, final int oldl, final int oldt) {

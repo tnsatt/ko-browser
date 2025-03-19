@@ -149,14 +149,17 @@ public class HistoryService {
                 //binding here
                 mostVisistedView.setAdapter(new MostVisitedAdapter(context, mostVisiteds, itemClickListener));
 
-                mostVisistedSeperatorHeader.animate()
-                        .alpha(1.0f)
-                        .setDuration(500);
+//                mostVisistedSeperatorHeader.animate()
+//                        .alpha(1.0f)
+//                        .setDuration(500);
+//
+//                //animate this
+//                mostVisistedView.animate()
+//                        .alpha(1.0f)
+//                        .setDuration(500);
 
-                //animate this
-                mostVisistedView.animate()
-                        .alpha(1.0f)
-                        .setDuration(500);
+                mostVisistedSeperatorHeader.setAlpha(1.0f);
+                mostVisistedView.setAlpha(1.0f);
 
                 historyServiceAction.onLoadComplete();
             }

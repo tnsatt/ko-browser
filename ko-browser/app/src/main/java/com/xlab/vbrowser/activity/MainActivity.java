@@ -62,6 +62,7 @@ import com.tonyodev.fetch2.Fetch;
 import com.tonyodev.fetch2.FetchListener;
 import com.xlab.vbrowser.z.Z;
 import com.xlab.vbrowser.z.module.Adblock;
+import com.xlab.vbrowser.z.module.ThemeColors;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -136,6 +137,11 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements IabBro
 
         if (Settings.getInstance(this).shouldUseSecureMode()) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
+        }
+        try {
+            new ThemeColors(this);
+        }catch (Exception e){
+            e.printStackTrace();
         }
 
         //getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
@@ -491,6 +497,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements IabBro
             // There's already a BrowserFragment displaying this session.
             transaction.show(fragment);
             transaction.commit();
+            fragment.refreshHomePage();
             return;
         }
 

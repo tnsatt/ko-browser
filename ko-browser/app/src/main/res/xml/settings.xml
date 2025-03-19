@@ -23,6 +23,21 @@
             android:key="create_pin"/>
     </PreferenceCategory>
     <PreferenceCategory
+        android:title="Color">
+        <Preference
+            android:layout="@layout/focus_preference"
+            android:title="Select theme"
+            android:key="select_theme"/>
+        <Preference
+            android:layout="@layout/focus_preference"
+            android:title="Pick color"
+            android:key="pick_color"/>
+        <Preference
+            android:layout="@layout/focus_preference"
+            android:title="Reset"
+            android:key="reset_color"/>
+    </PreferenceCategory>
+    <PreferenceCategory
         android:title="@string/preference_category_search">
 
         <com.xlab.vbrowser.search.SearchEnginePreference

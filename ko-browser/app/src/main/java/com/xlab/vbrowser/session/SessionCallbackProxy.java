@@ -146,8 +146,8 @@ public class SessionCallbackProxy implements IWebView.Callback {
     }
 
     @Override
-    public void onReceivedIcon(Bitmap bitmap) {
-        delegate.onReceivedIcon(bitmap);
+    public void onReceivedIcon(WebView webView, Bitmap bitmap) {
+        delegate.onReceivedIcon(webView, bitmap);
     }
 
     @Override

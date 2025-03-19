@@ -142,6 +142,10 @@ public class QuickDialAdapter extends RecyclerView.Adapter<QuickDialAdapter.View
         this.quickDialgItemClickListener = quickDialgItemClickListener;
     }
 
+    public List<QuickDialItem> getData(){
+        return this.quickDialItems;
+    }
+
     @Override
     public long getItemId(int i) {
         return i;

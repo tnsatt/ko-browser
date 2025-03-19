@@ -33,6 +33,7 @@ import com.xlab.vbrowser.z.activity.AdblockActivity;
 import com.xlab.vbrowser.z.adapter.CardMenuAdapter;
 import com.xlab.vbrowser.z.adapter.GridBrowserMenuAdapter;
 import com.xlab.vbrowser.z.module.Adblock;
+import com.xlab.vbrowser.z.module.Menu;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -52,12 +53,27 @@ public class GridBrowserMenu extends BrowserMenu {
         final BlockingItemViewHolder blockingItemViewHolder = new BlockingItemViewHolder(
                 view.findViewById(R.id.ad_menu), fragment);
         blockingItemViewHolderReference = new WeakReference<>(blockingItemViewHolder);
+        int itemsCount = 10;
+        List<GridBrowserMenuAdapter.MenuItem> menus = Menu.createMenu(context, fragment.getUrl(), customTabConfig);
 
         adapter = new GridBrowserMenuAdapter(context, this, fragment, customTabConfig);
 
         List<GridBrowserMenuAdapter> menuAdapters = new ArrayList<>();
         menuAdapters.add(adapter);
-        menuAdapters.add(new GridBrowserMenuAdapter(context, this, fragment, customTabConfig));
+        for(int i = 0; i<Math.ceil((float)menus.size()/(float)itemsCount)-1; i++){
+            GridBrowserMenuAdapter a = new GridBrowserMenuAdapter(context, this, fragment, customTabConfig);
+            menuAdapters.add(a);
+        }
+
+        for(int i=0; i<menuAdapters.size(); i++){
+            if(i*itemsCount > menus.size()) break;
+            List<GridBrowserMenuAdapter.MenuItem> items = new ArrayList<>();
+            for(int j = i*itemsCount; j < (i+1)*itemsCount; j++){
+                if(j >= menus.size()) break;
+                items.add(menus.get(j));
+            }
+            menuAdapters.get(i).setMenu(items);
+        }
 
         ViewPager viewPager = view.findViewById(R.id.viewPager);
         CardMenuAdapter cardAdapter = new CardMenuAdapter(context, menuAdapters);

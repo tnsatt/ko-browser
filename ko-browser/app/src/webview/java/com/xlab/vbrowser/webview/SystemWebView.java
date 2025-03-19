@@ -349,7 +349,7 @@ public class SystemWebView extends NestedWebView implements IWebView, SharedPref
                     return;
                 }
 
-                callback.onReceivedIcon(icon);
+                callback.onReceivedIcon(webView, icon);
             }
 
             @Override

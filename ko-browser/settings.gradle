@@ -27,3 +27,5 @@ include ':pin'
 project (":pin").projectDir = new File("../../Module/PinLockView/pinlockview")
 include ':adblock-parser'
 project (":adblock-parser").projectDir = new File("../../Module/adblock-parser-android/adblock-parser")
+include ':color-picker-view'
+project (":color-picker-view").projectDir = new File("../../Libs/color-picker-view/color-picker-view")

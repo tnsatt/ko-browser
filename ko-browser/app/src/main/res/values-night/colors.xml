@@ -68,7 +68,7 @@
     <color name="mostvisisited_fake_icon_background">#FF008000</color>
 
 
-    <!-- This 2 colors is used for ListViewItem, with a main text and a sub text-->
+    <!-- This 2 colorItem is used for ListViewItem, with a main text and a sub text-->
     <color name="list_header_text_color">#FFFFFF</color>
     <color name="list_title_text_color">#FFFFFF</color>
     <color name="list_info_text_color">#FFFFFF</color>

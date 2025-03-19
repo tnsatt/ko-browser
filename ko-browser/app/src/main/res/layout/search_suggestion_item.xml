@@ -5,28 +5,36 @@
     android:orientation="horizontal"
     android:gravity="center_vertical"
     android:paddingTop="5dp"
-    android:paddingBottom="5dp">
+    android:paddingBottom="5dp"
+    android:background="?android:attr/selectableItemBackground">
     <ImageView
         android:id="@+id/searchIcon"
         style="?android:attr/borderlessButtonStyle"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="8dp"
         android:layout_gravity="center_vertical"
-        android:src="@drawable/ic_search"/>
+        android:src="@drawable/ic_search"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        android:scaleType="fitCenter"
+        />
     <ImageView
         android:id="@+id/linkIcon"
         style="?android:attr/borderlessButtonStyle"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="8dp"
         android:rotation="45"
         android:layout_gravity="center_vertical"
-        android:src="@drawable/ic_link"/>
+        android:src="@drawable/ic_link"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        android:scaleType="fitCenter"
+        />
     <LinearLayout
         android:layout_weight="1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="?android:attr/selectableItemBackground"
         android:layout_gravity="center_vertical"
         android:gravity="center_vertical">
         <TextView
@@ -61,6 +69,8 @@
         android:layout_height="40dp"
         android:scaleX="-1"
         android:layout_gravity="center_vertical"
-        android:src="@drawable/ic_select_search"/>
+        android:src="@drawable/ic_select_search"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        />
 </LinearLayout>
 

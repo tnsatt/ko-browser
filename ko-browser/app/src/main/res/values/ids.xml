@@ -24,4 +24,6 @@
     <item name="pin_lock_view" type="id" />
     <item name="indicator_dots" type="id" />
     <item name="darkMode" type="id" />
+    <item name="color_picker_view" type="id" />
+    <item name="themeMenu" type="id" />
 </resources>

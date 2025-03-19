@@ -67,7 +67,7 @@
     <color name="mostvisisited_fake_icon_background">#FF008000</color>
 
 
-    <!-- This 2 colors is used for ListViewItem, with a main text and a sub text-->
+    <!-- This 2 colorItem is used for ListViewItem, with a main text and a sub text-->
     <color name="list_header_text_color">#000000</color>
     <color name="list_title_text_color">#414141</color>
     <color name="list_info_text_color">#B3414141</color>
@@ -90,7 +90,7 @@
 
     <!-- For blocking circle in topbar -->
     <color name="colorBlockInfo">#FFA400</color >
-    <color name="color_blocking_menu">#E1E1E6</color>
+<!--    <color name="color_blocking_menu">#E1E1E6</color>-->
     <color name="dark_color_blocking_menu">#20ffffff</color>
 
     <!-- Floating ads action button background -->
@@ -110,5 +110,7 @@
     <color name="searchHintTextColor">#000000</color>
 
     <color name="colorEnabledIcon">#007bff</color>
+    <color name="color_blocking_menu">#fdfffd</color>
+
     <color name="yellow">#FFA400</color>
 </resources>

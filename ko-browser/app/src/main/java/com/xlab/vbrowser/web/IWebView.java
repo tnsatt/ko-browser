@@ -87,7 +87,7 @@ public interface IWebView {
 
         void onReceivedTitle(String title);
 
-        void onReceivedIcon(Bitmap bitmap);
+        void onReceivedIcon(WebView webView, Bitmap bitmap);
 
         void onScrollChanged(final int l, final int t, final int oldl, final int oldt);
 

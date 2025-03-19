@@ -20,7 +20,7 @@
             android:id="@+id/toolbarBackgroundView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/background_primary" />
+            android:background="@drawable/background_dialog" />
 
         <FrameLayout
             android:id="@+id/urlInputContainerView"
@@ -77,13 +77,26 @@
                     tools:targetApi="o" /><!-- importantForAutofill is only supported on Android O+ -->
 
                 <ImageButton
+                    android:id="@+id/expandInput"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/ic_expand_s"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_gravity="end"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
+                    style="?android:attr/borderlessButtonStyle" />
+
+                <ImageButton
                     android:id="@+id/voiceView"
+                    android:visibility="gone"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:src="@drawable/ic_voice"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
                     android:layout_gravity="end"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
                     style="?android:attr/borderlessButtonStyle"
                     android:contentDescription="@string/content_description_voice_input"/>
 
@@ -96,6 +109,7 @@
                     android:layout_marginBottom="8dp"
                     android:layout_gravity="end"
                     android:visibility="gone"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
                     style="?android:attr/borderlessButtonStyle"
                     android:contentDescription="@string/content_description_clear_input" />
 
@@ -107,6 +121,7 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
                     android:layout_gravity="end"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
                     style="?android:attr/borderlessButtonStyle" />
             </LinearLayout>
 
@@ -121,53 +136,67 @@
         android:background="@color/colorOverlay"
         android:contentDescription="@string/content_description_dismiss_input" />
 
-    <com.xlab.vbrowser.widget.ResizableKeyboardCoordinatorLayout
-        android:id="@+id/searchViewContainer"
-        android:layout_marginTop="50dp"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:clipChildren="false"
-        android:background="@drawable/background_dialog"
-        app:animate = "true">
-        <android.support.v4.widget.NestedScrollView
-            android:id="@+id/searchScrollView"
-            android:orientation="vertical"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <FrameLayout
+            android:layout_weight="0.5"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <LinearLayout
+            android:layout_height="0dp">
+            <com.xlab.vbrowser.widget.ResizableKeyboardCoordinatorLayout
+                android:id="@+id/searchViewContainer"
+                android:layout_marginTop="50dp"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-                    <TextView
-                        android:id="@+id/searchView"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:clipChildren="false"
+                android:background="@drawable/background_dialog"
+                app:animate = "true">
+                <android.support.v4.widget.NestedScrollView
+                    android:id="@+id/searchScrollView"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:drawablePadding="16dp"
-                        android:drawableStart="@drawable/ic_search_white"
-                        android:gravity="center_vertical"
-                        android:padding="16dp"
-                        android:lines="1"
-                        android:text="Hello World!"
-                        android:ellipsize="end"
-                        android:textSize="14sp"
-                        android:textColor="@color/searchHintTextColor"
-                        android:background="?android:attr/selectableItemBackground"
-                        android:paddingBottom="10dp"/>
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+                            <TextView
+                                android:id="@+id/searchView"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:drawablePadding="16dp"
+                                android:drawableStart="@drawable/ic_search_white"
+                                android:gravity="center_vertical"
+                                android:padding="16dp"
+                                android:lines="1"
+                                android:text="Hello World!"
+                                android:ellipsize="end"
+                                android:textSize="14sp"
+                                android:textColor="@color/searchHintTextColor"
+                                android:background="?android:attr/selectableItemBackground"
+                                android:paddingBottom="10dp"/>
 
-                    <View
-                        android:id="@+id/searchSeperator"
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="#33ffffff"
-                        android:layout_marginBottom="10dp"/>
+                            <View
+                                android:id="@+id/searchSeperator"
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:background="#33ffffff"
+                                android:layout_marginBottom="10dp"/>
 
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/searchSuggestionView"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
-            </LinearLayout>
-        </android.support.v4.widget.NestedScrollView>
-    </com.xlab.vbrowser.widget.ResizableKeyboardCoordinatorLayout>
-
+                            <android.support.v7.widget.RecyclerView
+                                android:id="@+id/searchSuggestionView"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"/>
+                    </LinearLayout>
+                </android.support.v4.widget.NestedScrollView>
+            </com.xlab.vbrowser.widget.ResizableKeyboardCoordinatorLayout>
+        </FrameLayout>
+        <FrameLayout
+            android:layout_weight="0.5"
+            android:layout_width="match_parent"
+            android:layout_height="0dp">
+        </FrameLayout>
+    </LinearLayout>
 </FrameLayout>

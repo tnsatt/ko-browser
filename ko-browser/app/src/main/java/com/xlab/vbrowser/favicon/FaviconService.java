@@ -67,9 +67,9 @@ public class FaviconService {
             File fileIcon = new File(faviconDir, url + ".png");
 
             //If file is exist, do nothing;
-            if (fileIcon.exists()) {
-                return;
-            }
+//            if (fileIcon.exists()) {
+//                return;
+//            }
 
             //If not, write file
             FileOutputStream fos = new FileOutputStream(fileIcon);

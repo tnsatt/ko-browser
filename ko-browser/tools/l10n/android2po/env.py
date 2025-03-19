@@ -235,8 +235,8 @@ def find_android_kinds(resource_dir, get_all=False):
             # We want to support arbitrary xml resource file names, but
             # we also need to make sure we only return those which actually
             # contain string resources. More specifically, a file named
-            # my-colors.xml, containing only color resources, should not
-            # result in a my-colors.po catalog to be created.
+            # my-colorItem.xml, containing only color resources, should not
+            # result in a my-colorItem.po catalog to be created.
             #
             # We thus attempt to read each file here, see if there are any
             # strings in it. If we fail to parse a file, we return it and

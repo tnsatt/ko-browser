@@ -102,6 +102,20 @@ public class SearchSuggestionAdapter extends RecyclerView.Adapter<SearchSuggesti
             }
         });
 
+        holder.searchIcon.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                itemClickListener.onItemClickListener(searchSuggestionItem.searchTerm);
+            }
+        });
+
+        holder.linkIcon.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                itemClickListener.onItemClickListener(searchSuggestionItem.searchTerm);
+            }
+        });
+
         holder.selectSearchView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

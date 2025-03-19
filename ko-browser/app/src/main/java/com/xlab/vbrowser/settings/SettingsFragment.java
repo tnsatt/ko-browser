@@ -19,7 +19,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import com.novacloud.data.adblock.RuleSet;
 import com.xlab.vbrowser.locale.Locales;
 import com.xlab.vbrowser.search.SearchEngineManager;
 import com.xlab.vbrowser.utils.AppConstants;
@@ -29,6 +28,7 @@ import com.xlab.vbrowser.autocomplete.AutocompleteSettingsFragment;
 import com.xlab.vbrowser.locale.LocaleManager;
 import com.xlab.vbrowser.search.MultiselectSearchEngineListPreference;
 import com.xlab.vbrowser.search.RadioSearchEngineListPreference;
+import com.xlab.vbrowser.z.ZColor;
 import com.xlab.vbrowser.z.Z;
 import com.xlab.vbrowser.z.activity.AdblockActivity;
 import com.xlab.vbrowser.z.module.AdblockRuleSet;
@@ -166,6 +166,12 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         } else if(preference.getKey().equals("adblocks")){
             Intent intent = new Intent(getActivity(), AdblockActivity.class);
             getActivity().startActivity(intent);
+        } else if(preference.getKey().equals("select_theme")){
+            ZColor.showThemePicker(getActivity());
+        } else if(preference.getKey().equals("pick_color")){
+            ZColor.showColorPicker(getActivity());
+        } else if(preference.getKey().equals("reset_color")){
+            ZColor.confirmClearColor(getActivity());
         }
 
         return super.onPreferenceTreeClick(preferenceScreen, preference);
