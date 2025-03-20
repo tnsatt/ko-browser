@@ -18,6 +18,7 @@ import com.xlab.vbrowser.R;
 import com.xlab.vbrowser.z.adapter.ColorAdapter;
 import com.xlab.vbrowser.z.items.ColorItem;
 import com.xlab.vbrowser.z.module.ThemeColors;
+import com.xlab.vbrowser.z.module.ZTheme;
 
 import org.xmlpull.v1.XmlPullParser;
 
@@ -44,7 +45,7 @@ public class ZColor {
         LayoutInflater inf = context.getLayoutInflater();
         View view = inf.inflate(R.layout.color_picker_view, null);
         ColorPickerView colorPickerView = view.findViewById(R.id.color_picker_view);
-        colorPickerView.setColor(ThemeColors.getSavedColorInt(context));
+        colorPickerView.setColor(ThemeColors.getInstance(context).getSavedColorInt());
         builder.setView(view);
         builder.setTitle("Pick Color");
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -54,7 +55,7 @@ public class ZColor {
                 int colorInt = colorPickerView.getColor();
                 colorInt = fixColor(context, colorInt);
                 String color = Integer.toHexString(colorInt).substring(2);
-                ThemeColors.setNewThemeColor(context, color);
+                ThemeColors.getInstance(context).setNewThemeColor(color);
             }
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -67,7 +68,7 @@ public class ZColor {
         dialog.show();
     }
     public static int fixColor(Activity context, int color){
-        List<Map<String, String>> data = parseStylesXml(context);
+        List<Map<String, String>> data = parseStylesXml(context, R.xml.styles);
         List<Integer> lst = new ArrayList<>();
         for(Map<String, String> item: data) {
             String sc = item.get("colorPrimary");
@@ -79,15 +80,12 @@ public class ZColor {
     }
     public static void showThemePicker(Activity context){
         List<ColorItem> lst = getColorsList(context);
+        List<ColorItem> lst2 = getStyleColors(context, R.xml.colors);
+        lst.addAll(lst2);
         ColorAdapter.OnSelected onSelected = new ColorAdapter.OnSelected() {
             @Override
             public void onSelectedColor(ColorItem colors) {
-                Toast.makeText(context, colors.primary, Toast.LENGTH_LONG).show();
-                SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
-                SharedPreferences.Editor editor = pref.edit();
-                editor.putString(PRIMARY_COLOR_KEY, colors.primary);
-                editor.putString(SECONDARY_COLOR_KEY, colors.secondary);
-                editor.commit();
+
             }
         };
         AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.DialogStyle);
@@ -105,9 +103,13 @@ public class ZColor {
                 dialogInterface.dismiss();
                 ColorItem colorItem = adapter.getSelectedColor();
                 if(colorItem !=null){
+                    SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+                    SharedPreferences.Editor editor = pref.edit();
+                    editor.putString(PRIMARY_COLOR_KEY, colorItem.primary);
+                    editor.putString(SECONDARY_COLOR_KEY, colorItem.secondary);
+                    editor.commit();
                     int color = android.graphics.Color.parseColor(colorItem.primary);
-                    color = fixColor(context, color);
-                    ThemeColors.setNewThemeColor((Activity) context, color);
+                    ZTheme.getInstance(context).setNewThemeColor(color);
                 }
             }
         });
@@ -131,7 +133,10 @@ public class ZColor {
             lst.add(c);
             if(c.selected) same = true;
         }
-        if(!same && color!=null) lst.add(0, color);
+        if(!same && color!=null) {
+            color.selected = true;
+            lst.add(0, color);
+        }
         return lst;
     }
     public static ColorItem getSavedColors(Context context){
@@ -142,19 +147,22 @@ public class ZColor {
         if(secondary==null) return null;
         return new ColorItem(primary, secondary);
     }
-    public static List<ColorItem> getStyleColors(Context context){
+    public static List<ColorItem> getStyleColors(Context context, int xml){
         List<ColorItem> lst = new ArrayList<>();
-        List<Map<String, String>> data = parseStylesXml(context);
+        List<Map<String, String>> data = parseStylesXml(context, xml);
         for(Map<String, String> item: data){
-            ColorItem c = new ColorItem(item.get("colorPrimary"), item.get("colorPrimaryDark"));
+            String colorPrimary = item.get("colorPrimary");
+            String colorPrimaryDark = item.get("colorPrimaryDark");
+            String colorAccent = item.get("colorAccent");
+            ColorItem c = new ColorItem(colorPrimary, colorAccent.equals(colorPrimary)?colorPrimaryDark:colorAccent);
             lst.add(c);
         }
         return lst;
     }
-    public static List<Map<String, String>> parseStylesXml(Context context) {
+    public static List<Map<String, String>> parseStylesXml(Context context, int xml) {
         List<Map<String, String>> stylesList = new ArrayList<>();
         Resources res = context.getResources();
-        XmlResourceParser parser = res.getXml(R.xml.styles); // Ensure styles.xml exists in res/values/
+        XmlResourceParser parser = res.getXml(xml); // Ensure styles.xml exists in res/values/
 
         Map<String, String> currentStyle = null;
         String styleName = null;
@@ -197,7 +205,8 @@ public class ZColor {
         editor.remove(PRIMARY_COLOR_KEY);
         editor.remove(SECONDARY_COLOR_KEY);
         editor.commit();
-        ThemeColors.clearColor(context);
+        ThemeColors.getInstance(context).clearColor();
+        ZTheme.getInstance(context).clearColor();
     }
     public static void confirmClearColor(Context context){
         AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.DialogStyle);

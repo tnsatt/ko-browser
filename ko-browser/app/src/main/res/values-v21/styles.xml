@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<style name="Z_2F3C7E">
+                <item name="colorPrimary">#2F3C7E</item>
+                <item name="colorPrimaryDark">#2F3C7E</item>
+                <item name="colorAccent">#FBEAEB</item>
+                </style>
+<style name="Z_101820">
+                <item name="colorPrimary">#101820</item>
+                <item name="colorPrimaryDark">#101820</item>
+                <item name="colorAccent">#FEE715</item>
+                </style>
+<style name="Z_F96167">
+                <item name="colorPrimary">#F96167</item>
+                <item name="colorPrimaryDark">#F96167</item>
+                <item name="colorAccent">#F9E795</item>
+                </style>
+<style name="Z_990011">
+                <item name="colorPrimary">#990011</item>
+                <item name="colorPrimaryDark">#990011</item>
+                <item name="colorAccent">#FCF6F5</item>
+                </style>
+<style name="Z_8AAAE5">
+                <item name="colorPrimary">#8AAAE5</item>
+                <item name="colorPrimaryDark">#8AAAE5</item>
+                <item name="colorAccent">#FFFFFF</item>
+                </style>
+<style name="Z_00246B">
+                <item name="colorPrimary">#00246B</item>
+                <item name="colorPrimaryDark">#00246B</item>
+                <item name="colorAccent">#CADCFC</item>
+                </style>
+<style name="Z_89ABE3">
+                <item name="colorPrimary">#89ABE3</item>
+                <item name="colorPrimaryDark">#89ABE3</item>
+                <item name="colorAccent">#EA738D</item>
+                </style>
+<style name="Z_CC313D">
+                <item name="colorPrimary">#CC313D</item>
+                <item name="colorPrimaryDark">#CC313D</item>
+                <item name="colorAccent">#F7C5CC</item>
+                </style>
+<style name="Z_2C5F2D">
+                <item name="colorPrimary">#2C5F2D</item>
+                <item name="colorPrimaryDark">#2C5F2D</item>
+                <item name="colorAccent">#97BC62</item>
+                </style>
+<style name="Z_A1BE95">
+                <item name="colorPrimary">#A1BE95</item>
+                <item name="colorPrimaryDark">#A1BE95</item>
+                <item name="colorAccent">#F98866</item>
+                </style>
+<style name="Z_735DA5">
+                <item name="colorPrimary">#735DA5</item>
+                <item name="colorPrimaryDark">#735DA5</item>
+                <item name="colorAccent">#D3C5E5</item>
+                </style>
+<style name="Z_F98866">
+                <item name="colorPrimary">#F98866</item>
+                <item name="colorPrimaryDark">#F98866</item>
+                <item name="colorAccent">#FFF2D7</item>
+                </style>
+<style name="Z_C4DFE6">
+                <item name="colorPrimary">#C4DFE6</item>
+                <item name="colorPrimaryDark">#C4DFE6</item>
+                <item name="colorAccent">#66A5AD</item>
+                </style>
+</resources>

@@ -63,6 +63,7 @@ import com.tonyodev.fetch2.FetchListener;
 import com.xlab.vbrowser.z.Z;
 import com.xlab.vbrowser.z.module.Adblock;
 import com.xlab.vbrowser.z.module.ThemeColors;
+import com.xlab.vbrowser.z.module.ZTheme;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -139,7 +140,9 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements IabBro
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
         }
         try {
-            new ThemeColors(this);
+            if(!ZTheme.getInstance(this).setTheme()){
+                ThemeColors.getInstance(this).setTheme();
+            }
         }catch (Exception e){
             e.printStackTrace();
         }
