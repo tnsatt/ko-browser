@@ -1,7 +1,3 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <style name="AppTheme.Toolbar" parent="Theme.AppCompat.DayNight">
-        <item name="android:textColorPrimary">@color/colorTextActive</item>
-        <item name="android:editTextColor">@color/colorTextActive</item>
-        <item name="android:textColorHint">@color/colorTextActive</item>
-    </style>
+
 </resources>

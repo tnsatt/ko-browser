@@ -60,6 +60,7 @@ import com.xlab.vbrowser.web.WebViewProvider;
 import com.tonyodev.fetch2.Download;
 import com.tonyodev.fetch2.Fetch;
 import com.tonyodev.fetch2.FetchListener;
+import com.xlab.vbrowser.z.Theme;
 import com.xlab.vbrowser.z.Z;
 import com.xlab.vbrowser.z.module.Adblock;
 import com.xlab.vbrowser.z.module.ThemeColors;
@@ -139,12 +140,15 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements IabBro
         if (Settings.getInstance(this).shouldUseSecureMode()) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
         }
-        try {
-            if(!ZTheme.getInstance(this).setTheme()){
-                ThemeColors.getInstance(this).setTheme();
+        Theme.setDarkMode(this);
+        if(Settings.getInstance(this).isEnabledDarkMode()) {
+            try {
+                if (!ZTheme.getInstance(this).setTheme()) {
+                    ThemeColors.getInstance(this).setTheme();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        }catch (Exception e){
-            e.printStackTrace();
         }
 
         //getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE);

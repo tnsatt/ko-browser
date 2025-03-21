@@ -2,7 +2,7 @@
 <!-- This Source Code Form is subject to the terms of the Mozilla Public
    - License, v. 2.0. If a copy of the MPL was not distributed with this
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <style name="AppTheme.Launcher" parent="Theme.AppCompat.DayNight.NoActionBar">
         <item name="android:windowBackground">@drawable/splash</item>
@@ -13,6 +13,12 @@
     </style>
 
     <style name="AppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="android:textColorPrimary">?attr/activeTextColor</item>
+<!--        <item name="android:statusBarColor">@android:color/transparent</item>-->
+        <item name="android:colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">@bool/light_status_bar</item>
+<!--        <item name="android:forceDarkAllowed">@bool/forceDarkAllowed</item>-->
+
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -20,8 +26,6 @@
         <item name="android:windowContentTransitions">true</item>
 
         <item name="popupMenuStyle">@style/PopupMenu</item>
-
-        <item name="android:statusBarColor">@android:color/transparent</item>
 
         <item name="windowActionModeOverlay">true</item>
 
@@ -43,6 +47,8 @@
 
         <!-- menu -->
         <item name="blockingMenuColor">@color/color_blocking_menu</item>
+
+        <item name="android:alertDialogTheme">@style/DialogStyle</item>
     </style>
 
     <style name="AppTheme.Dark" parent="AppTheme">
@@ -76,12 +82,14 @@
          explicitly select this via "new AlertDialog.Builder(activity, R.style.DialogStyle)"
          We need this style because the accent colour for the MainActivity is purple,
          but we want different accents in the dialog. -->
-    <style name="DialogStyle" parent="Theme.AppCompat.Dialog.Alert">
+    <style name="DialogStyle" parent="Theme.AppCompat.DayNight.Dialog.Alert">
         <item name="android:windowTitleStyle">@style/DialogTitleStyle</item>
         <item name="dialogPreferredPadding">24dp</item>
         <item name="android:background">?attr/dialogBackground</item>
         <item name="android:textColorPrimary">?attr/activeTextColor</item>
         <item name="android:textColorAlertDialogListItem">@color/darkColorPrimary</item>
+        <item name="android:textColorHint">@color/colorTextInactive</item>
+        <item name="android:colorAccent">@color/colorAccent</item>
     </style>
 
 

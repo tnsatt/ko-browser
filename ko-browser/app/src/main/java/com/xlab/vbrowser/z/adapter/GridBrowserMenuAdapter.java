@@ -130,6 +130,7 @@ public class GridBrowserMenuAdapter extends RecyclerView.Adapter<BrowserMenuView
     public void onBindViewHolder(BrowserMenuViewHolder holder, int position) {
         holder.setMenu(menu);
         holder.setOnClickListener(fragment);
+        holder.itemView.setOnLongClickListener(menu);
 
         if (position >= 0) {
             ((GridMenuItemViewHolder) holder).bind(items.get(position));

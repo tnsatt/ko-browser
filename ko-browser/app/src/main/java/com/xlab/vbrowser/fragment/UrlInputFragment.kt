@@ -355,6 +355,12 @@ class UrlInputFragment : LocaleAwareFragment(), View.OnClickListener, InlineAuto
         editText.text = text
         editText.setSelection(pos)
 
+        val submitButton = dialog.findViewById<ImageView>(R.id.submit)
+        submitButton.setOnClickListener{
+            dialog.dismiss();
+            transferInput(editText)
+            submitInput()
+        }
         val closeButton = dialog.findViewById<ImageView>(R.id.close)
         closeButton.setOnClickListener{
             dialog.dismiss();

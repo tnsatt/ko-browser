@@ -53,6 +53,7 @@ public class ThemeColors {
 
     public int getSavedColorInt(){
         String stringColor = getSavedColor();
+        if(stringColor == null) return -1;
         int color = Color.parseColor("#" + stringColor);
         return color;
     }

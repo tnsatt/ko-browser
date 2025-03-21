@@ -45,7 +45,8 @@ public class ZColor {
         LayoutInflater inf = context.getLayoutInflater();
         View view = inf.inflate(R.layout.color_picker_view, null);
         ColorPickerView colorPickerView = view.findViewById(R.id.color_picker_view);
-        colorPickerView.setColor(ThemeColors.getInstance(context).getSavedColorInt());
+        int colorInt = ThemeColors.getInstance(context).getSavedColorInt();
+        if(colorInt!=-1) colorPickerView.setColor(colorInt);
         builder.setView(view);
         builder.setTitle("Pick Color");
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {

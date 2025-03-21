@@ -29,3 +29,5 @@ include ':adblock-parser'
 project (":adblock-parser").projectDir = new File("../../Module/adblock-parser-android/adblock-parser")
 include ':color-picker-view'
 project (":color-picker-view").projectDir = new File("../../Libs/color-picker-view/color-picker-view")
+include ':dots'
+project (":dots").projectDir = new File("../../Libs/Material-ViewPagerIndicator/material-viewpagerindicator")

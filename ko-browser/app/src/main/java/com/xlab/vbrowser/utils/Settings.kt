@@ -204,6 +204,16 @@ class Settings private constructor(context: Context?) {
                 .apply()
     }
 
+    fun getDarkMode(): Int {
+        return preferences.getInt(Constants.PREF_DARKMODE_MODE, 0)
+    }
+
+    fun setDarkMode(mode: Int) {
+        preferences.edit()
+            .putInt(Constants.PREF_DARKMODE_MODE, mode)
+            .apply()
+    }
+
     fun isEnabledDarkMode(): Boolean {
         if (resources != null) {
             return preferences.getBoolean(Constants.PREF_DARKMODE_ENABLED_KEY,
@@ -217,5 +227,12 @@ class Settings private constructor(context: Context?) {
         preferences.edit()
             .putBoolean(Constants.PREF_DARKMODE_ENABLED_KEY, isEnabled)
             .apply()
+    }
+
+    fun clearDarkMode() {
+        val editor = preferences.edit()
+        editor.remove(Constants.PREF_DARKMODE_MODE)
+        editor.remove(Constants.PREF_DARKMODE_ENABLED_KEY)
+        editor.apply()
     }
 }

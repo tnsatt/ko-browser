@@ -19,7 +19,7 @@ public class Toast extends android.widget.Toast{
         view.getBackground().setColorFilter(context.getResources().getColor(R.color.colorPrimary), PorterDuff.Mode.SRC_IN);
 
         TextView text = view.findViewById(android.R.id.message);
-        text.setTextColor(context.getResources().getColor(R.color.colorTextActive));
+//        text.setTextColor(context.getResources().getColor(R.color.colorTextActive));
         text.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_toast, 0, 0, 0);
         text.setCompoundDrawablePadding(16);
         return toast;

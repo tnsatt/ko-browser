@@ -46,11 +46,11 @@ public class Menu {
         items.add(new GridBrowserMenuAdapter.MenuItem(context.getDrawable(R.drawable.ic_download_s)
                 ,R.id.download_manager, resources.getString(R.string.download_manager)));
 
-        boolean enableDarkMode = settings.isEnabledDarkMode();
-        Drawable darkModeDrawable = enableDarkMode ? context.getDrawable(R.drawable.ic_sun_s)
-                :  context.getDrawable(R.drawable.ic_moon_s);
-        items.add(new GridBrowserMenuAdapter.MenuItem(darkModeDrawable, R.id.darkMode, enableDarkMode ? resources.getString(R.string.light_mode)
-                : resources.getString(R.string.dark_mode) ));
+        int darkMode = settings.getDarkMode();
+        Drawable darkModeDrawable = darkMode == 0 ? context.getDrawable(R.drawable.ic_night_light_s): (darkMode!=1 ? context.getDrawable(R.drawable.ic_sun_s)
+                :  context.getDrawable(R.drawable.ic_moon_s));
+        items.add(new GridBrowserMenuAdapter.MenuItem(darkModeDrawable, R.id.darkMode,
+                darkMode == 0 ? "Auto Dark mode" : darkMode != 1 ? resources.getString(R.string.light_mode) : resources.getString(R.string.dark_mode) ));
 
         boolean enableSpeedmode = settings.shouldEnterSpeedMode();
         Drawable speedModeDrawbale = enableSpeedmode ? context.getDrawable(R.drawable.ic_speedmode_off)

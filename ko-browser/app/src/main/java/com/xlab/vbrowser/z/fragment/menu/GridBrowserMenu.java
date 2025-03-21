@@ -9,6 +9,8 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
@@ -27,7 +29,9 @@ import com.xlab.vbrowser.locale.LocaleAwareAppCompatActivity;
 import com.xlab.vbrowser.menu.browser.BlockingItemViewHolder;
 import com.xlab.vbrowser.menu.browser.BrowserMenu;
 import com.xlab.vbrowser.menu.browser.BrowserMenuAdapter;
+import com.xlab.vbrowser.utils.Settings;
 import com.xlab.vbrowser.utils.ViewUtils;
+import com.xlab.vbrowser.z.Toast;
 import com.xlab.vbrowser.z.Z;
 import com.xlab.vbrowser.z.activity.AdblockActivity;
 import com.xlab.vbrowser.z.adapter.CardMenuAdapter;
@@ -39,12 +43,11 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GridBrowserMenu extends BrowserMenu {
+public class GridBrowserMenu extends BrowserMenu implements View.OnLongClickListener{
     private GridBrowserMenuAdapter adapter;
     private BrowserFragment fragment;
     private Activity context;
     private WeakReference<BlockingItemViewHolder> blockingItemViewHolderReference;
-
     public GridBrowserMenu(Context context, BrowserFragment fragment, @Nullable @org.jetbrains.annotations.Nullable CustomTabConfig customTabConfig) {
         final View view = LayoutInflater.from(context).inflate(R.layout.bottom_menu_tab, null);
         setContentView(view);
@@ -152,7 +155,7 @@ public class GridBrowserMenu extends BrowserMenu {
         exitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(fragment.getContext(), R.style.DialogStyle);
+                AlertDialog.Builder builder = new AlertDialog.Builder(fragment.getContext());
                 builder.setTitle(fragment.getResources().getString(R.string.app_name))
                         .setMessage("Want to close app?")
                         .setIcon(context.getResources().getDrawable(R.drawable.ic_power_off_s))
@@ -188,5 +191,27 @@ public class GridBrowserMenu extends BrowserMenu {
 
     public void show(View anchor) {
         super.showAtLocation(anchor, Gravity.BOTTOM|Gravity.RIGHT, 0, 0);
+    }
+
+    @Override
+    public boolean onLongClick(View view) {
+        int id = view.getId();
+        switch (id){
+            case R.id.darkMode:
+                Settings.getInstance(context).clearDarkMode();
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+                ((AppCompatActivity) fragment.getActivity()).getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+                Toast.makeText(context, "Reset Darkmode", Toast.LENGTH_LONG).show();
+                recreate();
+                break;
+            default:
+                break;
+        }
+        return true;
+    }
+    public void recreate(){
+        GridBrowserMenu menu = new GridBrowserMenu(context, fragment, fragment.getSession().getCustomTabConfig());
+        menu.show(fragment.getView().findViewById(R.id.menuView));
+        dismiss();
     }
 }

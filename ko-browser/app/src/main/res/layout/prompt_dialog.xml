@@ -28,7 +28,7 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="?attr/activeTextColor"
             android:textColorHighlight="?attr/colorAccent"
-            android:textColorHint="?attr/activeTextColor"
+            android:textColorHint="?attr/inactiveTextColor"
             android:textCursorDrawable="@null" />
 
     </LinearLayout>

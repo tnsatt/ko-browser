@@ -30,4 +30,5 @@ public class Constants {
     public static final String PREF_IS_RATED_KEY = "PREF_IS_RATED_KEY";
 
     public static final String PREF_DARKMODE_ENABLED_KEY = "PREF_DARKMODE_ENABLED_KEY";
+    public static final String PREF_DARKMODE_MODE = "PREF_DARKMODE_MODE";
 }

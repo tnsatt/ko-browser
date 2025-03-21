@@ -5,9 +5,10 @@
 <resources>
     <!-- Primary color -->
     <color name="colorPrimary">#1c1c1d</color>
-    <color name="colorPrimaryDark">#6c3b6e</color>
+    <color name="colorPrimaryDark">#1c1c1d</color>
     <color name="colorAccent">#007bff</color>
     <color name="background">#0f0f0f</color>
+    <color name="backgrounds">#0f0f0f</color>
 
     <!-- Settings -->
     <color name="darkColorPrimary">#ff453440</color>

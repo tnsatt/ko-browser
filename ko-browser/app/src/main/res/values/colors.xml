@@ -5,7 +5,7 @@
 <resources>
     <!-- Primary color -->
 <!--    <color name="colorPrimary">#F2F2F2</color>-->
-    <color name="colorPrimaryDark">#6c3b6e</color>
+<!--    <color name="colorPrimaryDark">#6c3b6e</color>-->
     <color name="colorAccent">#FFA400</color>
 
     <!-- Settings -->
@@ -97,12 +97,15 @@
     <color name="semi_transparent_color">#40000066</color>
 
     <!-- new -->
+    <color name="colorPrimaryDark">#ffffff</color>
+
     <color name="white">#ffffff</color>
     <color name="night">#1c1c1d</color>
+    <color name="background">#fdfffd</color>
+    <color name="backgrounds">#fdfffd</color>
     <color name="dark_background">#1c1c1d</color>
 
     <color name="colorPrimary">#fdfffd</color>
-    <color name="background">#fdfffd</color>
     <color name="urlbar_background">#fdfffd</color>
 
     <color name="colorTextActive">#000000</color>

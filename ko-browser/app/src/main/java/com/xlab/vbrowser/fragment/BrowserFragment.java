@@ -1290,6 +1290,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                     ((AppCompatActivity)getActivity()).getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES);
                 }
                 settings.setEnabledDarkMode(!enableDarkMode);
+                settings.setDarkMode(!enableDarkMode?1:2);
                 break;
 
             case R.id.themeMenu:
