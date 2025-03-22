@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -19,6 +20,8 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.xlab.vbrowser.R;
+import com.xlab.vbrowser.activity.MainActivity;
+import com.xlab.vbrowser.session.Session;
 import com.xlab.vbrowser.session.SessionManager;
 import com.xlab.vbrowser.session.Source;
 import com.xlab.vbrowser.utils.Settings;
@@ -78,7 +81,7 @@ public class WebContextMenu {
 
         menu.setVisibility(View.VISIBLE);
 
-        setupMenuForHitTarget(dialog, menu, callback, hitTarget, isBlockingEnabled);
+        setupMenuForHitTarget(context, dialog, menu, callback, hitTarget, isBlockingEnabled);
 
         dialog.show();
     }
@@ -88,7 +91,8 @@ public class WebContextMenu {
      * has already been created - we need the dialog in order to be able to dismiss it in the
      * menu callbacks.
      */
-    private static void setupMenuForHitTarget(final @NonNull Dialog dialog,
+    private static void setupMenuForHitTarget(Context context,
+                                              final @NonNull Dialog dialog,
                                               final @NonNull NavigationView navigationView,
                                               final @NonNull IWebView.Callback callback,
                                               final @NonNull IWebView.HitTarget hitTarget,
@@ -118,7 +122,16 @@ public class WebContextMenu {
                         return true;
                     }
                     case com.xlab.vbrowser.R.id.menu_new_background_tab: {
-                        SessionManager.getInstance().createNextSession(Source.MENU, hitTarget.linkURL, isBlockingEnabled, true);
+                        if(!(context instanceof MainActivity)) {
+                            SessionManager.getInstance().createNextSession(Source.MENU, hitTarget.linkURL, isBlockingEnabled, true);
+                        }else {
+                            MainActivity mainActivity = (MainActivity) context;
+                            Session currentSession = SessionManager.getInstance().getCurrentSession();
+                            SessionManager.getInstance().createNextSession(Source.MENU, hitTarget.linkURL, isBlockingEnabled, false);
+                            FragmentManager fragmentManager = mainActivity.getSupportFragmentManager();
+                            fragmentManager.executePendingTransactions();
+                            SessionManager.getInstance().selectSession(currentSession);
+                        }
                         return true;
                     }
                     case com.xlab.vbrowser.R.id.menu_link_share: {

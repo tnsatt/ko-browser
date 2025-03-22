@@ -9,6 +9,7 @@ import android.arch.lifecycle.Observer;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -41,6 +42,7 @@ import android.webkit.CookieManager;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -121,6 +123,7 @@ import java.util.List;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.AppSettingsDialog;
 import pub.devrel.easypermissions.EasyPermissions;
+import utils.Utils;
 
 
 /**
@@ -762,6 +765,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                         webIcon.setVisibility(View.VISIBLE);
                     }
                 }
+                iconHintView.setVisibility(View.GONE);
             }
 
             @Override
@@ -853,8 +857,13 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
 
             @Override
             public void onDownloadStart(Download download) {
+                updateToolbarButtonStates(false);
+                if (progressView.getVisibility() == View.VISIBLE) {
+                    progressView.setProgress(progressView.getMax());
+                    progressView.setVisibility(View.GONE);
+                }
                 if (hasWriteStoragePermission()) {
-                    startDownload(download, null);
+                    startDownloadDialog(download, null);
                     GaReport.sendReportEvent(getContext(), "onDownloadStart_hasWriteStoragePermission", BrowserFragment.class.getName());
                 } else {
                     // We do not have the permission to write to the external storage. Request the permission and start the
@@ -870,7 +879,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                         @Override
                         public void onReceivePermission() {
                             if (pendingDownload != null) {
-                                startDownload(pendingDownload, null);
+                                startDownloadDialog(pendingDownload, null);
                                 GaReport.sendReportEvent(getContext(), "onDownloadStart_onReceivePermission", BrowserFragment.class.getName());
                                 pendingDownload = null;
                             }
@@ -1281,16 +1290,16 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
             }
 
             case R.id.darkMode:
-                boolean enableDarkMode = settings.isEnabledDarkMode();
+                boolean enableDarkMode = !settings.isEnabledDarkMode();
                 if(enableDarkMode){
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-                    ((AppCompatActivity)getActivity()).getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-                }else{
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
                     ((AppCompatActivity)getActivity()).getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                }else{
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                    ((AppCompatActivity)getActivity()).getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO);
                 }
-                settings.setEnabledDarkMode(!enableDarkMode);
-                settings.setDarkMode(!enableDarkMode?1:2);
+                settings.setEnabledDarkMode(enableDarkMode);
+                settings.setDarkMode(enableDarkMode?1:2);
                 break;
 
             case R.id.themeMenu:
@@ -1472,7 +1481,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     /**
      * Use Fetch's Download Manager to queue this download.
      */
-    private void queueDownload(Download download, String fileName) {
+    private void queueDownload(Download download, String fileName, String dir) {
         final Context context = getContext();
 
         if (fetch == null || download == null || context == null) {
@@ -1488,7 +1497,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         fileName = fileName.replace("/", "");
         String originalFileName = fileName;
 
-        String [] files = DownloadUtils.getFilePath(context, fileName);
+        String [] files = DownloadUtils.getFilePath(context, fileName, dir);
         String filePath = files[0];
         fileName = files[1];
 
@@ -1525,6 +1534,48 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         });
     }
 
+    public void startDownloadDialog(Download download, String fileName){
+        final Context context = getContext();
+
+        if (fetch == null || download == null || context == null) {
+            return;
+        }
+        if (fileName == null) {
+            fileName = DownloadUtils.guessFileName(download);
+        }
+        String dir = DownloadUtils.getDefaultDir(getContext());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.SDialog);
+        LayoutInflater inf = getLayoutInflater();
+        View view = inf.inflate(R.layout.dialog_download_confirm, null);
+        EditText fileNameView = view.findViewById(R.id.filename);
+        EditText dirView = view.findViewById(R.id.dir);
+        EditText urlView = view.findViewById(R.id.url);
+        urlView.setEnabled(false);
+
+        fileNameView.setText(fileName);
+        dirView.setText(dir);
+        urlView.setText(download.getUrl());
+        builder.setView(view).setCancelable(false)
+                .setTitle("Download File ("+ Utils.formatFileSize(download.getContentLength())+"):")
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                })
+                .setPositiveButton("Download", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        String fileName2 = fileNameView.getText().toString().trim();
+                        if(fileName2.isEmpty()) fileName2 = null;
+                        String dir2 = dirView.getText().toString().trim();
+                        startDownload(download, fileName2, dir2);
+                    }
+                });
+        AlertDialog dialog = builder.show();
+        dialog.show();
+    }
+
     public void startDownload(Download [] downloads, String fileNames[]) {
         ViewUtils.showSnackbarInfo(browserContainer, R.string.download_started, 300, getString(R.string.action_view), new ISnackbarAction() {
             @Override
@@ -1534,11 +1585,11 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         });
 
         for(int pos = 0; pos < downloads.length; pos++) {
-            queueDownload(downloads[pos], fileNames[pos]);
+            queueDownload(downloads[pos], fileNames[pos], null);
         }
     }
 
-    public void startDownload(Download download, String fileName) {
+    public void startDownload(Download download, String fileName, String dir) {
         ViewUtils.showSnackbarInfo(browserContainer, R.string.download_started, 300, getString(R.string.action_view), new ISnackbarAction() {
             @Override
             public void onOk() {
@@ -1546,7 +1597,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
             }
         });
 
-        queueDownload(download, fileName);
+        queueDownload(download, fileName, dir);
     }
 
     /**********************Permission*********************************/

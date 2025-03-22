@@ -36,6 +36,8 @@ import com.xlab.vbrowser.web.Download;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.Charset;
 import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -104,6 +106,7 @@ public class DownloadUtils {
 
         String filename = null;
         String extension = null;
+        boolean trusted = false;
 
         // Extract file name from content disposition header field
         if (contentDisposition != null) {
@@ -113,6 +116,7 @@ public class DownloadUtils {
                 if (index > 0) {
                     filename = filename.substring(index);
                 }
+                trusted = true;
             }
         }
 
@@ -129,6 +133,9 @@ public class DownloadUtils {
                     int index = decodedUrl.lastIndexOf('/') + 1;
                     if (index > 0) {
                         filename = decodedUrl.substring(index);
+                        try{
+                            filename = URLDecoder.decode(filename, String.valueOf(Charset.forName("UTF-8")));
+                        }catch (Exception e){}
                     }
                 }
             }
@@ -161,16 +168,18 @@ public class DownloadUtils {
                 }
             }
         } else {
-            if (mimeType != null) {
+            if (mimeType != null && !trusted) {
                 // Compare the last segment of the extension against the mime type.
                 // If there's a mismatch, discard the entire extension.
                 int lastDotIndex = filename.lastIndexOf('.');
                 String typeFromExt = MimeTypeMap.getSingleton().getMimeTypeFromExtension(
                         filename.substring(lastDotIndex + 1));
-                if (typeFromExt != null && !typeFromExt.equalsIgnoreCase(mimeType)) {
+//                if (typeFromExt != null && !typeFromExt.equalsIgnoreCase(mimeType)) {
+                if(typeFromExt == null){
                     extension = MimeTypeMap.getSingleton().getExtensionFromMimeType(mimeType);
                     if (extension != null) {
                         extension = "." + extension;
+                        dotIndex = filename.length();
                     }
                 }
             }
@@ -188,7 +197,7 @@ public class DownloadUtils {
      * Only the attachment type is supported.
      */
     private static final Pattern CONTENT_DISPOSITION_PATTERN =
-            Pattern.compile("attachment\\s*;\\s*filename\\s*=\\s*" +
+            Pattern.compile("[^\\s]+\\s*;\\s*filename\\s*=\\s*" +
                             "(\"((?:\\\\.|[^\"\\\\])*)\"|[^;]*)\\s*" +
                             "(?:;\\s*filename\\*\\s*=\\s*(utf-8|iso-8859-1)'[^']*'(\\S*))?",
                     Pattern.CASE_INSENSITIVE);
@@ -325,35 +334,60 @@ public class DownloadUtils {
         }
     }
 
-    public static String[] getFilePath(Context context, String fileName) {
-        final String dir = getSaveDir(context);
+    public static String[] getFilePath(Context context, String fileName){
+        return getFilePath(context, fileName, null);
+    }
+
+    public static String[] getFilePath(Context context, String fileName, String dir){
+        return getFilePath(context, fileName, dir, " (", ")");
+    }
+
+    public static String[] getFilePath(Context context, String fileName, String dir, String prefix, String suffix) {
+        if(dir==null || dir.trim().isEmpty()) dir = getSaveDir(context);
+        else{
+            dir = dir.replaceAll("^[\\\\/]+|[\\\\/]+$", "").replaceAll("[\\\\/]+", "/");
+            String root = Environment.getExternalStorageDirectory().getAbsolutePath();
+            if(!dir.startsWith(root)){
+                dir = root + "/" + dir;
+            }
+        }
+        dir = dir.replaceAll("^[\\\\/]+|[\\\\/]+$", "").replaceAll("[\\\\/]+", "/");
 
         if (TextUtils.isEmpty(dir)) {
             return new String [] {"", ""};
         }
 
-        String newFile = dir + DownloadListDir + fileName;
-        boolean first = true;
+        int lastDotIndexOf = fileName.lastIndexOf(".");
+        String noExtFileName = fileName;
+        String ext = null;
 
-        while((new File(newFile)).exists() || first) {
-            first = false;
-            int lastDotIndexOf = fileName.lastIndexOf(".");
-            String noExtFileName = fileName;
-            String ext = "";
+        if (lastDotIndexOf > 0) {
+            noExtFileName = fileName.substring(0, lastDotIndexOf);
 
-            if (lastDotIndexOf > 0) {
-                noExtFileName = fileName.substring(0, lastDotIndexOf);
-
-                if (lastDotIndexOf + 1 < fileName.length()) {
-                    ext = fileName.substring(lastDotIndexOf + 1);
-                }
+            if (lastDotIndexOf + 1 < fileName.length()) {
+                ext = fileName.substring(lastDotIndexOf + 1);
             }
+        }
+        String newFile = dir + "/" + fileName;
+        int i = 0;
 
-            fileName = noExtFileName + "-" + (new Date()).getTime() + "." + ext;
-            newFile = dir + DownloadListDir + fileName;
+        while((new File(newFile)).exists()) {
+            i+=1;
+            fileName = noExtFileName + prefix + i + suffix + (ext==null?"":"." + ext);
+            newFile = dir + "/" + fileName;
         }
 
         return new String [] {newFile, fileName};
+    }
+    public static String getDefaultDir(Context context){
+        try{
+            File file = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+            File root = Environment.getExternalStorageDirectory();
+            String path = file.getAbsolutePath().replace(root.getAbsolutePath(), "");
+            return path;
+        }catch (Exception e){
+            return "/Downloads";
+        }
     }
 
     private static String getSaveDir(Context context) {
@@ -361,7 +395,7 @@ public class DownloadUtils {
             File file = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
 
             if (file.exists()) {
-                return file.toString() + "/" + context.getString(R.string.download_folder);
+                return file.toString(); // + "/" + context.getString(R.string.download_folder);
             } else {
                 File file2 = context.getNoBackupFilesDir();
                 return file2.toString() + "/" + context.getString(R.string.download_folder);

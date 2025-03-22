@@ -264,7 +264,7 @@
   <string name="incognito_off_info">Đã tắt chế độ riêng tư</string>
 
   <!-- Browser context menu -->
-  <string name="contextmenu_open_in_new_background_tab">Mở liên kết trong tab ẩn mới</string>
+  <string name="contextmenu_open_in_new_background_tab">Mở liên kết trong tab nền mới</string>
   <string name="contextmenu_image_open_in_new_tab">Mở ảnh trong tab mới</string>
 
   <!-- Media report -->

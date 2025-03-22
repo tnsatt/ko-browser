@@ -334,11 +334,15 @@ class UrlInputFragment : LocaleAwareFragment(), View.OnClickListener, InlineAuto
         }
     }
 
-    private fun transferInput(editText: EditText){
+    private fun transferInput(editText: EditText, focus: Boolean){
         val text = editText.text
-        val pos = editText.selectionStart
         urlView.text = text
-        urlView.setSelection(pos)
+        if (focus) {
+            val pos = editText.selectionStart
+            urlView.setSelection(pos)
+            urlView.requestFocus()
+            requireActivity().window?.setSoftInputMode(android.view.WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
+        }
     }
 
     private fun expandInput(){
@@ -358,7 +362,7 @@ class UrlInputFragment : LocaleAwareFragment(), View.OnClickListener, InlineAuto
         val submitButton = dialog.findViewById<ImageView>(R.id.submit)
         submitButton.setOnClickListener{
             dialog.dismiss();
-            transferInput(editText)
+            transferInput(editText, false)
             submitInput()
         }
         val closeButton = dialog.findViewById<ImageView>(R.id.close)
@@ -366,10 +370,10 @@ class UrlInputFragment : LocaleAwareFragment(), View.OnClickListener, InlineAuto
             dialog.dismiss();
         }
         dialog.setOnCancelListener{
-            transferInput(editText)
+            transferInput(editText, true)
         }
         dialog.setOnDismissListener{
-            transferInput(editText)
+            transferInput(editText, true)
         }
         dialog.show()
         editText.requestFocus()

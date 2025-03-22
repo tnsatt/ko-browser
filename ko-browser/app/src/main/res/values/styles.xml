@@ -90,8 +90,28 @@
         <item name="android:textColorAlertDialogListItem">@color/darkColorPrimary</item>
         <item name="android:textColorHint">@color/colorTextInactive</item>
         <item name="android:colorAccent">@color/colorAccent</item>
+        <item name="android:windowBackground">@drawable/dialog_rounded</item>
     </style>
 
+    <style name="SDialogTitleStyle" parent="TextAppearance.AppCompat.Title">
+        <item name="android:textColor">?attr/activeTextColor</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">@string/font_roboto_medium</item>
+        <item name="android:background">?attr/dialogBackground</item>
+    </style>
+    <style name="SDialog" parent="Theme.AppCompat.DayNight.Dialog.Alert">
+        <item name="android:windowTitleStyle">@style/SDialogTitleStyle</item>
+        <item name="dialogPreferredPadding">16dp</item>
+        <item name="android:background">?attr/dialogBackground</item>
+        <item name="android:textColorPrimary">?attr/activeTextColor</item>
+        <item name="android:textColorAlertDialogListItem">@color/darkColorPrimary</item>
+        <item name="android:textColorHint">@color/colorTextInactive</item>
+        <item name="android:colorAccent">@color/colorAccent</item>
+        <item name="android:windowBackground">@drawable/dialog_rounded</item>
+    </style>
+    <style name="SEditText">
+        <item name="android:textSize">16sp</item>
+    </style>
 
     <style name="SettingsTheme" parent="AppTheme">
     </style>
