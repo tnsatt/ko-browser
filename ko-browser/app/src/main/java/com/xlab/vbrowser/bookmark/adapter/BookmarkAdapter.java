@@ -125,7 +125,8 @@ public class BookmarkAdapter extends RecyclerView.Adapter<BookmarkAdapter.ViewHo
 
                                     if (data == bookmarkData) {
                                         //Notify client
-                                        BookmarkService.notifyClearBookmarkEvent(data.bookmark.url);
+//                                        BookmarkService.notifyClearBookmarkEvent(data.bookmark.url);
+                                        BookmarkService.notifyUrl(context, data.bookmark.url);
 
                                         mBookmarkActionListener.onRemoveBookmark(data.bookmark);
                                         mBookmarks.remove(index);
@@ -168,28 +169,34 @@ public class BookmarkAdapter extends RecyclerView.Adapter<BookmarkAdapter.ViewHo
 
                     @Override
                     public void onEdit() {
+                        Bookmark bookmark = bookmarkData.bookmark;
                         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                        builder.setTitle(bookmarkData.bookmark.title);
+                        builder.setTitle(bookmark.title);
                         LinearLayout lila1= new LinearLayout(context);
                         lila1.setOrientation(LinearLayout.VERTICAL);
                         final EditText input = new EditText(context);
                         final EditText input1 = new EditText(context);
                         lila1.addView(input);
                         lila1.addView(input1);
-                        input.setText(bookmarkData.bookmark.title);
-                        input1.setText(bookmarkData.bookmark.url);
+                        input.setText(bookmark.title);
+                        input1.setText(bookmark.url);
                         builder.setView(lila1);
                         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
+                                String prevurl = bookmark.url;
                                 String title = input.getText().toString();
                                 String url = input1.getText().toString();
-                                bookmarkData.bookmark.title = title;
-                                bookmarkData.bookmark.url = url;
-                                BookmarkService.updateBookmarkData(context, bookmarkData.bookmark, new Runnable() {
+                                bookmark.title = title;
+                                bookmark.url = url;
+                                BookmarkService.updateBookmarkData(context, bookmark, new Runnable() {
                                     @Override
                                     public void run() {
                                         BookmarkAdapter.this.notifyDataSetChanged();
+                                        BookmarkService.notifyUrl(context, bookmark.url);
+                                        if(prevurl!=null && !prevurl.equals(bookmark.url)){
+                                            BookmarkService.notifyUrl(context, prevurl);
+                                        }
                                     }
                                 });
                             }

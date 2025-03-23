@@ -2,14 +2,17 @@ package com.xlab.vbrowser.bookmark.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.xlab.vbrowser.R;
 import com.xlab.vbrowser.bookmark.BookmarkActionListener;
@@ -25,6 +28,8 @@ import com.xlab.vbrowser.utils.BackgroundTask;
 import com.xlab.vbrowser.utils.IBackgroundTask;
 import com.xlab.vbrowser.utils.UrlUtils;
 import com.xlab.vbrowser.widget.EndlessRecyclerViewScrollListener;
+
+import java.util.zip.Inflater;
 
 /**
  * Created by nguyenducthuan on 3/21/18.
@@ -78,6 +83,12 @@ public class BookmarkActivity extends LocaleAwareAppCompatActivity
 
         GaReport.sendReportScreen(getBaseContext(), BookmarkActivity.class.getName());
     }
+    private void addNewBookmark(boolean isFolder){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inf = getLayoutInflater();
+        View view = inf.inflate(R.layout.dialog_create_bookmark, null);
+        TextView titleView = view.findViewById(R.id.title);
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -85,6 +96,10 @@ public class BookmarkActivity extends LocaleAwareAppCompatActivity
             case android.R.id.home:
                 onBackPressed();
                 return true;
+            case R.id.bookmark_add_folder:
+            case R.id.bookmark_add_new:
+                addNewBookmark(item.getItemId()==R.id.bookmark_add_folder);
+                break;
         }
         return super.onOptionsItemSelected(item);
     }

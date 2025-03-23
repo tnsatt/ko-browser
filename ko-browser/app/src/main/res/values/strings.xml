@@ -645,4 +645,6 @@ be temporary, and you can try again later.</li>
     <string name="light_mode">Light mode</string>
 
     <string name="contextmenu_edit">Edit</string>
+    <string name="add_folder_bookmark_hint">Add new folder</string>
+    <string name="add_new_bookmark_hint">Add New Bookmark</string>
 </resources>

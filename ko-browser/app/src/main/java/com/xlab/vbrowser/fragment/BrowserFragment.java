@@ -565,6 +565,16 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
             }
         });
 
+        BookmarkService.getAddBookmarkEvent().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(@Nullable String str) {
+                if (bookmarkView != null && !TextUtils.isEmpty(str) && str.equals(getUrl())) {
+                    bookmarkView.setTag(true);
+                    bookmarkView.setImageResource(R.drawable.ic_star_s_enabled);
+                }
+            }
+        });
+
     }
 
     @Override
@@ -1212,7 +1222,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                 break;
 
             case R.id.bookmarkView:
-                BookmarkService.addOrRemoveBookmark(getActivity(), getTitle(), getInitialUrl(), bookmarkView);
+                BookmarkService.addOrRemoveBookmark2(getActivity(), getTitle(), getInitialUrl(), bookmarkView);
                 GaReport.sendReportEvent(getContext(), "addOrRemoveBookmark", "ACTION_" + BrowserFragment.class.getName());
                 break;
 
