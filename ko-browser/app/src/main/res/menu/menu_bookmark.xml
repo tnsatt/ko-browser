@@ -2,6 +2,11 @@
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <item
+        android:id="@+id/bookmark_reload"
+        android:icon="@drawable/ic_refresh_s"
+        android:title="@string/refresh_bookmark_hint"
+        app:showAsAction="always|collapseActionView"/>
+    <item
         android:id="@+id/bookmark_add_new"
         android:icon="@drawable/ic_bookmark_add"
         android:title="@string/add_new_bookmark_hint"

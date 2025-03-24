@@ -114,7 +114,8 @@
         <activity
             android:name=".bookmark.activity.BookmarkActivity"
             android:configChanges="keyboard|keyboardHidden|mcc|mnc|orientation|screenSize|locale|layoutDirection|smallestScreenSize|screenLayout"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="adjustResize"
+            android:theme="@style/AppTheme"/>
         <activity
             android:name=".activity.EraseShortcutActivity"
             android:theme="@android:style/Theme.Translucent" /> <!-- (thuan): We don't support customtab now -->

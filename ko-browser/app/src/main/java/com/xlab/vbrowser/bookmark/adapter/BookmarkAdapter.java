@@ -22,9 +22,11 @@ import com.xlab.vbrowser.bookmark.BookmarkActionListener;
 import com.xlab.vbrowser.bookmark.entity.Bookmark;
 import com.xlab.vbrowser.bookmark.service.BookmarkService;
 import com.xlab.vbrowser.favicon.FaviconService;
-import com.xlab.vbrowser.menu.context.HistoryContextMenu;
 import com.xlab.vbrowser.trackers.GaReport;
+import com.xlab.vbrowser.utils.BackgroundTask;
+import com.xlab.vbrowser.utils.IBackgroundTask;
 import com.xlab.vbrowser.utils.UrlUtils;
+import com.xlab.vbrowser.z.Toast;
 import com.xlab.vbrowser.z.module.BookmarkContextMenu;
 
 import java.io.File;
@@ -80,20 +82,37 @@ public class BookmarkAdapter extends RecyclerView.Adapter<BookmarkAdapter.ViewHo
         holder.titleTextView.setText(TextUtils.isEmpty(bookmarkData.bookmark.title) ? "Default Title" : bookmarkData.bookmark.title);
         holder.urlTextView.setText(bookmarkData.bookmark.url);
 
-        String faviconPath = FaviconService.getFavicon(context, bookmarkData.bookmark.url);
+        if(bookmarkData.bookmark.isFolder){
+            holder.urlTextView.setVisibility(View.GONE);
+            holder.iconImageView.setImageDrawable(context.getDrawable(R.drawable.ic_bookmark_folder));
+        }else {
+            holder.urlTextView.setVisibility(View.VISIBLE);
+            String faviconPath = FaviconService.getFavicon(context, bookmarkData.bookmark.url);
 
-        if (faviconPath == null) {
-            holder.iconImageView.setImageDrawable(context.getDrawable(R.drawable.ic_default_image));
+            if (faviconPath == null) {
+                holder.iconImageView.setImageDrawable(context.getDrawable(R.drawable.ic_star_full_s));
+            } else {
+                holder.iconImageView.setImageURI(Uri.fromFile(new File(faviconPath)));
+            }
         }
-        else {
-            holder.iconImageView.setImageURI(Uri.fromFile(new File(faviconPath)));
-        }
-
+        holder.openNewTab.setVisibility(bookmarkData.bookmark.isFolder?View.GONE:View.VISIBLE);
 
         //Set view action
         holder.dataView.setOnClickListener(new View.OnClickListener() {
             @Override
             public  void onClick(View v) {
+                if(bookmarkData.bookmark.isFolder){
+                    mBookmarkActionListener.onOpenFolder(bookmarkData.bookmark);
+                    return;
+                }
+//                mBookmarkActionListener.onOpenBookmark(bookmarkData.bookmark.url);
+//                GaReport.sendReportEvent(context, "ON_OPEN_BOOKMARK_URL", BookmarkAdapter.class.getName());
+            }
+        });
+
+        holder.openNewTab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
                 mBookmarkActionListener.onOpenBookmark(bookmarkData.bookmark.url);
                 GaReport.sendReportEvent(context, "ON_OPEN_BOOKMARK_URL", BookmarkAdapter.class.getName());
             }
@@ -117,26 +136,45 @@ public class BookmarkAdapter extends RecyclerView.Adapter<BookmarkAdapter.ViewHo
 
                     @Override
                     public void onDelete() {
-                        new android.os.Handler().post(new Runnable() {
+                        new BackgroundTask(new IBackgroundTask() {
+                            int res = -1;
                             @Override
                             public void run() {
-                                for (int index = 0; index < mBookmarks.size(); index++) {
-                                    final BookmarkData data = mBookmarks.get(index);
-
-                                    if (data == bookmarkData) {
-                                        //Notify client
-//                                        BookmarkService.notifyClearBookmarkEvent(data.bookmark.url);
-                                        BookmarkService.notifyUrl(context, data.bookmark.url);
-
-                                        mBookmarkActionListener.onRemoveBookmark(data.bookmark);
-                                        mBookmarks.remove(index);
-                                        notifyItemRemoved(index);
-                                        deleteHeaderIfNeeded(data);
-                                        GaReport.sendReportEvent(context, "ON_DELETE_BOOKMARK", BookmarkAdapter.class.getName());
-                                    }
-                                }
+                                res = BookmarkService.countChildren(context, bookmarkData.bookmark.id);
                             }
-                        });
+
+                            @Override
+                            public void onComplete() {
+                                if(res==BookmarkService.ERROR_RESULT){
+                                    Toast.makeText(context, "Delete Error", Toast.LENGTH_SHORT).show();
+                                    return;
+                                }
+                                if(res > 0){
+                                    Toast.makeText(context, "Folder not empty", Toast.LENGTH_SHORT).show();
+                                    return;
+                                }
+                                new android.os.Handler().post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        for (int index = 0; index < mBookmarks.size(); index++) {
+                                            final BookmarkData data = mBookmarks.get(index);
+
+                                            if (data == bookmarkData) {
+                                                //Notify client
+//                                        BookmarkService.notifyClearBookmarkEvent(data.bookmark.url);
+                                                BookmarkService.notifyUrl(context, data.bookmark.url);
+
+                                                mBookmarkActionListener.onRemoveBookmark(data.bookmark);
+                                                mBookmarks.remove(index);
+                                                notifyItemRemoved(index);
+                                                deleteHeaderIfNeeded(data);
+                                                GaReport.sendReportEvent(context, "ON_DELETE_BOOKMARK", BookmarkAdapter.class.getName());
+                                            }
+                                        }
+                                    }
+                                });
+                            }
+                        }).execute();
                     }
 
 
@@ -170,25 +208,27 @@ public class BookmarkAdapter extends RecyclerView.Adapter<BookmarkAdapter.ViewHo
                     @Override
                     public void onEdit() {
                         Bookmark bookmark = bookmarkData.bookmark;
-                        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                        builder.setTitle(bookmark.title);
-                        LinearLayout lila1= new LinearLayout(context);
-                        lila1.setOrientation(LinearLayout.VERTICAL);
-                        final EditText input = new EditText(context);
-                        final EditText input1 = new EditText(context);
-                        lila1.addView(input);
-                        lila1.addView(input1);
-                        input.setText(bookmark.title);
-                        input1.setText(bookmark.url);
-                        builder.setView(lila1);
+                        AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.SDialog);
+                        builder.setTitle("Edit Bookmark").setIcon(R.drawable.ic_star_bookmark_s);
+                        View view = LayoutInflater.from(context).inflate(R.layout.dialog_bookmark_edit, null);
+                        builder.setView(view);
+                        final EditText titleInput = view.findViewById(R.id.title);
+                        final EditText urlInput = view.findViewById(R.id.url);
+                        titleInput.setText(bookmark.title);
+                        urlInput.setText(bookmark.url);
+                        if(bookmark.isFolder){
+                            urlInput.setVisibility(View.GONE);
+                        }
                         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 String prevurl = bookmark.url;
-                                String title = input.getText().toString();
-                                String url = input1.getText().toString();
+                                String title = titleInput.getText().toString();
                                 bookmark.title = title;
-                                bookmark.url = url;
+                                if(!bookmark.isFolder) {
+                                    String url = urlInput.getText().toString();
+                                    bookmark.url = url;
+                                }
                                 BookmarkService.updateBookmarkData(context, bookmark, new Runnable() {
                                     @Override
                                     public void run() {
@@ -215,8 +255,10 @@ public class BookmarkAdapter extends RecyclerView.Adapter<BookmarkAdapter.ViewHo
             }
         });
     }
-
-    public void addBookmark(final Bookmark bookmark) {
+    public void addBookmark(final Bookmark bookmark){
+        addBookmark(bookmark, false);
+    }
+    public void addBookmark(final Bookmark bookmark, boolean isHeader) {
         if (bookmark == null) {
             return;
         }
@@ -227,7 +269,7 @@ public class BookmarkAdapter extends RecyclerView.Adapter<BookmarkAdapter.ViewHo
         String strAccessTime = format.format(accessTime);
 
         //Add time header if needed
-        if (!strAccessTime.equals(mLastAccessTime)) {
+        if (isHeader && !strAccessTime.equals(mLastAccessTime)) {
             final BookmarkData headerData = new BookmarkData();
             headerData.accessTime = strAccessTime;
             headerData.isHeader = true;
@@ -285,6 +327,7 @@ public class BookmarkAdapter extends RecyclerView.Adapter<BookmarkAdapter.ViewHo
         public final TextView titleTextView;
         public final TextView urlTextView;
         public final ImageView iconImageView;
+        public final ImageView openNewTab;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -293,6 +336,7 @@ public class BookmarkAdapter extends RecyclerView.Adapter<BookmarkAdapter.ViewHo
             iconImageView = (ImageView) itemView.findViewById(R.id.iconImageView);
             titleTextView = (TextView) itemView.findViewById(R.id.titleTextView);
             urlTextView = (TextView) itemView.findViewById(R.id.urlTextView);
+            openNewTab = itemView.findViewById(R.id.openNewTab);
         }
 
     }

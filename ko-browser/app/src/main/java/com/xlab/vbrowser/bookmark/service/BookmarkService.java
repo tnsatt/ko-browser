@@ -7,12 +7,15 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.xlab.vbrowser.fragment.BrowserFragment;
@@ -39,6 +42,41 @@ public class BookmarkService {
     private final static NonNullMutableLiveData<String> clearBookmarkEvent = new NonNullMutableLiveData<>("");
     private final static NonNullMutableLiveData<Long> clearAllBookmarksEvent = new NonNullMutableLiveData<>(0l);
 
+    public static Bookmark[] getAllFolders(Context context){
+        BookmarkDb bookmarkDb = BookmarkDb.getInstance(context);
+
+        if (bookmarkDb == null) {
+            return new Bookmark[]{new Bookmark()};
+        }
+        Bookmark[] lst = bookmarkDb.bookmarkDao().getAllFolders();
+        Bookmark[] data = new Bookmark[lst.length+1];
+        data[0] = new Bookmark();
+        for(int i = 0; i<lst.length; i++){
+            data[i+1] = lst[i];
+        }
+        return data;
+    }
+
+    public static Bookmark[] getChildrens(Context context, int parentId){
+        BookmarkDb bookmarkDb = BookmarkDb.getInstance(context);
+
+        if (bookmarkDb == null) {
+            return new Bookmark[0];
+        }
+
+        return bookmarkDb.bookmarkDao().getChildrens(parentId);
+    }
+
+    public static int countChildren(Context context, int parentId) {
+        BookmarkDb bookmarkDb = BookmarkDb.getInstance(context);
+
+        if (bookmarkDb == null) {
+            return ERROR_RESULT;
+        }
+
+        return bookmarkDb.bookmarkDao().countChildren(parentId);
+    }
+
     private static Bookmark[] getBookmarkByUrl(Context context, String url){
         BookmarkDb bookmarkDb = BookmarkDb.getInstance(context);
 
@@ -48,6 +86,7 @@ public class BookmarkService {
 
         return bookmarkDb.bookmarkDao().getBookmarkByUrl(url);
     }
+
     private static int countBookmarkByUrl(Context context, String url) {
         BookmarkDb bookmarkDb = BookmarkDb.getInstance(context);
 
@@ -78,24 +117,24 @@ public class BookmarkService {
         bookmarkDb.bookmarkDao().updateBookmark(bookmark);
     }
 
-    private static void deleteByUrl(Context context, String url) {
+    private static int deleteByUrl(Context context, String url) {
         BookmarkDb bookmarkDb = BookmarkDb.getInstance(context);
 
         if (bookmarkDb == null) {
-            return;
+            return 0;
         }
 
-        bookmarkDb.bookmarkDao().deleteByUrl(url);
+        return bookmarkDb.bookmarkDao().deleteByUrl(url);
     }
 
-    private static void deleteById(Context context, int id) {
+    private static int deleteById(Context context, int id) {
         BookmarkDb bookmarkDb = BookmarkDb.getInstance(context);
 
         if (bookmarkDb == null) {
-            return;
+            return 0;
         }
 
-        bookmarkDb.bookmarkDao().deleteById(id);
+        return bookmarkDb.bookmarkDao().deleteById(id);
     }
 
     public static void clearAll(final Context context) {
@@ -108,14 +147,15 @@ public class BookmarkService {
         bookmarkDb.bookmarkDao().clear();
     }
 
-    public static void deleteBookmark(final Context context, final Bookmark bookmark) {
+    public static int deleteBookmark(final Context context, final Bookmark bookmark) {
         BookmarkDb bookmarkDb = BookmarkDb.getInstance(context);
 
         if (bookmarkDb == null) {
-            return;
+            return 0;
         }
 
-        bookmarkDb.bookmarkDao().deleteBookmarks(bookmark);
+//        bookmarkDb.bookmarkDao().deleteBookmarks(bookmark);
+        return bookmarkDb.bookmarkDao().deleteById(bookmark.id);
     }
 
     public static Bookmark[] loadBookmarks(final Context context, final long lastAccesstime, String queryText, final int limitRecords) {
@@ -234,41 +274,20 @@ public class BookmarkService {
         }).execute();
     }
     private static void showBookmarkDialog(Context context, Bookmark bookmark, ImageView bookmarkView){
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        LinearLayout view = new LinearLayout(context);
-        view.setPadding(20, 20, 20, 20);
-        view.setOrientation(LinearLayout.VERTICAL);
-        EditText title = new EditText(context);
-        EditText url = new EditText(context);
+        AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.SDialog);
+        View view = LayoutInflater.from(context).inflate(R.layout.dialog_bookmark_edit, null);
+        EditText title = view.findViewById(R.id.title);
+        EditText url = view.findViewById(R.id.url);
         title.setText(bookmark.title);
         url.setText(bookmark.url);
-        view.addView(title);
-        view.addView(url);
-        LinearLayout buttons = new LinearLayout(context);
-        buttons.setOrientation(LinearLayout.HORIZONTAL);
-        view.addView(buttons);
-        Button delete = new Button(context);
-        delete.setText("Delete");
-        delete.setBackgroundColor(Color.RED);
-        Button cancel = new Button(context);
-        cancel.setText("Cancel");
-        Button save = new Button(context);
-        save.setText("Save");
-        save.setBackgroundColor(Color.GREEN);
-        TextView temp = new TextView(context);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                0, // width 0dp
-                LinearLayout.LayoutParams.WRAP_CONTENT, // height
-                1.0f // weight
-        );
-        temp.setLayoutParams(params);
-        buttons.addView(delete);
-        buttons.addView(temp);
-        buttons.addView(cancel);
-        buttons.addView(save);
-
+        LinearLayout buttons = view.findViewById(R.id.buttons);
+        buttons.setVisibility(View.VISIBLE);
+        View delete = view.findViewById(R.id.delete);
+        View cancel = view.findViewById(R.id.cancel);
+        View save = view.findViewById(R.id.save);
+        Spinner parents = view.findViewById(R.id.parents);
         builder.setView(view)
-                .setTitle(bookmark.title);
+                .setTitle("Edit Bookmark").setIcon(R.drawable.ic_star_full_s);
         AlertDialog dialog = builder.create();
         dialog.show();
 
@@ -276,7 +295,6 @@ public class BookmarkService {
             @Override
             public void onClick(View view) {
                 dialog.dismiss();
-                updateView(context, bookmark.url, bookmarkView, true);
             }
         });
         delete.setOnClickListener(new View.OnClickListener() {
@@ -308,6 +326,8 @@ public class BookmarkService {
                         String newurl = url.getText().toString();
                         bookmark.title = title.getText().toString();
                         bookmark.url = newurl;
+                        Bookmark parent = (Bookmark) parents.getSelectedItem();
+                        if(parent!=null) bookmark.parentId = parent.id;
                         updateBookmark(context, bookmark);
                     }
 
@@ -323,10 +343,31 @@ public class BookmarkService {
                 }).execute();
             }
         });
+
+        new BackgroundTask(new IBackgroundTask() {
+            Bookmark[] bookmarks;
+            @Override
+            public void run() {
+                bookmarks = getAllFolders(context);
+            }
+
+            @Override
+            public void onComplete() {
+                int pos = -1;
+                for(int i=0; i< bookmarks.length; i++){
+                    if(bookmark.parentId==bookmarks[i].id){
+                        pos = i;
+                        break;
+                    }
+                }
+                parents.setAdapter(createBookmarkAdapter(context, bookmarks));
+                if(pos>=0) parents.setSelection(pos);
+            }
+        }).execute();
     }
     public static void addOrRemoveBookmark2(final Context context, final String title, final String url, final ImageButton bookmarkView) {
         final boolean isAdded = (boolean) bookmarkView.getTag();
-        bookmarkView.setEnabled(false);
+        if(!isAdded) bookmarkView.setEnabled(false);
 
         new BackgroundTask(new IBackgroundTask() {
             long result = - 1;
@@ -395,7 +436,7 @@ public class BookmarkService {
                 if(mResult > 0){
                     addBookmarkEvent.setValue(url);
                 }else{
-                    clearBookmarkEvent.setValue(url);
+                    clearBookmarkEvent.setValue(url==null?"":url);
                 }
             }
         }).execute();
@@ -448,7 +489,7 @@ public class BookmarkService {
             }
         }).execute();
     }
-    public static void insertBookmarkTask(Context context, Bookmark bookmark){
+    public static void goInsertBookmark(Context context, Bookmark bookmark, Runnable run){
         new BackgroundTask(new IBackgroundTask() {
             @Override
             public void run() {
@@ -457,8 +498,16 @@ public class BookmarkService {
 
             @Override
             public void onComplete() {
-
+                if(run!=null) run.run();
             }
         }).execute();
+    }
+    public static void goInsertBookmark(Context context, Bookmark bookmark){
+        goInsertBookmark(context, bookmark, null);
+    }
+
+    public static ArrayAdapter<Bookmark> createBookmarkAdapter(Context context, Bookmark[] data){
+        ArrayAdapter<Bookmark> lst = new ArrayAdapter<Bookmark>(context, R.layout.support_simple_spinner_dropdown_item, data);
+        return lst;
     }
 }

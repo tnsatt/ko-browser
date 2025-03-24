@@ -21,14 +21,14 @@ public interface BookmarkDao {
     @Update(onConflict = OnConflictStrategy.REPLACE)
     public void updateBookmark(Bookmark bookmark);
 
-    @Delete
-    public void deleteBookmarks(Bookmark... bookmarks);
+//    @Delete
+//    public void deleteBookmarks(Bookmark... bookmarks);
 
-    @Query("DELETE FROM bookmark where id=(SELECT id FROM bookmark WHERE url = :url ORDER BY id DESC LIMIT 1)")
-    public void deleteByUrl(String url);
+    @Query("DELETE FROM bookmark where id=(SELECT id FROM bookmark WHERE url = :url ORDER BY id DESC LIMIT 1) and not exists(SELECT 1 FROM BOOKMARK b WHERE b.parentId=bookmark.id)")
+    public int deleteByUrl(String url);
 
-    @Query("DELETE FROM bookmark where id = :id")
-    public void deleteById(int id);
+    @Query("DELETE FROM bookmark where id = :id and not exists(SELECT 1 FROM BOOKMARK b WHERE b.parentId=bookmark.id)")
+    public int deleteById(int id);
 
     @Query("DELETE FROM bookmark")
     public void clear();
@@ -45,12 +45,21 @@ public interface BookmarkDao {
     @Query("SELECT * FROM bookmark order by id desc limit :limitRecords")
     public Bookmark[] loadBookmarks(int limitRecords);
 
-    @Query("SELECT * FROM bookmark where accessTime < :lastAccessTime order by id desc limit :limitRecords")
+    @Query("SELECT * FROM bookmark where accessTime < :lastAccessTime order by isFolder desc, id desc limit :limitRecords")
     public Bookmark[] loadBookmarks(long lastAccessTime, int limitRecords);
 
-    @Query("SELECT * FROM bookmark where accessTime < :lastAccessTime and (url like :queryText or title like :queryText) order by id desc limit :limitRecords")
+    @Query("SELECT * FROM bookmark where accessTime < :lastAccessTime and (url like :queryText or title like :queryText) order by isFolder desc, id desc limit :limitRecords")
     public Bookmark[] loadBookmarks(long lastAccessTime, String queryText, int limitRecords);
 
     @Query("SELECT count(url) FROM bookmark where url = :url")
     public int countBookmarkByUrl(String url);
+
+    @Query("SELECT * FROM bookmark where url is null order by updateAt desc")
+    public Bookmark[] getAllFolders();
+
+    @Query("SELECT * FROM bookmark where parentId=:parentId order by isFolder desc, id desc")
+    public Bookmark[] getChildrens(int parentId);
+
+    @Query("SELECT count(*) FROM bookmark where parentId=:parentId")
+    int countChildren(int parentId);
 }

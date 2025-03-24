@@ -31,12 +31,13 @@
 
         <ImageView
             android:id="@+id/iconImageView"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
             android:src="@drawable/filetype_file"
             android:scaleType="fitCenter"/>
 
         <LinearLayout
+            android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -63,6 +64,19 @@
                 android:lines="1"
                 android:ellipsize="end"
                 tools:text="Url" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:paddingRight="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+            <ImageView
+                android:id="@+id/openNewTab"
+                android:layout_gravity="center"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_open_in_new"
+                android:scaleType="fitCenter"/>
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

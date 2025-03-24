@@ -12,4 +12,6 @@ public interface BookmarkActionListener {
     void onOpenBookmark(String url);
 
     void onOpenBookmarkInNewTab(String url);
+
+    void onOpenFolder(Bookmark bookmark);
 }
