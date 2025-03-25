@@ -2,7 +2,7 @@ package com.xlab.vbrowser.z.module;
 
 
 import android.app.Activity;
-import com.xlab.vbrowser.z.Toast;
+import com.xlab.vbrowser.z.utils.Toast;
 
 public class Back {
     public static final long interval = 500;

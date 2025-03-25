@@ -116,4 +116,7 @@
     <color name="color_blocking_menu">#fdfffd</color>
 
     <color name="yellow">#FFA400</color>
+
+    <color name="highlight">#33000000</color>
+    <color name="transparent">#00000000</color>
 </resources>

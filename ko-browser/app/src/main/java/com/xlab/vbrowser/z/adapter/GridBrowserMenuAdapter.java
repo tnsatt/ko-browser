@@ -3,7 +3,6 @@ package com.xlab.vbrowser.z.adapter;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
@@ -14,18 +13,12 @@ import android.view.ViewGroup;
 import com.xlab.vbrowser.R;
 import com.xlab.vbrowser.customtabs.CustomTabConfig;
 import com.xlab.vbrowser.fragment.BrowserFragment;
-import com.xlab.vbrowser.menu.browser.BlockingItemViewHolder;
-import com.xlab.vbrowser.menu.browser.BrowserMenu;
 import com.xlab.vbrowser.menu.browser.BrowserMenuViewHolder;
 import com.xlab.vbrowser.menu.browser.NavigationItemViewHolder;
-import com.xlab.vbrowser.session.Session;
-import com.xlab.vbrowser.session.SessionManager;
-import com.xlab.vbrowser.utils.Settings;
 import com.xlab.vbrowser.z.fragment.menu.GridBrowserMenu;
-import com.xlab.vbrowser.z.module.Menu;
+import com.xlab.vbrowser.z.menu.Menu;
 
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
 import java.util.List;
 
 public class GridBrowserMenuAdapter extends RecyclerView.Adapter<BrowserMenuViewHolder>  {

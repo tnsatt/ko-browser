@@ -1,11 +1,9 @@
-package com.xlab.vbrowser.z.module;
+package com.xlab.vbrowser.z.ad;
 
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
-import com.xlab.vbrowser.z.Toast;
-
-import com.novacloud.data.adblock.EasyListRuleSet;
+import com.xlab.vbrowser.z.utils.Toast;
 
 public class Adblock {
     public static void init(Context context){

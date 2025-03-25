@@ -1,4 +1,4 @@
-package com.xlab.vbrowser.z;
+package com.xlab.vbrowser.z.utils;
 
 import android.content.Context;
 import android.graphics.PorterDuff;

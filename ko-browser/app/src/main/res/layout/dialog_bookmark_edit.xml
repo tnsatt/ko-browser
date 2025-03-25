@@ -2,7 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@drawable/dialog_rounded"
+    android:paddingHorizontal="16dp"
+    android:paddingBottom="14dp">
 
     <EditText
         android:id="@+id/title"
@@ -69,8 +72,9 @@
         <Button
             android:id="@+id/save"
             android:text="Save"
-            android:textColor="@color/colorAccent"
-            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:textColor="@color/colorTextActive"
+            android:backgroundTint="@color/colorAccent"
+            android:background="@drawable/button_round"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
     </LinearLayout>

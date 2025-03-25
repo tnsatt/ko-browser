@@ -164,4 +164,15 @@
         android:title="@string/preference_language"
         android:defaultValue=""/>
 
+    <PreferenceCategory
+        android:title="Clean">
+        <Preference
+            android:layout="@layout/focus_preference"
+            android:title="Reset"
+            android:key="reset_setting"/>
+        <Preference
+            android:layout="@layout/focus_preference"
+            android:title="Clean"
+            android:key="clean_browser"/>
+    </PreferenceCategory>
 </PreferenceScreen>

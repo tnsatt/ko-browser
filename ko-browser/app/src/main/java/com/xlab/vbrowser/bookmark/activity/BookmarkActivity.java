@@ -32,7 +32,7 @@ import com.xlab.vbrowser.utils.BackgroundTask;
 import com.xlab.vbrowser.utils.IBackgroundTask;
 import com.xlab.vbrowser.utils.UrlUtils;
 import com.xlab.vbrowser.widget.EndlessRecyclerViewScrollListener;
-import com.xlab.vbrowser.z.Toast;
+import com.xlab.vbrowser.z.utils.Toast;
 
 import java.util.ArrayList;
 import java.util.List;

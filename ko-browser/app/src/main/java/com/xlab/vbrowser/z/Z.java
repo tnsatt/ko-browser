@@ -7,18 +7,11 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
-import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
-import android.text.Layout;
 import android.util.DisplayMetrics;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import com.xlab.vbrowser.z.Toast;
 
 import com.xlab.vbrowser.R;
 import com.xlab.vbrowser.activity.MainActivity;

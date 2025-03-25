@@ -1,4 +1,4 @@
-package com.xlab.vbrowser.z.module;
+package com.xlab.vbrowser.z.ad;
 
 import com.novacloud.data.adblock.Config;
 

@@ -31,8 +31,9 @@ import com.xlab.vbrowser.search.RadioSearchEngineListPreference;
 import com.xlab.vbrowser.z.ZColor;
 import com.xlab.vbrowser.z.Z;
 import com.xlab.vbrowser.z.activity.AdblockActivity;
-import com.xlab.vbrowser.z.module.AdblockRuleSet;
-import com.xlab.vbrowser.z.module.ZEasyListRuleSet;
+import com.xlab.vbrowser.z.ad.AdblockRuleSet;
+import com.xlab.vbrowser.z.module.Clean;
+import com.xlab.vbrowser.z.ad.ZEasyListRuleSet;
 
 import java.util.Locale;
 import java.util.Set;
@@ -172,6 +173,10 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
             ZColor.showColorPicker(getActivity());
         } else if(preference.getKey().equals("reset_color")){
             ZColor.confirmClearColor(getActivity());
+        } else if(preference.getKey().equals("reset_setting")){
+            Clean.confirmReset(getActivity());
+        } else if(preference.getKey().equals("clean_browser")){
+            Clean.confirmClean(getActivity());
         }
 
         return super.onPreferenceTreeClick(preferenceScreen, preference);

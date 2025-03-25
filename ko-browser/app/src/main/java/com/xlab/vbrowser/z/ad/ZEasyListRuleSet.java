@@ -1,7 +1,6 @@
-package com.xlab.vbrowser.z.module;
+package com.xlab.vbrowser.z.ad;
 
 import com.novacloud.data.adblock.Config;
-import com.novacloud.data.adblock.EasyListRuleSet;
 import com.novacloud.data.adblock.RuleSet;
 import com.novacloud.data.adblock.cache.LocalCache;
 import com.novacloud.data.adblock.io.SerializedFile;
@@ -22,8 +21,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ConcurrentSkipListSet;

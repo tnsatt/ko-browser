@@ -18,7 +18,7 @@ import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.ImageButton;
-import com.xlab.vbrowser.z.Toast;
+import com.xlab.vbrowser.z.utils.Toast;
 
 import com.xlab.vbrowser.session.Source;
 import com.xlab.vbrowser.trackers.GaReport;

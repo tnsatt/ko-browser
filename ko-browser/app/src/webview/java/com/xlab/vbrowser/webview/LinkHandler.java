@@ -37,12 +37,12 @@ import com.xlab.vbrowser.web.IWebView;
             case WebView.HitTestResult.SRC_ANCHOR_TYPE:
                 final String linkURL = hitTestResult.getExtra();
                 callback.onLongPress(new IWebView.HitTarget(true, linkURL, false, null));
-                return true;
+                return false;
 
             case WebView.HitTestResult.IMAGE_TYPE:
                 final String imageURL = hitTestResult.getExtra();
                 callback.onLongPress(new IWebView.HitTarget(false, null, true, imageURL));
-                return true;
+                return false;
 
             case WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE:
                 // hitTestResult.getExtra() contains only the image URL, and not the link
@@ -67,7 +67,7 @@ import com.xlab.vbrowser.web.IWebView;
                 });
 
                 webView.requestFocusNodeHref(message);
-                return true;
+                return false;
 
             default:
                 return false;

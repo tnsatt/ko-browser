@@ -2,8 +2,10 @@ package com.xlab.vbrowser.utils;
 
 public class QuickDialWebsites {
     public static String [][] Sites = new String[][] {
-            {"Facebook","https://facebook.com"},
-            {"Youtube","https://youtube.com"},
+            {"Facebook","https://www.facebook.com"},
+            {"Youtube","https://www.youtube.com"},
+            {"Google","https://www.google.com"},
+            {"Gmail","https://www.gmail.com"},
             {"Wikipedia","https://wikipedia.org"},
             {"Amazon","https://amazon.com"},
             {"Reddit", "https://reddit.com"},

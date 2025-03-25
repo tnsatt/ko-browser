@@ -1,7 +1,9 @@
 package com.xlab.vbrowser.downloadmanagers;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -11,8 +13,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.xlab.vbrowser.R;
 import com.xlab.vbrowser.UpApplication;
@@ -27,9 +31,14 @@ import com.tonyodev.fetch2.Fetch;
 import com.tonyodev.fetch2.FetchListener;
 import com.tonyodev.fetch2.Func;
 import com.tonyodev.fetch2.util.FileTypeValue;
+import com.xlab.vbrowser.z.utils.Toast;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -385,8 +394,7 @@ public class DownloadManagerActivity extends LocaleAwareAppCompatActivity implem
 
         @Override
         public void onRemoved(@NotNull Download download) {
-            fileAdapter.update(download, UNKNOWN_REMAINING_TIME, UNKNOWN_DOWNLOADED_BYTES_PER_SECOND);
-            onRemoveDownload(download.getId());
+            openDeleteDialog(download);
         }
 
         @Override
@@ -396,6 +404,60 @@ public class DownloadManagerActivity extends LocaleAwareAppCompatActivity implem
         }
     };
 
+    public void openDeleteDialog(Download download){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Confirm Delete?");
+        View view = getLayoutInflater().inflate(R.layout.dialog_delete_download, null);
+        TextView message = view.findViewById(R.id.message);
+        CheckBox checkBox = view.findViewById(R.id.deleteFileCheckbox);
+        message.setText("Remove "+download.getFileName()+"?");
+        builder.setView(view)
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                })
+                .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        fileAdapter.update(download, UNKNOWN_REMAINING_TIME, UNKNOWN_DOWNLOADED_BYTES_PER_SECOND);
+                        onRemoveDownload(download.getId());
+                        if(checkBox.isChecked()){
+                            Boolean res = deleteFile(download);
+                            if(res){
+                                Toast.makeText(getBaseContext(), download.getFileName()+" was deleted", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+                });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private boolean deleteFile(Download download){
+        if(download.getFile()==null) return false;
+        File file = new File(download.getFile());
+        if(!file.exists()) return false;
+        if(!file.isFile()) return false;
+        if(file.length() != download.getDownloaded()) return false;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            try {
+                BasicFileAttributes attr = Files.readAttributes(file.toPath(), BasicFileAttributes.class);
+                long createdAt = attr.creationTime().toMillis();
+                if(createdAt != download.getCreated()) return false;
+            } catch (IOException e) {
+                return false;
+            }
+        }else{
+            return false;
+        }
+        try{
+            file.delete();
+        }catch (Exception e){}
+        return true;
+    }
+    
     @Override
     public void onPauseDownload(int id) {
         if (fetch == null) {

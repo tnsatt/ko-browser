@@ -7,12 +7,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import com.xlab.vbrowser.z.Toast;
+import com.xlab.vbrowser.z.utils.Toast;
 
 import com.xlab.vbrowser.R;
 import com.xlab.vbrowser.z.fragment.adblock.placeholder.AdblockPlaceholder;
-import com.xlab.vbrowser.z.module.AdblockRuleSet;
-import com.xlab.vbrowser.z.module.ZEasyListRuleSet;
+import com.xlab.vbrowser.z.ad.AdblockRuleSet;
+import com.xlab.vbrowser.z.ad.ZEasyListRuleSet;
 
 import java.io.File;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.xlab.vbrowser.z.module;
+package com.xlab.vbrowser.z.menu;
 
 import android.content.Context;
 import android.content.res.Resources;

@@ -10,11 +10,8 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.app.Activity.RESULT_OK
 import android.app.Dialog
-import android.content.ActivityNotFoundException
-import android.content.Intent
-import android.graphics.Color
+import android.content.*
 import android.graphics.Typeface
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.speech.RecognizerIntent
 import android.support.v7.widget.LinearLayoutManager
@@ -48,6 +45,7 @@ import com.xlab.vbrowser.session.Source
 import com.xlab.vbrowser.trackers.GaReport
 import com.xlab.vbrowser.utils.*
 import com.xlab.vbrowser.widget.InlineAutocompleteEditText
+import com.xlab.vbrowser.z.utils.Toast
 import kotlinx.android.synthetic.main.fragment_urlinput.*
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.AppSettingsDialog
@@ -165,7 +163,7 @@ class UrlInputFragment : LocaleAwareFragment(), View.OnClickListener, InlineAuto
             inflater.inflate(R.layout.fragment_urlinput, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        listOf(dismissView, clearView, searchView, voiceView, closeView, expandInput).forEach { it.setOnClickListener(this) }
+        listOf(dismissView, clearView, searchView, voiceView, closeView, expandInput, copyView).forEach { it.setOnClickListener(this) }
 
         urlView.setOnFilterListener(this)
         urlView.imeOptions = urlView.imeOptions or ViewUtils.IME_FLAG_NO_PERSONALIZED_LEARNING
@@ -330,8 +328,19 @@ class UrlInputFragment : LocaleAwareFragment(), View.OnClickListener, InlineAuto
                 expandInput();
             }
 
+            R.id.copyView -> {
+                copy();
+            }
+
             else -> throw IllegalStateException("Unhandled view in onClick()")
         }
+    }
+
+    private fun copy(){
+        val clipboard = context?.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        val clip = ClipData.newPlainText("url", urlView.text)
+        clipboard.setPrimaryClip(clip)
+        Toast.makeText(context, "Copied to clipboard", Toast.LENGTH_SHORT).show()
     }
 
     private fun transferInput(editText: EditText, focus: Boolean){
@@ -691,7 +700,7 @@ class UrlInputFragment : LocaleAwareFragment(), View.OnClickListener, InlineAuto
 
         if (searchText.trim { it <= ' ' }.isEmpty()) {
             clearView.visibility = View.GONE
-            searchView.visibility = View.GONE
+            searchBar.visibility = View.GONE
             searchSeperator.visibility = View.GONE
 
             //Load the latest histories
@@ -729,7 +738,7 @@ class UrlInputFragment : LocaleAwareFragment(), View.OnClickListener, InlineAuto
             content.setSpan(StyleSpan(Typeface.BOLD), start, start + searchText.length, 0)
 
             searchView.text = content
-            searchView.visibility = View.VISIBLE
+            searchBar.visibility = View.VISIBLE
             searchSeperator.visibility = View.VISIBLE
 
             //Load search suggestions

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Selected item background -->
+    <item android:drawable="@drawable/background_highlight" android:state_selected="true"/>
+
+<!--    &lt;!&ndash; Pressed state &ndash;&gt;-->
+    <item android:drawable="@drawable/background_highlight" android:state_pressed="true"/>
+
+<!--    &lt;!&ndash; Default background &ndash;&gt;-->
+    <item android:drawable="@android:color/transparent"/>
+</selector>

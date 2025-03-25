@@ -97,4 +97,6 @@
 
     <!-- Floating ads action button background -->
     <color name="semi_transparent_color">#40000066</color>
+
+    <color name="highlight">#33ffffff</color>
 </resources>

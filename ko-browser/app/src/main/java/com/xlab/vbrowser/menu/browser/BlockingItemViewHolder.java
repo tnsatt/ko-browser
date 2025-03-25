@@ -12,7 +12,6 @@ import com.xlab.vbrowser.R;
 import com.xlab.vbrowser.trackers.GaReport;
 import com.xlab.vbrowser.utils.ThreadUtils;
 import com.xlab.vbrowser.fragment.BrowserFragment;
-import com.xlab.vbrowser.z.module.Adblock;
 
 /* package */ public class BlockingItemViewHolder extends BrowserMenuViewHolder implements CompoundButton.OnCheckedChangeListener {
     /* package */ static final int LAYOUT_ID = com.xlab.vbrowser.R.layout.menu_blocking_switch;

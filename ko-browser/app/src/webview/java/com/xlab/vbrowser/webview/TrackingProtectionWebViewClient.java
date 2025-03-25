@@ -15,21 +15,13 @@ import android.webkit.WebViewClient;
 import com.novacloud.data.adblock.RuleSet;
 import com.xlab.vbrowser.webview.matcher.UrlMatcher;
 import com.xlab.vbrowser.web.IWebView;
-import com.xlab.vbrowser.z.module.AdblockRuleSet;
-
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
+import com.xlab.vbrowser.z.ad.AdblockRuleSet;
 
 import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.URL;
-import java.net.URLConnection;
-import java.nio.CharBuffer;
 import java.nio.charset.StandardCharsets;
-import java.util.Map;
 
 public class TrackingProtectionWebViewClient extends WebViewClient {
     private static volatile UrlMatcher MATCHER;

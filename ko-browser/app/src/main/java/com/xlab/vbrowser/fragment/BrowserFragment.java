@@ -51,7 +51,7 @@ import android.widget.TextSwitcher;
 import android.widget.TextView;
 
 import com.xlab.vbrowser.z.ZColor;
-import com.xlab.vbrowser.z.Toast;
+import com.xlab.vbrowser.z.utils.Toast;
 import com.xlab.vbrowser.R;
 import com.xlab.vbrowser.UpApplication;
 import com.xlab.vbrowser.activity.MainActivity;

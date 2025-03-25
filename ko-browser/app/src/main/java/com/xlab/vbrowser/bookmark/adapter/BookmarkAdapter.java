@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.xlab.vbrowser.R;
@@ -26,8 +25,8 @@ import com.xlab.vbrowser.trackers.GaReport;
 import com.xlab.vbrowser.utils.BackgroundTask;
 import com.xlab.vbrowser.utils.IBackgroundTask;
 import com.xlab.vbrowser.utils.UrlUtils;
-import com.xlab.vbrowser.z.Toast;
-import com.xlab.vbrowser.z.module.BookmarkContextMenu;
+import com.xlab.vbrowser.z.utils.Toast;
+import com.xlab.vbrowser.z.menu.BookmarkContextMenu;
 
 import java.io.File;
 import java.text.DateFormat;
@@ -82,9 +81,11 @@ public class BookmarkAdapter extends RecyclerView.Adapter<BookmarkAdapter.ViewHo
         holder.titleTextView.setText(TextUtils.isEmpty(bookmarkData.bookmark.title) ? "Default Title" : bookmarkData.bookmark.title);
         holder.urlTextView.setText(bookmarkData.bookmark.url);
 
+        holder.view.setSelected(bookmarkData.isSelected);
+
         if(bookmarkData.bookmark.isFolder){
             holder.urlTextView.setVisibility(View.GONE);
-            holder.iconImageView.setImageDrawable(context.getDrawable(R.drawable.ic_bookmark_folder));
+            holder.iconImageView.setImageDrawable(context.getDrawable(R.drawable.ic_folder_with_files_s));
         }else {
             holder.urlTextView.setVisibility(View.VISIBLE);
             String faviconPath = FaviconService.getFavicon(context, bookmarkData.bookmark.url);
@@ -107,6 +108,12 @@ public class BookmarkAdapter extends RecyclerView.Adapter<BookmarkAdapter.ViewHo
                 }
 //                mBookmarkActionListener.onOpenBookmark(bookmarkData.bookmark.url);
 //                GaReport.sendReportEvent(context, "ON_OPEN_BOOKMARK_URL", BookmarkAdapter.class.getName());
+
+                for(BookmarkData bm: mBookmarks){
+                    bm.isSelected = false;
+                }
+                bookmarkData.isSelected = true;
+                notifyDataSetChanged();
             }
         });
 
@@ -321,7 +328,7 @@ public class BookmarkAdapter extends RecyclerView.Adapter<BookmarkAdapter.ViewHo
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-
+        public final View view;
         public final TextView headerView;
         public final View dataView;
         public final TextView titleTextView;
@@ -331,6 +338,7 @@ public class BookmarkAdapter extends RecyclerView.Adapter<BookmarkAdapter.ViewHo
 
         ViewHolder(View itemView) {
             super(itemView);
+            view = itemView;
             headerView = (TextView)itemView.findViewById(R.id.headerView);
             dataView = itemView.findViewById(R.id.dataView);
             iconImageView = (ImageView) itemView.findViewById(R.id.iconImageView);
@@ -345,6 +353,7 @@ public class BookmarkAdapter extends RecyclerView.Adapter<BookmarkAdapter.ViewHo
         public boolean isHeader;
         public String accessTime;
         public Bookmark bookmark;
+        public boolean isSelected = false;
     }
 
 }

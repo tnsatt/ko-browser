@@ -19,6 +19,7 @@ import com.xlab.vbrowser.z.adapter.ColorAdapter;
 import com.xlab.vbrowser.z.items.ColorItem;
 import com.xlab.vbrowser.z.module.ThemeColors;
 import com.xlab.vbrowser.z.module.ZTheme;
+import com.xlab.vbrowser.z.utils.Toast;
 
 import org.xmlpull.v1.XmlPullParser;
 

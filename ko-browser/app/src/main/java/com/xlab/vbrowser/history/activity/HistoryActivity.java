@@ -294,7 +294,8 @@ public class HistoryActivity extends LocaleAwareAppCompatActivity
             return;
         }
 
-        SessionManager.getInstance().openUrl(url);
+//        SessionManager.getInstance().openUrl(url);
+        SessionManager.getInstance().createSession(Source.HISTORY, url);
 
         finish();
     }

@@ -7,13 +7,11 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import com.xlab.vbrowser.z.Toast;
+import com.xlab.vbrowser.z.utils.Toast;
 
 import com.android.y.dom.Drag;
 import com.xlab.vbrowser.R;
 import com.xlab.vbrowser.z.Z;
-
-import edu.umd.cs.findbugs.ba.Frame;
 
 public class DragView {
     public Activity context;
