@@ -97,12 +97,14 @@
         <activity
             android:name=".activity.SettingsActivity"
             android:configChanges="locale"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="adjustResize"
+            android:theme="@style/AppTheme"/>
         <activity
             android:name=".downloadmanagers.DownloadManagerActivity"
             android:configChanges="keyboard|keyboardHidden|mcc|mnc|orientation|screenSize|locale|layoutDirection|smallestScreenSize|screenLayout"
             android:parentActivityName=".activity.MainActivity"
-            android:windowSoftInputMode="adjustResize">
+            android:windowSoftInputMode="adjustResize"
+            android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.xlab.vbrowser.activity.MainActivity" />
@@ -110,7 +112,8 @@
         <activity
             android:name=".history.activity.HistoryActivity"
             android:configChanges="keyboard|keyboardHidden|mcc|mnc|orientation|screenSize|locale|layoutDirection|smallestScreenSize|screenLayout"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="adjustResize"
+            android:theme="@style/AppTheme"/>
         <activity
             android:name=".bookmark.activity.BookmarkActivity"
             android:configChanges="keyboard|keyboardHidden|mcc|mnc|orientation|screenSize|locale|layoutDirection|smallestScreenSize|screenLayout"

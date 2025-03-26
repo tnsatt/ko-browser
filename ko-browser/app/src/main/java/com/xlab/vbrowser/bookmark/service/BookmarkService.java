@@ -314,6 +314,11 @@ public class BookmarkService {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String newurl = url.getText().toString().trim();
+                if(newurl.isEmpty()){
+                    url.setError("Require a URL");
+                    return;
+                }
                 dialog.dismiss();
                 new BackgroundTask(new IBackgroundTask() {
                     private String prevurl = null;

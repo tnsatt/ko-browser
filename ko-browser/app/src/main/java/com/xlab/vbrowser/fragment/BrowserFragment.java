@@ -502,6 +502,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         SessionManager.getInstance().getOpenUrlEvent().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String newUrl) {
+                if(getSession()!=SessionManager.getInstance().getCurrentSession()) return;
                 if (!getUrl().equals(newUrl) && !TextUtils.isEmpty(newUrl) && UrlUtils.isHttpOrHttps(newUrl)) {
                     loadUrl(newUrl);
                 }
@@ -1937,7 +1938,13 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
 
         @Override
         public void onCompleted(@NotNull com.tonyodev.fetch2.Download download) {
-            ViewUtils.showSnackbarForDownloadingCompletely(getView(), download.getFileName(), download.getFile());
+//            ViewUtils.showSnackbarForDownloadingCompletely(getView(), download.getFileName(), download.getFile());
+            ViewUtils.showSnackbarForDownloadingCompletely(getView(), download.getFileName(), new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ((MainActivity)getActivity()).openDownloadManager();
+                }
+            });
         }
 
         @Override

@@ -120,7 +120,7 @@ public class BookmarkAdapter extends RecyclerView.Adapter<BookmarkAdapter.ViewHo
         holder.openNewTab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mBookmarkActionListener.onOpenBookmark(bookmarkData.bookmark.url);
+                mBookmarkActionListener.onOpenBookmarkInNewTab(bookmarkData.bookmark.url);
                 GaReport.sendReportEvent(context, "ON_OPEN_BOOKMARK_URL", BookmarkAdapter.class.getName());
             }
         });
@@ -132,7 +132,7 @@ public class BookmarkAdapter extends RecyclerView.Adapter<BookmarkAdapter.ViewHo
                 BookmarkContextMenu.show(context, bookmarkData.bookmark.url,  new BookmarkContextMenu.IActionMenu() {
                     @Override
                     public void onOpen() {
-                        holder.dataView.performClick();
+                        mBookmarkActionListener.onOpenBookmark(bookmarkData.bookmark.url);
                     }
 
                     @Override

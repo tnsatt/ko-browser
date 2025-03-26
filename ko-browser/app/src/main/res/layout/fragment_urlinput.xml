@@ -175,14 +175,14 @@
                                 android:drawablePadding="16dp"
                                 android:drawableStart="@drawable/ic_search_white"
                                 android:gravity="center_vertical"
-                                android:padding="16dp"
+                                android:padding="14dp"
                                 android:lines="1"
                                 android:text="Hello World!"
                                 android:ellipsize="end"
                                 android:textSize="14sp"
                                 android:textColor="@color/searchHintTextColor"
                                 android:background="?android:attr/selectableItemBackground"
-                                android:paddingBottom="10dp"/>
+                                />
                             <ImageButton
                                 android:id="@+id/copyView"
                                 android:layout_width="40dp"
@@ -194,6 +194,27 @@
                                 android:layout_gravity="center_vertical|end"
                                 android:background="?android:attr/selectableItemBackgroundBorderless"
                                 style="?android:attr/borderlessButtonStyle" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:id="@+id/pasteBar"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal">
+                            <TextView
+                                android:id="@+id/pasteView"
+                                android:layout_weight="1"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:drawablePadding="16dp"
+                                android:drawableStart="@drawable/ic_content_paste"
+                                android:gravity="center_vertical"
+                                android:padding="14dp"
+                                android:lines="1"
+                                android:text=""
+                                android:ellipsize="end"
+                                android:textSize="14sp"
+                                android:textColor="@color/searchHintTextColor"
+                                android:background="?android:attr/selectableItemBackground" />
                         </LinearLayout>
                             <View
                                 android:id="@+id/searchSeperator"

@@ -137,6 +137,9 @@ class UrlInputFragment : LocaleAwareFragment(), View.OnClickListener, InlineAuto
     private val isOverlay: Boolean
         get() = session != null
 
+    val listener = ClipboardManager.OnPrimaryClipChangedListener {
+        updateClip()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -163,7 +166,7 @@ class UrlInputFragment : LocaleAwareFragment(), View.OnClickListener, InlineAuto
             inflater.inflate(R.layout.fragment_urlinput, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        listOf(dismissView, clearView, searchView, voiceView, closeView, expandInput, copyView).forEach { it.setOnClickListener(this) }
+        listOf(dismissView, clearView, searchView, voiceView, closeView, expandInput, copyView, pasteView).forEach { it.setOnClickListener(this) }
 
         urlView.setOnFilterListener(this)
         urlView.imeOptions = urlView.imeOptions or ViewUtils.IME_FLAG_NO_PERSONALIZED_LEARNING
@@ -256,6 +259,44 @@ class UrlInputFragment : LocaleAwareFragment(), View.OnClickListener, InlineAuto
                 clearView.visibility = View.VISIBLE
             }
         }
+        updateClip()
+        registerClipboardListener()
+    }
+
+    private fun updateClip(){
+        val text = getClip()
+        if (text == null || text.trim().isEmpty()){
+            pasteBar.visibility = View.GONE;
+        }else{
+            pasteBar.visibility = View.VISIBLE;
+            pasteView.text = "Paste: "+text
+        }
+    }
+
+    fun registerClipboardListener() {
+        val clipboard = context?.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        clipboard.addPrimaryClipChangedListener(listener)
+    }
+
+    fun unregisterClipboardListener(){
+        val clipboard = context?.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        clipboard.removePrimaryClipChangedListener(listener)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        updateClip()
+        registerClipboardListener()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        unregisterClipboardListener()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        unregisterClipboardListener()
     }
 
     override fun applyLocale() {
@@ -332,8 +373,28 @@ class UrlInputFragment : LocaleAwareFragment(), View.OnClickListener, InlineAuto
                 copy();
             }
 
+            R.id.pasteView -> {
+                pasteClipboard()
+            }
+
             else -> throw IllegalStateException("Unhandled view in onClick()")
         }
+    }
+
+    private fun pasteClipboard(){
+        val text = getClip()
+        if (text==null) return
+        urlView.setText(text ?: "")
+        urlView.setSelection(urlView.text?.length?:0)
+    }
+
+    private fun getClip(): String? {
+        val clipboard = context?.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        val clipData: ClipData? = clipboard.primaryClip
+        if (clipData != null && clipData.itemCount > 0) {
+            return clipData.getItemAt(0).text?.toString()
+        }
+        return null
     }
 
     private fun copy(){
@@ -574,6 +635,7 @@ class UrlInputFragment : LocaleAwareFragment(), View.OnClickListener, InlineAuto
     }
 
     private fun dismiss() {
+        unregisterClipboardListener()
         // This method is called from animation callbacks. In the short time frame between the animation
         // starting and ending the activity can be paused. In this case this code can throw an
         // IllegalStateException because we already saved the state (of the activity / fragment) before

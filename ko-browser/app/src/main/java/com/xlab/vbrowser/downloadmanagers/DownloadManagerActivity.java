@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.tonyodev.fetch2.Func2;
 import com.xlab.vbrowser.R;
 import com.xlab.vbrowser.UpApplication;
 import com.xlab.vbrowser.downloadmanagers.adapter.FileTypeAdapter;
@@ -34,6 +35,7 @@ import com.tonyodev.fetch2.util.FileTypeValue;
 import com.xlab.vbrowser.z.utils.Toast;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.IOException;
@@ -394,7 +396,8 @@ public class DownloadManagerActivity extends LocaleAwareAppCompatActivity implem
 
         @Override
         public void onRemoved(@NotNull Download download) {
-            openDeleteDialog(download);
+            fileAdapter.update(download, UNKNOWN_REMAINING_TIME, UNKNOWN_DOWNLOADED_BYTES_PER_SECOND);
+            onRemoveDownload(download.getId());
         }
 
         @Override
@@ -403,9 +406,17 @@ public class DownloadManagerActivity extends LocaleAwareAppCompatActivity implem
             onRemoveDownload(download.getId());
         }
     };
-
+    public void openDeleteDialog(int id){
+        fetch.getDownload(id, new Func2<Download>() {
+            @Override
+            public void call(@Nullable Download download) {
+                openDeleteDialog(download);
+            }
+        });
+    }
     public void openDeleteDialog(Download download){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        if(download == null) return;
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.SDialog);
         builder.setTitle("Confirm Delete?");
         View view = getLayoutInflater().inflate(R.layout.dialog_delete_download, null);
         TextView message = view.findViewById(R.id.message);
@@ -421,12 +432,16 @@ public class DownloadManagerActivity extends LocaleAwareAppCompatActivity implem
                 .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        fileAdapter.update(download, UNKNOWN_REMAINING_TIME, UNKNOWN_DOWNLOADED_BYTES_PER_SECOND);
-                        onRemoveDownload(download.getId());
+                        fetch.remove(download.getId());
                         if(checkBox.isChecked()){
-                            Boolean res = deleteFile(download);
-                            if(res){
-                                Toast.makeText(getBaseContext(), download.getFileName()+" was deleted", Toast.LENGTH_SHORT).show();
+                            try {
+                                Boolean res = deleteFile(download);
+                                if(res){
+                                    Toast.makeText(getBaseContext(), download.getFileName()+" was deleted", Toast.LENGTH_SHORT).show();
+                                }
+                            }catch (Exception e){
+                                Log.d("delete", e.toString());
+                                Toast.makeText(getBaseContext(), e.toString().split(":")[1].trim(), Toast.LENGTH_LONG).show();
                             }
                         }
                     }
@@ -435,23 +450,23 @@ public class DownloadManagerActivity extends LocaleAwareAppCompatActivity implem
         dialog.show();
     }
 
-    private boolean deleteFile(Download download){
-        if(download.getFile()==null) return false;
+    private boolean deleteFile(Download download) throws Exception {
+        if(download==null || download.getFile()==null) return false;
         File file = new File(download.getFile());
-        if(!file.exists()) return false;
-        if(!file.isFile()) return false;
-        if(file.length() != download.getDownloaded()) return false;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            try {
-                BasicFileAttributes attr = Files.readAttributes(file.toPath(), BasicFileAttributes.class);
-                long createdAt = attr.creationTime().toMillis();
-                if(createdAt != download.getCreated()) return false;
-            } catch (IOException e) {
-                return false;
-            }
-        }else{
-            return false;
-        }
+        if(!file.exists()) throw new Exception("Not exists "+download.getFile());
+        if(!file.isFile()) throw new Exception("Not file "+download.getFile());
+        if(file.length() != download.getTotal()) throw new Exception("Not same size "+download.getFile());
+//        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+//            try {
+//                BasicFileAttributes attr = Files.readAttributes(file.toPath(), BasicFileAttributes.class);
+//                long createdAt = attr.creationTime().toMillis();
+//                if(createdAt != download.getCreated()) throw new Exception("Not same creation time "+download.getFile());
+//            } catch (IOException e) {
+//                throw new Exception("Get attr error "+download.getFile());
+//            }
+//        }else{
+//            throw new Exception("Cannot get attr "+download.getFile());
+//        }
         try{
             file.delete();
         }catch (Exception e){}
@@ -482,7 +497,8 @@ public class DownloadManagerActivity extends LocaleAwareAppCompatActivity implem
             return;
         }
 
-        fetch.delete(id);
+//        fetch.delete(id); //delete file without check
+        openDeleteDialog(id);
     }
 
     @Override

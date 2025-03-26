@@ -7,10 +7,11 @@ import android.widget.TextView;
 
 import com.xlab.vbrowser.R;
 
-public class Toast extends android.widget.Toast{
-
+public class Toast{
+    public static final int LENGTH_LONG = 1;
+    public static final int LENGTH_SHORT = 0;
     public Toast(Context context) {
-        super(context);
+
     }
 
     public static android.widget.Toast makeText(Context context, String msg, int duration){

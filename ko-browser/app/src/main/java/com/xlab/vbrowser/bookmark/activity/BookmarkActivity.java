@@ -425,26 +425,30 @@ public class BookmarkActivity extends LocaleAwareAppCompatActivity
         }).execute();
     }
 
+    private String makeUrl(String url){
+        if(UrlUtils.isHttpOrHttps(url)) return url;
+        return UrlUtils.createSearchUrl(this, url);
+    }
+
     @Override
     public void onOpenBookmark(String url) {
-        if (url == null || !UrlUtils.isHttpOrHttps(url)) {
+        if (url == null) { // || !UrlUtils.isHttpOrHttps(url)
             Toast.makeText(this, "Not URL", Toast.LENGTH_SHORT).show();
             return;
         }
 
-//        SessionManager.getInstance().openUrl(url);
-        SessionManager.getInstance().createSession(Source.BOOKMARK, url);
+        SessionManager.getInstance().openUrl(url);
 
         finish();
     }
 
     @Override
     public void onOpenBookmarkInNewTab(String url) {
-        if (url == null || !UrlUtils.isHttpOrHttps(url)) {
+        if (url == null) { // || !UrlUtils.isHttpOrHttps(url)
             return;
         }
 
-        SessionManager.getInstance().createSession(Source.BOOKMARK, url);
+        SessionManager.getInstance().createSession(Source.BOOKMARK, makeUrl(url));
 
         finish();
     }

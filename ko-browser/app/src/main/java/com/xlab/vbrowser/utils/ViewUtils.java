@@ -17,6 +17,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
 import com.xlab.vbrowser.R;
+import com.xlab.vbrowser.z.utils.Toast;
 
 import java.lang.ref.WeakReference;
 
@@ -133,7 +134,12 @@ public class ViewUtils {
             }
         });
         snackbar.setActionTextColor(ContextCompat.getColor(context, R.color.snackbarActionText));
-
+        snackbarView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                snackbar.dismiss();
+            }
+        });
         view.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -162,13 +168,50 @@ public class ViewUtils {
             }
         });
         snackbar.setActionTextColor(ContextCompat.getColor(context, R.color.snackbarActionText));
-
+        snackbarView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                snackbar.dismiss();
+            }
+        });
         view.postDelayed(new Runnable() {
             @Override
             public void run() {
                 snackbar.show();
             }
         }, delayMillis);
+    }
+
+    public static void showToastForDownloadingCompletely(View view, String fileName, View.OnClickListener onClickListener) {
+        Context context = view.getContext();
+        android.widget.Toast toast = Toast.makeText(context, String.format(context.getString(R.string.download_snackbar_finished), fileName), Toast.LENGTH_LONG);
+        toast.getView().setOnClickListener(onClickListener);
+        toast.show();
+    }
+
+    public static void showSnackbarForDownloadingCompletely(View view, String fileName, View.OnClickListener onClickListener) {
+        final Context context = view.getContext();
+        final Snackbar snackbar = Snackbar
+                .make(view, String.format(context.getString(R.string.download_snackbar_finished), fileName), Snackbar.LENGTH_LONG);
+
+        final View snackbarView = snackbar.getView();
+        snackbarView.setBackgroundColor(ContextCompat.getColor(context, R.color.snackbarBackground));
+
+        snackbar.setAction(context.getString(R.string.action_view), new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                snackbar.dismiss();
+                onClickListener.onClick(view);
+            }
+        });
+        snackbar.setActionTextColor(ContextCompat.getColor(context, R.color.snackbarActionText));
+        snackbarView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                snackbar.dismiss();
+            }
+        });
+        snackbar.show();
     }
 
     public static void showSnackbarForDownloadingCompletely(View view, String fileName, final String filePath) {
@@ -187,7 +230,12 @@ public class ViewUtils {
             }
         });
         snackbar.setActionTextColor(ContextCompat.getColor(context, R.color.snackbarActionText));
-
+        snackbarView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                snackbar.dismiss();
+            }
+        });
         snackbar.show();
     }
 
