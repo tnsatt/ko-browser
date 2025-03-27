@@ -41,7 +41,7 @@
 
 
     <!-- For snackbar -->
-    <color name="snackbarBackground">#FF414146</color>
+    <color name="snackbarBackground">#1c1c1d</color>
     <color name="snackbarTextColor">#ffffffff</color>
     <color name="snackbarActionText">@color/photonBlue50</color>
 

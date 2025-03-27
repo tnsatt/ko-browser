@@ -50,6 +50,7 @@ import android.widget.LinearLayout;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
 
+import com.xlab.vbrowser.z.Icons;
 import com.xlab.vbrowser.z.ZColor;
 import com.xlab.vbrowser.z.utils.Toast;
 import com.xlab.vbrowser.R;
@@ -925,7 +926,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
 
                 String url = webView.getUrl();
 
-                FaviconService.writeFavicon(getContext(), url, bitmap);
+                FaviconService.writeFaviconTask(getContext(), url, bitmap);
 
                 session.setReceivedFavicon(System.nanoTime());
 
@@ -1002,7 +1003,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
 
     private void loadBookmark(String url) {
         if (bookmarkView != null && url != null && UrlUtils.isHttpOrHttps(url)) {
-            BookmarkService.loadBookmark(getContext(), url, bookmarkView, earthView);
+            BookmarkService.loadBookmark(getContext(), url, bookmarkView, earthView, this);
         }
     }
 
@@ -1317,6 +1318,14 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                 ZColor.showThemePicker(getActivity());
                 break;
 
+            case R.id.changeIcons:
+                Icons.change(getActivity());
+                BrowserMenu menu2 = new GridBrowserMenu(getActivity(), this, session.getCustomTabConfig());
+                menu2.show(menuView);
+
+                menuWeakReference = new WeakReference<>(menu2);
+                break;
+
             default:
                 Toast.makeText(getContext(), "Unhandled menu item in BrowserFragment", Toast.LENGTH_LONG).show();
 //                throw new IllegalArgumentException("Unhandled menu item in BrowserFragment");
@@ -1371,6 +1380,17 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         backButtonView.setEnabled(canGoBack);
         forwardButtonView.setAlpha(canGoForward ? 1f : 0.5f);
         backButtonView.setAlpha(canGoBack ? 1f : 0.5f);
+    }
+
+    public String getCurrentUrl(){
+        if (getWebView() != null) {
+            String url = getWebView().getUrl();
+
+            if (url != null) {
+                return url;
+            }
+        }
+        return "";
     }
 
     @NonNull
@@ -1561,6 +1581,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         EditText fileNameView = view.findViewById(R.id.filename);
         EditText dirView = view.findViewById(R.id.dir);
         EditText urlView = view.findViewById(R.id.url);
+        ImageView refreshFilename = view.findViewById(R.id.refreshFilename);
         urlView.setEnabled(false);
 
         fileNameView.setText(fileName);
@@ -1583,6 +1604,13 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
                         startDownload(download, fileName2, dir2);
                     }
                 });
+        String finalFileName = fileName;
+        refreshFilename.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(finalFileName !=null) fileNameView.setText(finalFileName);
+            }
+        });
         AlertDialog dialog = builder.show();
         dialog.show();
     }

@@ -5,6 +5,8 @@ import android.content.res.AssetFileDescriptor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
+import com.xlab.vbrowser.utils.BackgroundTask;
+import com.xlab.vbrowser.utils.IBackgroundTask;
 import com.xlab.vbrowser.utils.UrlUtils;
 
 import java.io.File;
@@ -47,6 +49,20 @@ public class FaviconService {
         }
         catch(Exception e) {
         }
+    }
+
+    public static void writeFaviconTask(Context context, String url, Bitmap bitmap){
+        new BackgroundTask(new IBackgroundTask() {
+            @Override
+            public void run() {
+                writeFavicon(context, url, bitmap);
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        }).execute();
     }
 
     public static void writeFavicon(Context context, String url, Bitmap bitmap) {

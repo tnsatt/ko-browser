@@ -174,7 +174,7 @@ public class BookmarkService {
     /**
      * Determine the url is added to bookmark or not, and then update bookmarkView
      */
-    public static void loadBookmark(final Context context, final String url, final ImageButton bookmarkView, final ImageView earthView) {
+    public static void loadBookmark(final Context context, final String url, final ImageButton bookmarkView, final ImageView earthView, BrowserFragment fragment) {
         bookmarkView.setEnabled(false);
 
         new BackgroundTask(new IBackgroundTask() {
@@ -193,9 +193,9 @@ public class BookmarkService {
                     return;
                 }
 
-                Session session = SessionManager.getInstance().getCurrentSession();
+                String currentUrl = fragment.getCurrentUrl();
 
-                if (session != null && session.getUrl() != null && url.equals(session.getUrl().getValue())) {
+                if (currentUrl != null && url.equals(currentUrl)) {
                     //This tag is used when user press the button to know bookmark is added or not yet.
                     bookmarkView.setTag(mResult > 0);
                     bookmarkView.setImageResource(mResult > 0 ? R.drawable.ic_star_s_enabled : R.drawable.ic_star_s);

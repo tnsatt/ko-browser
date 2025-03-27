@@ -26,12 +26,15 @@ import com.xlab.vbrowser.downloadmanagers.data.FileTypeItem;
 import com.xlab.vbrowser.locale.LocaleAwareAppCompatActivity;
 import com.xlab.vbrowser.styles.ThemeUtils;
 import com.xlab.vbrowser.trackers.GaReport;
+import com.xlab.vbrowser.utils.BackgroundTask;
+import com.xlab.vbrowser.utils.IBackgroundTask;
 import com.xlab.vbrowser.widget.EndlessRecyclerViewScrollListener;
 import com.tonyodev.fetch2.Download;
 import com.tonyodev.fetch2.Fetch;
 import com.tonyodev.fetch2.FetchListener;
 import com.tonyodev.fetch2.Func;
 import com.tonyodev.fetch2.util.FileTypeValue;
+import com.xlab.vbrowser.z.module.Back;
 import com.xlab.vbrowser.z.utils.Toast;
 
 import org.jetbrains.annotations.NotNull;
@@ -105,6 +108,9 @@ public class DownloadManagerActivity extends LocaleAwareAppCompatActivity implem
         switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();
+                return true;
+            case R.id.download_remove_all:
+                removeAllDownload();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -518,6 +524,34 @@ public class DownloadManagerActivity extends LocaleAwareAppCompatActivity implem
     @Override
     public void onFinish() {
         finish();
+    }
+
+    public void removeAllDownload(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Remove All Download?")
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                })
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        new BackgroundTask(new IBackgroundTask() {
+                            @Override
+                            public void run() {
+                                fetch.removeAll();
+                            }
+
+                            @Override
+                            public void onComplete() {
+                                fileAdapter.clearAll();
+                                loadData();
+                            }
+                        }).execute();
+                    }
+                }).show();
     }
 
 }

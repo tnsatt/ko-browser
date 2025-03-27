@@ -2,9 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/background_dialog"
-    android:orientation="vertical"
-    >
+    android:orientation="vertical">
     <LinearLayout
         android:id="@+id/toplayout"
         android:layout_width="match_parent"
@@ -25,8 +25,8 @@
             android:layout_height="match_parent">
             <ImageButton
                 android:id="@+id/lockButton"
-                android:padding="10dp"
-                android:layout_width="60dp"
+                android:padding="5dp"
+                android:layout_width="48dp"
                 android:layout_height="match_parent"
                 android:adjustViewBounds="true"
                 android:src="@drawable/ic_locked_s"
@@ -40,6 +40,8 @@
         android:layout_height="190dp">
         <com.itsronald.widget.ViewPagerIndicator
             android:id="@+id/view_pager_indicator"
+            app:selectedDotColor="@color/colorTextActive"
+            app:unselectedDotColor="@color/colorTextInactive"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|center_horizontal"

@@ -3,7 +3,9 @@
 
 package com.xlab.vbrowser.webview;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -12,6 +14,7 @@ import android.os.Environment;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.text.InputType;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -19,6 +22,7 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
 import android.webkit.CookieManager;
 import android.webkit.DownloadListener;
+import android.webkit.JsPromptResult;
 import android.webkit.ValueCallback;
 import android.webkit.WebBackForwardList;
 import android.webkit.WebChromeClient;
@@ -26,6 +30,8 @@ import android.webkit.WebStorage;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.webkit.WebViewDatabase;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 
 import com.xlab.vbrowser.BuildConfig;
 import com.xlab.vbrowser.session.Session;
@@ -360,6 +366,35 @@ public class SystemWebView extends NestedWebView implements IWebView, SharedPref
                 }
 
                 return callback.onShowFileChooser(webView, filePathCallback, fileChooserParams);
+            }
+
+            @Override
+            public boolean onJsPrompt(WebView view, String url, String message, String defaultValue, JsPromptResult result){
+                LinearLayout layout = new LinearLayout(getContext());
+                layout.setOrientation(LinearLayout.VERTICAL);
+                final EditText input = new EditText(getContext());
+                input.setInputType(InputType.TYPE_CLASS_TEXT);
+                input.setText(defaultValue);
+                layout.addView(input);
+                layout.setPadding(16, 0, 16, 0);
+                String host = Uri.parse(url).getHost();
+                new AlertDialog.Builder(getContext())
+                        .setTitle("\""+host+"\" says:")
+                        .setView(layout)
+                        .setMessage(message)
+                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                result.confirm(input.getText().toString());
+                            }
+                        })
+                        .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                result.cancel();
+                            }
+                        })
+                        .create()
+                        .show();
+                return true;
             }
         };
     }

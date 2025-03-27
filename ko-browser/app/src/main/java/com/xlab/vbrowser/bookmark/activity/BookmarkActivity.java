@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -32,6 +33,7 @@ import com.xlab.vbrowser.utils.BackgroundTask;
 import com.xlab.vbrowser.utils.IBackgroundTask;
 import com.xlab.vbrowser.utils.UrlUtils;
 import com.xlab.vbrowser.widget.EndlessRecyclerViewScrollListener;
+import com.xlab.vbrowser.z.Icons;
 import com.xlab.vbrowser.z.utils.Toast;
 
 import java.util.ArrayList;
@@ -85,6 +87,9 @@ public class BookmarkActivity extends LocaleAwareAppCompatActivity
 
         View nightModeView = findViewById(R.id.nightModeView);
         ThemeUtils.loadNightmode(nightModeView, settings, this);
+
+        ImageView noBookmarkIcon = findViewById(R.id.noBookmarkIcon);
+        noBookmarkIcon.setImageDrawable(getResources().getDrawable(Icons.get(R.id.noBookmarkIcon)));
 
         setUpViews();
 
@@ -319,6 +324,7 @@ public class BookmarkActivity extends LocaleAwareAppCompatActivity
         Log.d("stacks", String.valueOf(stacks));
         level++;
         int lv = level;
+        if(!more) resetLoader();
         String queryText = this.queryText;
         if(queryText==null || queryText.trim().isEmpty()) this.currentBookmark = bookmark;
         if (lastAccessTime == Long.MAX_VALUE) {

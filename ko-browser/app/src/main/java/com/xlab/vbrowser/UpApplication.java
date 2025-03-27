@@ -17,6 +17,7 @@ import com.tonyodev.fetch2.Downloader;
 import com.tonyodev.fetch2.Fetch;
 import com.tonyodev.fetch2downloaders.OkHttpDownloader;
 import com.xlab.vbrowser.utils.Settings;
+import com.xlab.vbrowser.z.Icons;
 import com.xlab.vbrowser.z.Theme;
 
 import okhttp3.OkHttpClient;
@@ -34,6 +35,8 @@ public class UpApplication extends LocaleAwareApplication {
         super.onCreate();
 
         Theme.setDarkmode(this);
+
+        Icons.setup(this);
 
         sAnalytics = GoogleAnalytics.getInstance(this);
 

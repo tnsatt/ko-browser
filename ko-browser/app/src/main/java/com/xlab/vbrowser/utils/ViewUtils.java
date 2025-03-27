@@ -13,6 +13,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
@@ -119,6 +120,7 @@ public class ViewUtils {
         final Snackbar snackbar = Snackbar.make(view, resId,5000);
 
         final View snackbarView = snackbar.getView();
+        setSnackbar(snackbar, snackbarView);
         snackbarView.setBackgroundColor(ContextCompat.getColor(context, R.color.snackbarBackground));
 
         final TextView snackbarTextView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
@@ -134,12 +136,7 @@ public class ViewUtils {
             }
         });
         snackbar.setActionTextColor(ContextCompat.getColor(context, R.color.snackbarActionText));
-        snackbarView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                snackbar.dismiss();
-            }
-        });
+
         view.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -148,11 +145,21 @@ public class ViewUtils {
         }, delayMillis);
     }
 
+    private static void setSnackbar(Snackbar snackbar, View view){
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                snackbar.dismiss();
+            }
+        });
+    }
+
     public static void showSnackbarInfo(View view, @StringRes int resId, int delayMillis, String actionText, final ISnackbarAction snackbarAction) {
         final Context context = view.getContext();
         final Snackbar snackbar = Snackbar.make(view, resId,Snackbar.LENGTH_SHORT);
 
         final View snackbarView = snackbar.getView();
+        setSnackbar(snackbar, snackbarView);
         snackbarView.setBackgroundColor(ContextCompat.getColor(context, R.color.snackbarBackground));
 
         final TextView snackbarTextView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
@@ -168,12 +175,7 @@ public class ViewUtils {
             }
         });
         snackbar.setActionTextColor(ContextCompat.getColor(context, R.color.snackbarActionText));
-        snackbarView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                snackbar.dismiss();
-            }
-        });
+
         view.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -195,6 +197,7 @@ public class ViewUtils {
                 .make(view, String.format(context.getString(R.string.download_snackbar_finished), fileName), Snackbar.LENGTH_LONG);
 
         final View snackbarView = snackbar.getView();
+        setSnackbar(snackbar, snackbarView);
         snackbarView.setBackgroundColor(ContextCompat.getColor(context, R.color.snackbarBackground));
 
         snackbar.setAction(context.getString(R.string.action_view), new View.OnClickListener() {
@@ -205,12 +208,7 @@ public class ViewUtils {
             }
         });
         snackbar.setActionTextColor(ContextCompat.getColor(context, R.color.snackbarActionText));
-        snackbarView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                snackbar.dismiss();
-            }
-        });
+
         snackbar.show();
     }
 
@@ -220,6 +218,7 @@ public class ViewUtils {
                 .make(view, String.format(context.getString(R.string.download_snackbar_finished), fileName), Snackbar.LENGTH_LONG);
 
         final View snackbarView = snackbar.getView();
+        setSnackbar(snackbar, snackbarView);
         snackbarView.setBackgroundColor(ContextCompat.getColor(context, R.color.snackbarBackground));
 
         snackbar.setAction(context.getString(R.string.download_snackbar_open), new View.OnClickListener() {
@@ -230,12 +229,7 @@ public class ViewUtils {
             }
         });
         snackbar.setActionTextColor(ContextCompat.getColor(context, R.color.snackbarActionText));
-        snackbarView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                snackbar.dismiss();
-            }
-        });
+
         snackbar.show();
     }
 

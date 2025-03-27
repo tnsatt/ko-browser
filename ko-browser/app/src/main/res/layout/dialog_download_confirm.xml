@@ -14,13 +14,22 @@
         <LinearLayout
             android:paddingVertical="5dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
             <EditText
                 android:id="@+id/filename"
+                android:layout_weight="1"
                 android:hint="Filename to save"
                 style="@style/SEditText"
                 android:textColor="@color/colorTextActive"
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <ImageView
+                android:id="@+id/refreshFilename"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_refresh_s"
+                android:layout_marginLeft="10dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
         </LinearLayout>
         <LinearLayout

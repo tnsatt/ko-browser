@@ -53,6 +53,7 @@
             android:id="@+id/delete"
             android:text="Delete"
             android:textColor="#ff0000"
+            style="@style/SButton"
             android:background="?android:attr/selectableItemBackgroundBorderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
@@ -66,12 +67,14 @@
         <Button
             android:id="@+id/cancel"
             android:text="Cancel"
+            style="@style/SButton"
             android:background="?android:attr/selectableItemBackgroundBorderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <Button
             android:id="@+id/save"
             android:text="Save"
+            style="@style/SButton"
             android:textColor="@color/colorTextActive"
             android:backgroundTint="@color/colorAccent"
             android:background="@drawable/button_round"

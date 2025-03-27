@@ -648,4 +648,5 @@ be temporary, and you can try again later.</li>
     <string name="add_folder_bookmark_hint">Add new folder</string>
     <string name="add_new_bookmark_hint">Add New Bookmark</string>
     <string name="refresh_bookmark_hint">Refresh Bookmarks</string>
+    <string name="remove_all_download_hint">Remove All Download</string>
 </resources>

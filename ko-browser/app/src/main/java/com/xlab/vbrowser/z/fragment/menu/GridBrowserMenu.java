@@ -27,6 +27,7 @@ import com.xlab.vbrowser.locale.LocaleAwareAppCompatActivity;
 import com.xlab.vbrowser.menu.browser.BlockingItemViewHolder;
 import com.xlab.vbrowser.menu.browser.BrowserMenu;
 import com.xlab.vbrowser.utils.Settings;
+import com.xlab.vbrowser.z.Icons;
 import com.xlab.vbrowser.z.utils.Toast;
 import com.xlab.vbrowser.z.Z;
 import com.xlab.vbrowser.z.activity.AdblockActivity;
@@ -134,6 +135,7 @@ public class GridBrowserMenu extends BrowserMenu implements View.OnLongClickList
             }
         });
         ImageButton settingButton = view.findViewById(R.id.settingButton);
+        settingButton.setImageDrawable(context.getResources().getDrawable(Icons.get(R.id.settingButton)));
         settingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

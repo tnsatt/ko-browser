@@ -26,4 +26,5 @@
     <item name="darkMode" type="id" />
     <item name="color_picker_view" type="id" />
     <item name="themeMenu" type="id" />
+    <item name="changeIcons" type="id" />
 </resources>

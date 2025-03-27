@@ -49,6 +49,7 @@
         <item name="blockingMenuColor">@color/color_blocking_menu</item>
 
         <item name="android:alertDialogTheme">@style/DialogStyle</item>
+        <item name="snackbarStyle">@style/SnackbarStyle</item>
     </style>
 
     <style name="AppTheme.Dark" parent="AppTheme">
@@ -91,26 +92,41 @@
         <item name="android:textColorHint">@color/colorTextInactive</item>
         <item name="android:colorAccent">@color/colorAccent</item>
         <item name="android:windowBackground">@drawable/dialog_rounded</item>
+        <item name="android:windowMinWidthMajor">85%</item>
+        <item name="android:windowMinWidthMinor">85%</item>
     </style>
 
     <style name="SDialogTitleStyle" parent="TextAppearance.AppCompat.Title">
         <item name="android:textColor">?attr/activeTextColor</item>
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">16sp</item>
         <item name="android:fontFamily">@string/font_roboto_medium</item>
         <item name="android:background">?attr/dialogBackground</item>
     </style>
     <style name="SDialog" parent="Theme.AppCompat.DayNight.Dialog.Alert">
         <item name="android:windowTitleStyle">@style/SDialogTitleStyle</item>
-        <item name="android:dialogPreferredPadding">16dp</item>
+        <item name="android:dialogPreferredPadding">14dp</item>
         <item name="android:background">?attr/dialogBackground</item>
         <item name="android:textColorPrimary">?attr/activeTextColor</item>
         <item name="android:textColorAlertDialogListItem">@color/darkColorPrimary</item>
         <item name="android:textColorHint">@color/colorTextInactive</item>
         <item name="android:colorAccent">@color/colorAccent</item>
         <item name="android:windowBackground">@drawable/dialog_rounded</item>
+        <item name="android:windowMinWidthMajor">85%</item>
+        <item name="android:windowMinWidthMinor">85%</item>
+        <item name="android:buttonStyle">@style/SButton</item>
+        <item name="android:editTextStyle">@style/SEditText</item>
     </style>
     <style name="SEditText">
-        <item name="android:textSize">16sp</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+    <style name="SButton">
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="SnackbarStyle" parent="Widget.Design.Snackbar">
+        <item name="android:layout_marginLeft">24dp</item>
+        <item name="android:layout_marginRight">24dp</item>
+        <item name="android:layout_marginBottom">70dp</item>
     </style>
 
     <style name="SettingsTheme" parent="AppTheme">

@@ -18,6 +18,8 @@ import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.ImageButton;
+
+import com.xlab.vbrowser.z.Icons;
 import com.xlab.vbrowser.z.utils.Toast;
 
 import com.xlab.vbrowser.session.Source;
@@ -42,8 +44,8 @@ public class SessionsSheetFragment extends LocaleAwareFragment implements View.O
     private View backgroundView;
     private View cardView;
     private View progressOverlayView;
-    private View signOutButtonView;
-    private View newTabButtonView;
+    private ImageButton signOutButtonView;
+    private ImageButton newTabButtonView;
     private ImageButton incognitoButtonView;
     private RecyclerView sessionView;
     private boolean isAnimating;
@@ -74,9 +76,11 @@ public class SessionsSheetFragment extends LocaleAwareFragment implements View.O
         progressOverlayView = view.findViewById(R.id.progressOverlayView);
 
         signOutButtonView = view.findViewById(R.id.signOutButtonView);
+        signOutButtonView.setImageDrawable(getResources().getDrawable(Icons.get(R.id.signOutButtonView)));
         signOutButtonView.setOnClickListener(this);
 
         newTabButtonView = view.findViewById(R.id.newTabButtonView);
+        newTabButtonView.setImageDrawable(getResources().getDrawable(Icons.get(R.id.newTabButtonView)));
         newTabButtonView.setOnClickListener(this);
 
         incognitoButtonView = view.findViewById(R.id.incognitoButtonView);
