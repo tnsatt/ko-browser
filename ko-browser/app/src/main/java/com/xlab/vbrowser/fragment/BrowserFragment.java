@@ -1608,7 +1608,11 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         refreshFilename.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(finalFileName !=null) fileNameView.setText(finalFileName);
+                dirView.setText(dir);
+                if(finalFileName !=null) {
+                    fileNameView.setText(finalFileName);
+                    fileNameView.setSelection(finalFileName.length());
+                }
             }
         });
         AlertDialog dialog = builder.show();
