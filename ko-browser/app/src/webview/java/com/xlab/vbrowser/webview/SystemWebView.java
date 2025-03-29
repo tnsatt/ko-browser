@@ -392,6 +392,12 @@ public class SystemWebView extends NestedWebView implements IWebView, SharedPref
                                 result.cancel();
                             }
                         })
+                        .setOnDismissListener(new DialogInterface.OnDismissListener() {
+                            @Override
+                            public void onDismiss(DialogInterface dialogInterface) {
+                                result.cancel();
+                            }
+                        })
                         .create()
                         .show();
                 return true;
