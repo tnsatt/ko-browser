@@ -8,16 +8,21 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
+
+
+
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
+import com.dom.ui.PinLockFragment;
 import com.xlab.vbrowser.BuildConfig;
 import com.xlab.vbrowser.R;
 import com.xlab.vbrowser.UpApplication;
@@ -159,9 +164,9 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements IabBro
             Z.showLockScreen(this);
         }
         Adblock.init(this);
-        nightModeView = findViewById(R.id.nightModeView);
+//        nightModeView = findViewById(R.id.nightModeView);
         loadSessionProgressView = findViewById(R.id.load_sessions_progress_view);
-        ThemeUtils.loadNightmode(nightModeView, settings, this);
+//        ThemeUtils.loadNightmode(nightModeView, settings, this);
 
         final SafeIntent intent = new SafeIntent(getIntent());
 
@@ -479,6 +484,9 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements IabBro
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         big:
         for(Fragment f: fragmentManager.getFragments()){
+            if(f instanceof PinLockFragment){
+                continue;
+            }
             if(f instanceof SessionsSheetFragment){
                 if(!show && f.isVisible()){
                     transaction.hide(f);

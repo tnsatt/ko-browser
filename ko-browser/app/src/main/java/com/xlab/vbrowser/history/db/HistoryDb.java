@@ -1,8 +1,8 @@
 package com.xlab.vbrowser.history.db;
 
-import android.arch.persistence.room.Database;
-import android.arch.persistence.room.Room;
-import android.arch.persistence.room.RoomDatabase;
+import androidx.room.RoomDatabase;
+import androidx.room.Room;
+import androidx.room.Database;
 import android.content.Context;
 
 import com.xlab.vbrowser.history.dao.HistoryDao;

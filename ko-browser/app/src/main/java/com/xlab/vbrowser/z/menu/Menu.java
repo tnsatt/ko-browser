@@ -3,7 +3,7 @@ package com.xlab.vbrowser.z.menu;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import com.xlab.vbrowser.R;
 import com.xlab.vbrowser.customtabs.CustomTabConfig;

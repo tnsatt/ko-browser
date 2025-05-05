@@ -17,6 +17,7 @@ public class Toast{
     public static android.widget.Toast makeText(Context context, String msg, int duration){
         android.widget.Toast toast = android.widget.Toast.makeText(context, msg, duration);
         View view = toast.getView();
+        if(view == null) return toast;
         view.getBackground().setColorFilter(context.getResources().getColor(R.color.colorPrimary), PorterDuff.Mode.SRC_IN);
 
         TextView text = view.findViewById(android.R.id.message);

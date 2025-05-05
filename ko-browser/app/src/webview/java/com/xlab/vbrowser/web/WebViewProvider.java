@@ -116,7 +116,7 @@ public class WebViewProvider {
         settings.setAllowContentAccess(false);
 
         // The default for those settings should be "false" - But we want to be explicit.
-        settings.setAppCacheEnabled(true);
+//        settings.setAppCacheEnabled(true);
         settings.setDatabaseEnabled(true);
         settings.setCacheMode(WebSettings.LOAD_DEFAULT);
 

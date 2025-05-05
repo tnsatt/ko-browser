@@ -4,11 +4,15 @@ package com.xlab.vbrowser.activity;
 
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
-import android.support.annotation.Nullable;
-import android.support.v7.app.ActionBar;
-import android.support.v7.widget.Toolbar;
+
+
+
 import android.view.MenuItem;
 import android.view.View;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
+import androidx.appcompat.app.ActionBar;
 
 import com.xlab.vbrowser.R;
 import com.xlab.vbrowser.settings.SettingsFragment;

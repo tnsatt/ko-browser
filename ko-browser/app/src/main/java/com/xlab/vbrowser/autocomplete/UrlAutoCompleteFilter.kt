@@ -13,8 +13,9 @@ import com.xlab.vbrowser.utils.BackgroundTask
 import com.xlab.vbrowser.utils.IBackgroundTask
 import com.xlab.vbrowser.utils.Settings
 import com.xlab.vbrowser.widget.InlineAutocompleteEditText
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.io.IOException
 import java.util.*
 
@@ -111,7 +112,7 @@ class UrlAutoCompleteFilter : InlineAutocompleteEditText.OnFilterListener {
         settings = Settings.getInstance(context)
 
         if (loadDomainsFromDisk) {
-            launch(UI) {
+            CoroutineScope(Dispatchers.Main).launch {
                 //val domains = async(CommonPool) { loadDomains(context) }
                 BackgroundTask(object: IBackgroundTask{
                     override fun run() {

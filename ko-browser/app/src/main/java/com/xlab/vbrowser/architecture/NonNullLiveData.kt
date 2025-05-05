@@ -2,7 +2,7 @@
 
 package com.xlab.vbrowser.architecture
 
-import android.arch.lifecycle.LiveData
+import androidx.lifecycle.LiveData
 
 /**
  * A LiveData implementation with an initial value and that does not allow null values.

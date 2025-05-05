@@ -4,11 +4,13 @@
 package com.xlab.vbrowser.widget;
 
 import android.content.Context;
-import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CoordinatorLayout;
+
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
+
+import com.google.android.material.appbar.AppBarLayout;
 
 /**
  * A Behavior implementation that will hide/show a BottomBarBehavior based on whether an AppBarLayout

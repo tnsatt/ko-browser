@@ -3,7 +3,7 @@
 
 package com.xlab.vbrowser.menu.browser;
 
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 
 import com.xlab.vbrowser.fragment.BrowserFragment;

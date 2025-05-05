@@ -81,7 +81,7 @@
 -dontwarn okhttp3.**
 -dontwarn okio.**
 
--keep class android.support.v7.widget.SearchView { *; }
+-keep class androidx.appcompat.widget.SearchView { *; }
 
 -keep class com.android.vending.** { *; }
 -keep class com.xlab.vbrowser.payment.utils.IabHelper.**

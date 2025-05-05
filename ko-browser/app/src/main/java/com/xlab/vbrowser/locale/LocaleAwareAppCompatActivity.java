@@ -5,10 +5,11 @@ package com.xlab.vbrowser.locale;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.v4.text.TextUtilsCompat;
-import android.support.v4.view.ViewCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.text.TextUtilsCompat;
+import androidx.core.view.ViewCompat;
 
 import com.xlab.vbrowser.R;
 import com.xlab.vbrowser.activity.SettingsActivity;
@@ -20,7 +21,7 @@ import com.xlab.vbrowser.utils.Settings;
 import java.util.Locale;
 
 public abstract class LocaleAwareAppCompatActivity
-        extends AppCompatActivity{
+        extends AppCompatActivity {
 
     private volatile Locale mLastLocale;
 

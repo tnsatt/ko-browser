@@ -5,7 +5,6 @@ package com.xlab.vbrowser.fragment;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.arch.lifecycle.Observer;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -19,18 +18,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.AppBarLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.AppCompatDelegate;
-import android.support.v7.content.res.AppCompatResources;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
+
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -50,6 +38,20 @@ import android.widget.LinearLayout;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.content.res.AppCompatResources;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.Observer;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
+import com.google.android.material.appbar.AppBarLayout;
 import com.xlab.vbrowser.z.Icons;
 import com.xlab.vbrowser.z.ZColor;
 import com.xlab.vbrowser.z.utils.Toast;
@@ -209,7 +211,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
     private ItemTouchHelper itemTouchHelper;
 
     /*
-    *Support upload file
+     *Support upload file
      */
     WebViewUpload webViewUpload = new WebViewUpload(this);
 
@@ -616,7 +618,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         }
 
         //Animation slideTextInAnimation =  AnimationUtils.
-          //      loadAnimation(getContext(),   R.anim.slide_text_in);
+        //      loadAnimation(getContext(),   R.anim.slide_text_in);
 
         //Animation slideTextOutAnimation =  AnimationUtils.
         //        loadAnimation(getContext(),   R.anim.slide_text_out);
@@ -941,7 +943,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
 
             @Override
             public boolean onShowFileChooser(WebView webView, final ValueCallback<Uri[]> filePathCallback, WebChromeClient.FileChooserParams fileChooserParams) {
-               return webViewUpload.onShowFileChooser(webView, filePathCallback, fileChooserParams);
+                return webViewUpload.onShowFileChooser(webView, filePathCallback, fileChooserParams);
             }
         });
     }
@@ -1703,11 +1705,11 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == AppSettingsDialog.DEFAULT_SETTINGS_REQ_CODE) {
-           if (hasWriteStoragePermission()) {
-               if (this.requestPerssionResult != null) {
-                   this.requestPerssionResult.onReceivePermission();
-               }
-           }
+            if (hasWriteStoragePermission()) {
+                if (this.requestPerssionResult != null) {
+                    this.requestPerssionResult.onReceivePermission();
+                }
+            }
         }
 
         //Handle upload file.
@@ -2074,7 +2076,7 @@ public class BrowserFragment extends WebFragment implements View.OnClickListener
 
     private void updateTabsButtonView() {
         tabsCountView.setBackground(settings.isIncognitoEnabled() ? getContext().getDrawable(R.drawable.tabs_background_incognito_on)
-                                        : getContext().getDrawable(R.drawable.tabs_background_incognito_off));
+                : getContext().getDrawable(R.drawable.tabs_background_incognito_off));
         incognitoImageView.setVisibility(settings.isIncognitoEnabled() ? View.VISIBLE : View.GONE);
     }
     public ImageButton getBookmarkView(){

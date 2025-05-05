@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
-import android.support.annotation.ColorInt;
+
 import android.util.Log;
 
 import com.xlab.vbrowser.R;

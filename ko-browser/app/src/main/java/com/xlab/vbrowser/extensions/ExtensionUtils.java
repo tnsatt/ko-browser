@@ -1,8 +1,8 @@
 package com.xlab.vbrowser.extensions;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.annotation.RawRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.RawRes;
 import android.view.View;
 
 import java.io.BufferedReader;

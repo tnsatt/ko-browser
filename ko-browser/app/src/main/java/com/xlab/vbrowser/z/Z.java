@@ -13,6 +13,9 @@ import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.Window;
 
+import com.dom.lock.Lock;
+import com.dom.lock.PIN;
+import com.dom.ui.PinLockFragment;
 import com.xlab.vbrowser.R;
 import com.xlab.vbrowser.activity.MainActivity;
 import com.xlab.vbrowser.utils.UrlConstants;
@@ -79,11 +82,10 @@ public class Z {
     public static Boolean isLock(Activity context){
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
         Boolean lock = pref.getBoolean("pinlock", false);
-        String enc = pref.getString("encodedPin", null);
-        return lock && enc!=null;
+        return lock && isCreatedPin(context);
     }
     public static void showCreatePinScreen(Activity context){
-        showLockScreen(context, PinLockActivity.CREATE_PIN, 0);
+        Lock.showCreatePinScreen(context);
     }
     public static void showLockScreen(Activity context){
         showLockScreen(context, 0);
@@ -91,12 +93,58 @@ public class Z {
     public static void showLockScreen(Activity context, int code){
         showLockScreen(context, null, code);
     }
-    public static void showLockScreen(Activity context, String action, int code){
-        Intent intent = new Intent(context, PinLockActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        if(action!=null) intent.setAction(action);
-        if(code>0) context.startActivityForResult(intent, code);
-        else context.startActivity(intent);
-    }
+    public static void showLockScreen(Activity context, String action, int code) {
+        if(false && context instanceof MainActivity){
+            MainActivity main = (MainActivity) context;
+            Lock.showFragment(main, PIN.MODE_AUTH, R.id.lock_container, new PinLockFragment.OnLock() {
+                @Override
+                public void onUnlock() {
 
+                }
+
+                @Override
+                public void onCreatedLock() {
+
+                }
+
+                @Override
+                public void onFailedUnlock() {
+
+                }
+            });
+            return;
+        }
+        Lock.showLockScreen(context, action, code);
+    }
+    public static Boolean isCreatedPin(Context context){
+        return Lock.isCreatedPin(context);
+    }
+    
+    //    public static Boolean isLock(Activity context){
+//        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+//        Boolean lock = pref.getBoolean("pinlock", false);
+//        String enc = pref.getString("encodedPin", null);
+//        return lock && enc!=null;
+//    }
+//    public static void showCreatePinScreen(Activity context){
+//        showLockScreen(context, PinLockActivity.CREATE_PIN, 0);
+//    }
+//    public static void showLockScreen(Activity context){
+//        showLockScreen(context, 0);
+//    }
+//    public static void showLockScreen(Activity context, int code){
+//        showLockScreen(context, null, code);
+//    }
+//    public static void showLockScreen(Activity context, String action, int code){
+//        Intent intent = new Intent(context, PinLockActivity.class);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+//        if(action!=null) intent.setAction(action);
+//        if(code>0) context.startActivityForResult(intent, code);
+//        else context.startActivity(intent);
+//    }
+//        public static Boolean isCreatedPin(Context context){
+//            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+//            String enc = sharedPreferences.getString("encodedPin", null);
+//            return enc!=null;
+//        }
 }

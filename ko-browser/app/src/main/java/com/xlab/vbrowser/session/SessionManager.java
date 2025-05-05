@@ -5,8 +5,9 @@ package com.xlab.vbrowser.session;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.VisibleForTesting;
+import androidx.annotation.NonNull;
+import androidx.annotation.VisibleForTesting;
+
 import android.text.TextUtils;
 
 import com.xlab.vbrowser.customtabs.CustomTabConfig;
@@ -338,7 +339,8 @@ public class SessionManager {
         this.sessions.setValue(sessions);
     }
 
-    @VisibleForTesting void removeSession(String uuid) {
+    @VisibleForTesting
+    void removeSession(String uuid) {
         final List<Session> sessions = new ArrayList<>();
 
         int removedFromPosition = -1;

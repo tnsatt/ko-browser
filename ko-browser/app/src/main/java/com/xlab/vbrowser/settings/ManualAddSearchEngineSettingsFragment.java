@@ -4,8 +4,8 @@ package com.xlab.vbrowser.settings;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
+import androidx.annotation.Nullable;
+import com.google.android.material.snackbar.Snackbar;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;

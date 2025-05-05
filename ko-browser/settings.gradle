@@ -1,33 +1,34 @@
 include ':app'
 include ':js'
-include':test-hls-downloader'
+//include':test-hls-downloader'
 include ':fetch2'
 include ':fetch2downloaders'
 project(':fetch2').projectDir = new File('../android-download-manager/fetch2')
 project(':fetch2downloaders').projectDir = new File('../android-download-manager/fetch2downloaders')
 project(':js').projectDir = new File('../js')
 
-
-include ':easypermissions'
-project(':easypermissions').projectDir = new File('../../Module/easypermissions/easypermissions')
-
 include ':utils'
 project(':utils').projectDir = new File('../../Utils/utils')
-//include ':android'
-//project(':android').projectDir = new File('../../AndroidCore/android')
+include ':android'
+project(':android').projectDir = new File('../../AndroidCore/android')
 include ':androidy'
 project(':androidy').projectDir = new File('../../AndroidY/android')
-
-//include ':fetch2'
-//project (":fetch2").projectDir = new File("../../Libs/Fetch-3.0.12/fetch2")
-//include ':fetch2core'
-//project (":fetch2core").projectDir = new File("../../Libs/Fetch-3.0.12/fetch2core")
-
-include ':pin'
-project (":pin").projectDir = new File("../../Module/PinLockView/pinlockview")
+include ':dom'
+project(':dom').projectDir = new File('../../Dom/dom')
 include ':adblock-parser'
 project (":adblock-parser").projectDir = new File("../../Module/adblock-parser-android/adblock-parser")
+include ':pin'
+project (":pin").projectDir = new File("../../Module/PFLockScreen-Android/pflockscreen")
+include ':easypermissions'
+project(':easypermissions').projectDir = new File('../../Module/easypermissions-3.0.0/easypermissions')
 include ':color-picker-view'
 project (":color-picker-view").projectDir = new File("../../Libs/color-picker-view/color-picker-view")
 include ':dots'
 project (":dots").projectDir = new File("../../Libs/Material-ViewPagerIndicator/material-viewpagerindicator")
+
+//include ':piny'
+//project (":piny").projectDir = new File("../../Module/PinLockView/pinlockview")
+
+//include ':easypermissions'
+//project(':easypermissions').projectDir = new File('../../Module/easypermissions/easypermissions')
+

@@ -13,7 +13,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Message;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.text.InputType;
 import android.util.AttributeSet;
 import android.util.Log;

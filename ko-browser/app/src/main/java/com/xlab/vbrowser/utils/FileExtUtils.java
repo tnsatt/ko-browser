@@ -3,8 +3,10 @@ package com.xlab.vbrowser.utils;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.v4.content.FileProvider;
+
 import android.webkit.MimeTypeMap;
+
+import androidx.core.content.FileProvider;
 
 import com.xlab.vbrowser.BuildConfig;
 

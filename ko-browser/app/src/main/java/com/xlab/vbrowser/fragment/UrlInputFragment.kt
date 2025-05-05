@@ -14,7 +14,7 @@ import android.content.*
 import android.graphics.Typeface
 import android.os.Bundle
 import android.speech.RecognizerIntent
-import android.support.v7.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import android.text.SpannableString
 import android.text.TextUtils
 import android.text.style.StyleSpan
@@ -26,6 +26,7 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import com.xlab.vbrowser.R
 import com.xlab.vbrowser.autocomplete.UrlAutoCompleteFilter
+import com.xlab.vbrowser.databinding.FragmentUrlinputBinding
 import com.xlab.vbrowser.events.IItemClickListener
 import com.xlab.vbrowser.history.service.HistoryService
 import com.xlab.vbrowser.locale.LocaleAwareAppCompatActivity
@@ -46,7 +47,6 @@ import com.xlab.vbrowser.trackers.GaReport
 import com.xlab.vbrowser.utils.*
 import com.xlab.vbrowser.widget.InlineAutocompleteEditText
 import com.xlab.vbrowser.z.utils.Toast
-import kotlinx.android.synthetic.main.fragment_urlinput.*
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
@@ -141,6 +141,8 @@ class UrlInputFragment : LocaleAwareFragment(), View.OnClickListener, InlineAuto
         updateClip()
     }
 
+    lateinit var binding: FragmentUrlinputBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -162,18 +164,21 @@ class UrlInputFragment : LocaleAwareFragment(), View.OnClickListener, InlineAuto
         GaReport.sendReportScreen(context, UrlInputFragment::class.java.name)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
-            inflater.inflate(R.layout.fragment_urlinput, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val view = inflater.inflate(R.layout.fragment_urlinput, container, false)
+        binding = FragmentUrlinputBinding.bind(view)
+        return view
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        listOf(dismissView, clearView, searchView, voiceView, closeView, expandInput, copyView, pasteView).forEach { it.setOnClickListener(this) }
+        listOf(binding.dismissView, binding.clearView, binding.searchView, binding.voiceView, binding.closeView, binding.expandInput, binding.copyView, binding.pasteView).forEach { it.setOnClickListener(this) }
 
-        urlView.setOnFilterListener(this)
-        urlView.imeOptions = urlView.imeOptions or ViewUtils.IME_FLAG_NO_PERSONALIZED_LEARNING
+        binding.urlView.setOnFilterListener(this)
+        binding.urlView.imeOptions = binding.urlView.imeOptions or ViewUtils.IME_FLAG_NO_PERSONALIZED_LEARNING
 
-        urlInputContainerView.viewTreeObserver.addOnPreDrawListener(object : ViewTreeObserver.OnPreDrawListener {
+        binding.urlInputContainerView.viewTreeObserver.addOnPreDrawListener(object : ViewTreeObserver.OnPreDrawListener {
             override fun onPreDraw(): Boolean {
-                urlInputContainerView.viewTreeObserver.removeOnPreDrawListener(this)
+                binding.urlInputContainerView.viewTreeObserver.removeOnPreDrawListener(this)
 
                 animateFirstDraw()
 
@@ -184,13 +189,13 @@ class UrlInputFragment : LocaleAwareFragment(), View.OnClickListener, InlineAuto
         if (isOverlay) {
             //keyboardLinearLayout.visibility = View.GONE
         } else {
-            backgroundView.setBackgroundResource(R.drawable.background)
+            binding.backgroundView.setBackgroundResource(R.drawable.background)
 
-            dismissView.visibility = View.GONE
-            toolbarBackgroundView.visibility = View.GONE
+            binding.dismissView.visibility = View.GONE
+            binding.toolbarBackgroundView.visibility = View.GONE
         }
 
-        urlView.setOnCommitListener(this)
+        binding.urlView.setOnCommitListener(this)
 
         //Process Search Engines
         if (SearchEngineManager.getInstance().searchEngines != null &&
@@ -198,7 +203,7 @@ class UrlInputFragment : LocaleAwareFragment(), View.OnClickListener, InlineAuto
 
             val adapter = SearchEngineAdapter(view.context, 0,
                     SearchEngineManager.getInstance().searchEngines)
-            searchEnginesView.adapter = adapter
+            binding.searchEnginesView.adapter = adapter
 
             var selectedEngine: SearchEngine = SearchEngineManager.getInstance().getDefaultSearchEngine(view.context)
 
@@ -209,10 +214,10 @@ class UrlInputFragment : LocaleAwareFragment(), View.OnClickListener, InlineAuto
                 selectedEngine = SearchEngineManager.getInstance().searchEngines.get(0)
             }
 
-            searchEnginesView.setSelection(selectedIndex)
+            binding.searchEnginesView.setSelection(selectedIndex)
             adapter.setSelectedEngine(selectedEngine)
 
-            searchEnginesView.onItemSelectedListener = object : OnItemSelectedListener {
+            binding.searchEnginesView.onItemSelectedListener = object : OnItemSelectedListener {
                 override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                     var engine = SearchEngineManager.getInstance().searchEngines.get(p2)
 
@@ -233,7 +238,7 @@ class UrlInputFragment : LocaleAwareFragment(), View.OnClickListener, InlineAuto
                 }
             }
 
-            searchEnginesView.setOnTouchListener(object : View.OnTouchListener {
+            binding.searchEnginesView.setOnTouchListener(object : View.OnTouchListener {
                 override fun onTouch(v: View, m: MotionEvent): Boolean {
                     // Perform tasks here
                     var urlView = activity?.findViewById<View>(R.id.urlView)
@@ -247,16 +252,16 @@ class UrlInputFragment : LocaleAwareFragment(), View.OnClickListener, InlineAuto
 
             // use a linear layout manager
             val layoutManager = LinearLayoutManager(context)
-            searchSuggestionView.setLayoutManager(layoutManager)
+            binding.searchSuggestionView.setLayoutManager(layoutManager)
         }
 
         session?.let {
             var url = if (UrlUtils.isBlankUrl(it.url.value)) "" else it.url.value
             url = if (it.isSearch) it.searchTerms else url
-            urlView.setText(url)
+            binding.urlView.setText(url)
 
             if (!TextUtils.isEmpty(url)) {
-                clearView.visibility = View.VISIBLE
+                binding.clearView.visibility = View.VISIBLE
             }
         }
         updateClip()
@@ -266,10 +271,10 @@ class UrlInputFragment : LocaleAwareFragment(), View.OnClickListener, InlineAuto
     private fun updateClip(){
         val text = getClip()
         if (text == null || text.trim().isEmpty()){
-            pasteBar.visibility = View.GONE;
+            binding.pasteBar.visibility = View.GONE;
         }else{
-            pasteBar.visibility = View.VISIBLE;
-            pasteView.text = "Paste: "+text
+            binding.pasteBar.visibility = View.VISIBLE;
+            binding.pasteView.text = "Paste: "+text
         }
     }
 
@@ -303,7 +308,7 @@ class UrlInputFragment : LocaleAwareFragment(), View.OnClickListener, InlineAuto
         if (isOverlay) {
             activity?.supportFragmentManager
                     ?.beginTransaction()
-                    ?.replace(R.id.container, createWithSession(session!!, urlView), FRAGMENT_TAG)
+                    ?.replace(R.id.container, createWithSession(session!!, binding.urlView), FRAGMENT_TAG)
                     ?.commit()
         } else {
             activity?.supportFragmentManager
@@ -335,7 +340,7 @@ class UrlInputFragment : LocaleAwareFragment(), View.OnClickListener, InlineAuto
     }
 
     fun showKeyboard() {
-        ViewUtils.showKeyboard(urlView)
+        ViewUtils.showKeyboard(binding.urlView)
     }
 
     override fun onClick(view: View) {
@@ -384,8 +389,8 @@ class UrlInputFragment : LocaleAwareFragment(), View.OnClickListener, InlineAuto
     private fun pasteClipboard(){
         val text = getClip()
         if (text==null) return
-        urlView.setText(text ?: "")
-        urlView.setSelection(urlView.text?.length?:0)
+        binding.urlView.setText(text ?: "")
+        binding.urlView.setSelection(binding.urlView.text?.length?:0)
     }
 
     private fun getClip(): String? {
@@ -399,24 +404,24 @@ class UrlInputFragment : LocaleAwareFragment(), View.OnClickListener, InlineAuto
 
     private fun copy(){
         val clipboard = context?.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-        val clip = ClipData.newPlainText("url", urlView.text)
+        val clip = ClipData.newPlainText("url", binding.urlView.text)
         clipboard.setPrimaryClip(clip)
         Toast.makeText(context, "Copied to clipboard", Toast.LENGTH_SHORT).show()
     }
 
     private fun transferInput(editText: EditText, focus: Boolean){
         val text = editText.text
-        urlView.text = text
+        binding.urlView.text = text
         if (focus) {
             val pos = editText.selectionStart
-            urlView.setSelection(pos)
-            urlView.requestFocus()
+            binding.urlView.setSelection(pos)
+            binding.urlView.requestFocus()
             requireActivity().window?.setSoftInputMode(android.view.WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
         }
     }
 
     private fun expandInput(){
-        val dialog = Dialog(context)
+        val dialog = Dialog(requireContext())
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setContentView(R.layout.dialog_input_multiline)
         dialog.setCancelable(true)
@@ -424,8 +429,8 @@ class UrlInputFragment : LocaleAwareFragment(), View.OnClickListener, InlineAuto
 //        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         val editText = dialog.findViewById<EditText>(R.id.editText)
-        val text = urlView.text
-        val pos = urlView.selectionStart
+        val text = binding.urlView.text
+        val pos = binding.urlView.selectionStart
         editText.text = text
         editText.setSelection(pos)
 
@@ -452,8 +457,8 @@ class UrlInputFragment : LocaleAwareFragment(), View.OnClickListener, InlineAuto
 
     private fun clear() {
         session?.searchTerms = ""
-        urlView.setText("")
-        urlView.requestFocus()
+        binding.urlView.setText("")
+        binding.urlView.requestFocus()
     }
 
     override fun onDetach() {
@@ -478,7 +483,7 @@ class UrlInputFragment : LocaleAwareFragment(), View.OnClickListener, InlineAuto
         // but we don't want to restart animations and/or trigger hiding again (which could potentially
         // cause crashes since we don't know what state we're in). Ignoring further clicks is the simplest
         // solution, since dismissView is about to disappear anyway.
-        dismissView.isClickable = false
+        binding.dismissView.isClickable = false
 
         if (ANIMATION_BROWSER_SCREEN == arguments?.getString(ARGUMENT_ANIMATION)) {
             playVisibilityAnimation(true)
@@ -502,12 +507,12 @@ class UrlInputFragment : LocaleAwareFragment(), View.OnClickListener, InlineAuto
         isAnimating = true
 
         val xyOffset = (if (isOverlay)
-            (urlInputContainerView.layoutParams as FrameLayout.LayoutParams).bottomMargin
+            (binding.urlInputContainerView.layoutParams as FrameLayout.LayoutParams).bottomMargin
         else
             0).toFloat()
 
-        val width = urlInputBackgroundView.width.toFloat()
-        val height = urlInputBackgroundView.height.toFloat()
+        val width = binding.urlInputBackgroundView.width.toFloat()
+        val height = binding.urlInputBackgroundView.height.toFloat()
 
         val widthScale = if (isOverlay)
             (width + 2 * xyOffset) / width
@@ -527,16 +532,16 @@ class UrlInputFragment : LocaleAwareFragment(), View.OnClickListener, InlineAuto
             //urlInputBackgroundView.translationX = -xyOffset
             //urlInputBackgroundView.translationY = -xyOffset
 
-            clearView.alpha = 0f
-            voiceView.alpha = 0f
-            searchEnginesView.alpha = 0f
-            searchViewContainer.alpha = 0f
-            closeView.alpha = 0f
-            expandInput.alpha = 0f
+            binding.clearView.alpha = 0f
+            binding.voiceView.alpha = 0f
+            binding.searchEnginesView.alpha = 0f
+            binding.searchViewContainer.alpha = 0f
+            binding.closeView.alpha = 0f
+            binding.expandInput.alpha = 0f
         }
 
         // Let the URL input use the full width/height and then shrink to the actual size
-        urlInputBackgroundView.animate()
+        binding.urlInputBackgroundView.animate()
                 .setDuration(ANIMATION_DURATION.toLong())
                 //.scaleX(if (reverse) widthScale else 1f)
                 //.scaleY(if (reverse) heightScale else 1f)
@@ -547,12 +552,12 @@ class UrlInputFragment : LocaleAwareFragment(), View.OnClickListener, InlineAuto
                     override fun onAnimationStart(animation: Animator) {
                         try {
                             if (reverse) {
-                                clearView.alpha = 0f
-                                voiceView.alpha = 0f
-                                searchEnginesView.alpha = 0f
-                                searchViewContainer.alpha = 0f
-                                closeView.alpha = 0f
-                                expandInput.alpha = 0f
+                                binding.clearView.alpha = 0f
+                                binding.voiceView.alpha = 0f
+                                binding.searchEnginesView.alpha = 0f
+                                binding.searchViewContainer.alpha = 0f
+                                binding.closeView.alpha = 0f
+                                binding.expandInput.alpha = 0f
                             }
                         }
                         catch(ex: IllegalStateException) {
@@ -567,12 +572,12 @@ class UrlInputFragment : LocaleAwareFragment(), View.OnClickListener, InlineAuto
                                     dismiss()
                                 }
                             } else {
-                                clearView?.alpha = 1f
-                                voiceView?.alpha = 1f
-                                searchEnginesView?.alpha = 1f
-                                searchViewContainer?.alpha = 1f
-                                closeView?.alpha = 1f
-                                expandInput?.alpha = 1f
+                                binding.clearView?.alpha = 1f
+                                binding.voiceView?.alpha = 1f
+                                binding.searchEnginesView?.alpha = 1f
+                                binding.searchViewContainer?.alpha = 1f
+                                binding.closeView?.alpha = 1f
+                                binding.expandInput?.alpha = 1f
                             }
 
                             isAnimating = false
@@ -586,30 +591,30 @@ class UrlInputFragment : LocaleAwareFragment(), View.OnClickListener, InlineAuto
         // We only need to animate the toolbar if we are an overlay.
         if (isOverlay) {
             val screenLocation = IntArray(2)
-            urlView.getLocationOnScreen(screenLocation)
+            binding.urlView.getLocationOnScreen(screenLocation)
 
-            val leftDelta = arguments!!.getInt(ARGUMENT_X) - screenLocation[0] - urlView.paddingLeft
+            val leftDelta = requireArguments().getInt(ARGUMENT_X) - screenLocation[0] - binding.urlView.paddingLeft
 
             if (!reverse) {
-                urlView.pivotX = 0f
-                urlView.pivotY = 0f
-                urlView.translationX = leftDelta.toFloat()
+                binding.urlView.pivotX = 0f
+                binding.urlView.pivotY = 0f
+                binding.urlView.translationX = leftDelta.toFloat()
             }
 
             // The URL moves from the right (at least if the lock is visible) to it's actual position
-            urlView.animate()
+            binding.urlView.animate()
                     .setDuration(ANIMATION_DURATION.toLong())
                     .translationX((if (reverse) leftDelta else 0).toFloat())
         }
 
         if (!reverse) {
             //toolbarBackgroundView.alpha = 0f
-            clearView.alpha = 0f
-            voiceView.alpha = 0f
-            searchEnginesView.alpha = 0f
-            searchViewContainer.alpha = 0f
-            closeView.alpha = 0f
-            expandInput.alpha = 0f
+            binding.clearView.alpha = 0f
+            binding.voiceView.alpha = 0f
+            binding.searchEnginesView.alpha = 0f
+            binding.searchViewContainer.alpha = 0f
+            binding.closeView.alpha = 0f
+            binding.expandInput.alpha = 0f
         }
 
         // The darker background appears with an alpha animation
@@ -652,9 +657,9 @@ class UrlInputFragment : LocaleAwareFragment(), View.OnClickListener, InlineAuto
     }
 
     fun submitInput() {
-        val input = urlView.text.toString()
+        val input = binding.urlView.text.toString()
         if (!input.trim { it <= ' ' }.isEmpty()) {
-            ViewUtils.hideKeyboard(urlView)
+            ViewUtils.hideKeyboard(binding.urlView)
 
             val isUrl = UrlUtils.isUrl(input)
 
@@ -674,7 +679,7 @@ class UrlInputFragment : LocaleAwareFragment(), View.OnClickListener, InlineAuto
 
 
     private fun onSearch() {
-        val searchTerms = urlView.originalText
+        val searchTerms = binding.urlView.originalText
         val searchUrl = UrlUtils.createSearchUrl(context, searchTerms)
 
         openUrl(searchUrl, searchTerms)
@@ -708,7 +713,7 @@ class UrlInputFragment : LocaleAwareFragment(), View.OnClickListener, InlineAuto
 
         session?.searchTerms = searchTerms
 
-        val fragmentManager = activity!!.supportFragmentManager
+        val fragmentManager = requireActivity().supportFragmentManager
 
         // Replace all fragments with a fresh browser fragment. This means we either remove the
         // HomeFragment with an UrlInputFragment on top or an old BrowserFragment with an
@@ -754,16 +759,16 @@ class UrlInputFragment : LocaleAwareFragment(), View.OnClickListener, InlineAuto
                 }
                 else if (data.size == 2) {
                     val str = data[0].toString()
-                    urlView.setText(str)
-                    urlView.setSelection(str .length)
+                    binding.urlView.setText(str)
+                    binding.urlView.setSelection(str .length)
                 }
             }
         }
 
         if (searchText.trim { it <= ' ' }.isEmpty()) {
-            clearView.visibility = View.GONE
-            searchBar.visibility = View.GONE
-            searchSeperator.visibility = View.GONE
+            binding.clearView.visibility = View.GONE
+            binding.searchBar.visibility = View.GONE
+            binding.searchSeperator.visibility = View.GONE
 
             //Load the latest histories
             SearchSuggestion.loadSuggestionFromDisk(context, object: ISearchSuggestionCallback {
@@ -772,8 +777,8 @@ class UrlInputFragment : LocaleAwareFragment(), View.OnClickListener, InlineAuto
                 override fun onSuccess(items: Array<SearchSuggestionItem>, searchTerm: String) {
                     activity?.runOnUiThread(object: Runnable{
                         override fun run() {
-                            searchScrollView.scrollTo(0, 0)
-                            searchSuggestionView.adapter = SearchSuggestionAdapter(context, items, itemClickListener)
+                            binding.searchScrollView.scrollTo(0, 0)
+                            binding.searchSuggestionView.adapter = SearchSuggestionAdapter(context, items, itemClickListener)
                         }
                     })
                 }
@@ -783,11 +788,11 @@ class UrlInputFragment : LocaleAwareFragment(), View.OnClickListener, InlineAuto
                 playVisibilityAnimation(true)
             }
         } else {
-            clearView.visibility = View.VISIBLE
+            binding.clearView.visibility = View.VISIBLE
 
-            if (!isOverlay && dismissView.visibility != View.VISIBLE) {
+            if (!isOverlay && binding.dismissView.visibility != View.VISIBLE) {
                 playVisibilityAnimation(false)
-                dismissView.visibility = View.VISIBLE
+                binding.dismissView.visibility = View.VISIBLE
             }
 
             // LTR languages sometimes have grammar where the search terms are displayed to the left
@@ -799,23 +804,23 @@ class UrlInputFragment : LocaleAwareFragment(), View.OnClickListener, InlineAuto
             val content = SpannableString(hint.replace(PLACEHOLDER, searchText))
             content.setSpan(StyleSpan(Typeface.BOLD), start, start + searchText.length, 0)
 
-            searchView.text = content
-            searchBar.visibility = View.VISIBLE
-            searchSeperator.visibility = View.VISIBLE
+            binding.searchView.text = content
+            binding.searchBar.visibility = View.VISIBLE
+            binding.searchSeperator.visibility = View.VISIBLE
 
             //Load search suggestions
             SearchSuggestion.requestSuggestion(searchText, object: ISearchSuggestionCallback {
                 override fun onFailure(message: String) {}
 
                 override fun onSuccess(items: Array<SearchSuggestionItem>, searchTerm: String) {
-                    if (searchSuggestionView != null && currentSearchTerm?.equals(searchTerm) == false) {
+                    if (binding.searchSuggestionView != null && currentSearchTerm?.equals(searchTerm) == false) {
                         return
                     }
 
                     activity?.runOnUiThread(object: Runnable{
                         override fun run() {
-                            searchScrollView.scrollTo(0, 0)
-                            searchSuggestionView.adapter = SearchSuggestionAdapter(context, items, itemClickListener)
+                            binding.searchScrollView.scrollTo(0, 0)
+                            binding.searchSuggestionView.adapter = SearchSuggestionAdapter(context, items, itemClickListener)
                         }
                     })
                 }
@@ -841,7 +846,7 @@ class UrlInputFragment : LocaleAwareFragment(), View.OnClickListener, InlineAuto
                     startActivityForResult(intent, RESULT_SPEECH)
                 }
                 catch(e: ActivityNotFoundException) {
-                    ViewUtils.showBrandedSnackbar(urlView, R.string.no_voice_recognizer, 500);
+                    ViewUtils.showBrandedSnackbar(binding.urlView, R.string.no_voice_recognizer, 500);
                 }
 
             }
@@ -870,7 +875,7 @@ class UrlInputFragment : LocaleAwareFragment(), View.OnClickListener, InlineAuto
     }
 
     private fun hasRecordAudioPermission(): Boolean {
-        return EasyPermissions.hasPermissions(context!!, Manifest.permission.RECORD_AUDIO)
+        return EasyPermissions.hasPermissions(requireContext(), Manifest.permission.RECORD_AUDIO)
     }
 
     @AfterPermissionGranted(REQUEST_RECORD_AUDIO_PERMISSION)
@@ -913,13 +918,13 @@ class UrlInputFragment : LocaleAwareFragment(), View.OnClickListener, InlineAuto
             }
         }
         else if (requestCode == RESULT_SPEECH && data != null && resultCode == RESULT_OK) {
-            var matches: ArrayList<String> = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+            var matches: ArrayList<String> = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)!!;
 
             if (matches.size < 1) {
                 return;
             }
 
-            urlView.setText(matches.get(0))
+            binding.urlView.setText(matches.get(0))
 
             submitInput()
         }

@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import com.xlab.vbrowser.z.utils.Toast;
 
-import com.android.y.dom.Drag;
+import com.android.dom.Drag;
 import com.xlab.vbrowser.R;
 import com.xlab.vbrowser.z.Z;
 

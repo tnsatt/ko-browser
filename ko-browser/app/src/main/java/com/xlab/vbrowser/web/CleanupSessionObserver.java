@@ -4,7 +4,7 @@ package com.xlab.vbrowser.web;
 
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.xlab.vbrowser.architecture.NonNullObserver;
 import com.xlab.vbrowser.session.Session;

@@ -5,26 +5,30 @@ package com.xlab.vbrowser.autocomplete
 import android.app.Fragment
 import android.content.Context
 import android.os.Bundle
-import android.support.annotation.NonNull
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import androidx.annotation.Nullable
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import kotlinx.android.synthetic.main.fragment_autocomplete_customdomains.*
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.async
-import kotlinx.coroutines.experimental.launch
+import androidx.annotation.NonNull
+//import kotlinx.android.synthetic.main.fragment_autocomplete_customdomains.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import com.xlab.vbrowser.R
 import com.xlab.vbrowser.settings.SettingsFragment
+import kotlinx.coroutines.CoroutineScope
 
 class AutocompleteCustomDomainsFragment : Fragment() {
+    lateinit var domainList: RecyclerView
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View {
         return inflater!!.inflate(R.layout.fragment_autocomplete_customdomains, container, false)
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        domainList = view.findViewById(R.id.domainList)
         domainList.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
         domainList.adapter = DomainListAdapter()
     }
@@ -43,7 +47,7 @@ class AutocompleteCustomDomainsFragment : Fragment() {
         private val domains: MutableList<String> = mutableListOf()
 
         fun refresh(context: Context) {
-            launch(UI) {
+            CoroutineScope(Dispatchers.Main).launch {
                 val updatedDomains = async { CustomAutoComplete.loadCustomAutoCompleteDomains(context) }.await()
 
                 domains.clear()

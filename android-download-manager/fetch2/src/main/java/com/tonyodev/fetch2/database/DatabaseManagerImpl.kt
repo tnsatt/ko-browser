@@ -1,10 +1,11 @@
 package com.tonyodev.fetch2.database
 
-import android.arch.persistence.room.Room
+
 import android.content.Context
 import android.database.sqlite.SQLiteException
 import android.text.TextUtils
 import android.util.Log
+import androidx.room.Room
 import com.tonyodev.fetch2.Logger
 import com.tonyodev.fetch2.Status
 import com.tonyodev.fetch2.database.migration.Migration

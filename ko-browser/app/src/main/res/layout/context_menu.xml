@@ -9,7 +9,7 @@
     android:background="@android:color/transparent"
     android:orientation="vertical">
 
-    <android.support.design.widget.NavigationView
+    <com.google.android.material.navigation.NavigationView
         android:theme="@style/AppTheme.ContextMenuItem"
         android:id="@+id/context_menu_light"
         android:layout_width="match_parent"
@@ -20,7 +20,7 @@
         android:overScrollMode="never"
         android:visibility="gone"/>
 
-    <android.support.design.widget.NavigationView
+    <com.google.android.material.navigation.NavigationView
         android:theme="@style/AppTheme.ContextMenuItem"
         android:id="@+id/context_menu_dark"
         android:layout_width="match_parent"

@@ -18,7 +18,7 @@
         app:showAsAction="always|collapseActionView"/>
     <item
         android:id="@+id/bookmark_search"
-        app:actionViewClass="android.support.v7.widget.SearchView"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
         android:icon="@drawable/ic_search"
         android:title="@string/search_bookmark_hint"
         app:showAsAction="always|collapseActionView"/>

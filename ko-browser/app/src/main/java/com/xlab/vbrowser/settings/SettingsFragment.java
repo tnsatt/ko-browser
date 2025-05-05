@@ -13,7 +13,7 @@ import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -211,9 +211,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
 
         Preference createPin = findPreference("create_pin");
         if(createPin != null){
-            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-            String enc = sharedPreferences.getString("encodedPin", null);
-            createPin.setSummary(enc==null?"Not Set":"Pin Created");
+            createPin.setSummary(!Z.isCreatedPin(getActivity())?"Not Set":"Pin Created");
         }
         Preference adblocks = findPreference("adblocks");
         if(adblocks!=null) {

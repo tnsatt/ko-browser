@@ -7,16 +7,17 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.annotation.StringRes;
-import android.support.design.widget.Snackbar;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.view.ViewCompat;
+import androidx.annotation.StringRes;
+
+import androidx.core.content.ContextCompat;
+import androidx.core.view.ViewCompat;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.xlab.vbrowser.R;
 import com.xlab.vbrowser.z.utils.Toast;
 
@@ -123,7 +124,7 @@ public class ViewUtils {
         setSnackbar(snackbar, snackbarView);
         snackbarView.setBackgroundColor(ContextCompat.getColor(context, R.color.snackbarBackground));
 
-        final TextView snackbarTextView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
+        final TextView snackbarTextView = (TextView) snackbarView.findViewById(R.id.snackbar_text);
         snackbarTextView.setTextColor(ContextCompat.getColor(context, R.color.snackbarTextColor));
         snackbarTextView.setGravity(Gravity.CENTER);
         snackbarTextView.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
@@ -162,7 +163,7 @@ public class ViewUtils {
         setSnackbar(snackbar, snackbarView);
         snackbarView.setBackgroundColor(ContextCompat.getColor(context, R.color.snackbarBackground));
 
-        final TextView snackbarTextView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
+        final TextView snackbarTextView = (TextView) snackbarView.findViewById(R.id.snackbar_text);
         snackbarTextView.setTextColor(ContextCompat.getColor(context, R.color.snackbarTextColor));
         snackbarTextView.setGravity(Gravity.CENTER);
         snackbarTextView.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);

@@ -3,6 +3,7 @@
     package="com.xlab.vbrowser">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
@@ -22,11 +23,17 @@
         <activity
             android:name=".z.activity.AdblockActivity"
             android:label="Adblocker"
+            android:exported="false"
             ></activity>
         <activity android:name=".z.activity.PinLockActivity" />
+        <activity android:name="com.dom.ui.PinLockActivity"
+            android:exported="true"
+            android:noHistory="true"
+            android:excludeFromRecents="true"
+            android:launchMode="singleTask"/>
 
         <provider
-            android:name="android.support.v4.content.FileProvider"
+            android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
@@ -37,6 +44,7 @@
 
         <activity
             android:name=".activity.MainActivity"
+            android:exported="true"
             android:configChanges="keyboard|keyboardHidden|mcc|mnc|orientation|screenSize|locale|layoutDirection|smallestScreenSize|screenLayout"
             android:label="@string/app_name"
             android:launchMode="singleTask"
@@ -161,7 +169,8 @@
                 android:value="true" />
         </service>
 
-        <receiver android:name=".z.broadcast.QSBrowserBroadcast">
+        <receiver android:name=".z.broadcast.QSBrowserBroadcast"
+            android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
                 <action android:name="android.intent.action.BOOT_COMPLETED" />

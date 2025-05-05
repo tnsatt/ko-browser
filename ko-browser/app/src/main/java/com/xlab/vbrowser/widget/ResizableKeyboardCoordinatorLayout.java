@@ -4,7 +4,7 @@
 package com.xlab.vbrowser.widget;
 
 import android.content.Context;
-import android.support.design.widget.CoordinatorLayout;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import android.util.AttributeSet;
 
 /**

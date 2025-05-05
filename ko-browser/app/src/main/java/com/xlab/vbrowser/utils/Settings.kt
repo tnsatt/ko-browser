@@ -107,7 +107,7 @@ class Settings private constructor(context: Context?) {
     //User agent
     fun getMobileUserAgentString(): String =
             preferences.getString(Constants.PREF_MOBILE_USER_AGENT_KEY,
-                    "")
+                    "")!!
 
     fun setMobileUserAgentString(userAgent: String) {
         preferences.edit()

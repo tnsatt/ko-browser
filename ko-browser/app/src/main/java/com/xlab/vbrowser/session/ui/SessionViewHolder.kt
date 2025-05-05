@@ -4,17 +4,18 @@ package com.xlab.vbrowser.session.ui
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
-import android.arch.lifecycle.Lifecycle
-import android.arch.lifecycle.LifecycleOwner
-import android.arch.lifecycle.Observer
+
+import androidx.lifecycle.Observer
 import android.net.Uri
-import android.support.v4.content.ContextCompat
-import android.support.v7.widget.RecyclerView
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
 import com.xlab.vbrowser.R
 import com.xlab.vbrowser.session.Session
 import com.xlab.vbrowser.session.SessionManager
@@ -24,14 +25,14 @@ import com.xlab.vbrowser.utils.UrlUtils
 import java.io.File
 import java.lang.ref.WeakReference
 
-class SessionViewHolder internal constructor(private val fragment: SessionsSheetFragment, private val relativeLayout: RelativeLayout) : RecyclerView.ViewHolder(relativeLayout), View.OnClickListener, LifecycleOwner {
+class SessionViewHolder internal constructor(private val fragment: SessionsSheetFragment, private val relativeLayout: RelativeLayout) : RecyclerView.ViewHolder(relativeLayout), View.OnClickListener,
+    LifecycleOwner {
     override fun getLifecycle(): Lifecycle {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     companion object {
-        @JvmField
-        internal val LAYOUT_ID = R.layout.item_session
+        internal const val LAYOUT_ID = R.layout.item_session
     }
 
     private var sessionReference: WeakReference<Session> = WeakReference<Session>(null)

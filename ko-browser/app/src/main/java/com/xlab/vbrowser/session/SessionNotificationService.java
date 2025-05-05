@@ -13,10 +13,12 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.IBinder;
-import android.support.annotation.Nullable;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationManagerCompat;
-import android.support.v4.content.ContextCompat;
+
+
+import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+import androidx.core.content.ContextCompat;
 
 import com.xlab.vbrowser.R;
 import com.xlab.vbrowser.UpApplication;
@@ -156,7 +158,7 @@ public class SessionNotificationService extends Service {
                 .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher))
                 .setContentTitle(getString(com.xlab.vbrowser.R.string.up_teaser))
                 .setContentIntent(createOpenActionIntent())
-                .setVisibility(Notification.VISIBILITY_PRIVATE)
+                .setVisibility(NotificationCompat.VISIBILITY_PRIVATE)
                 .setShowWhen(false)
                 .setLocalOnly(true)
                 .setColor(ContextCompat.getColor(this, com.xlab.vbrowser.R.color.colorErase))
@@ -245,8 +247,8 @@ public class SessionNotificationService extends Service {
             case PAUSED:
                 action.setAction(DownloadManagerActionService.RESUME_ACTION);
 
-                default:
-                    break;
+            default:
+                break;
         }
 
         return PendingIntent.getService(getBaseContext(), 0, action, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -301,7 +303,7 @@ public class SessionNotificationService extends Service {
         if (status == Status.COMPLETED) {
             mBuilder.setSmallIcon(R.drawable.ic_done);
             mBuilder.setContentText(DownloadUtils.getDownloadLongString(getBaseContext(), download.getDownloaded())
-                    + " - " +getString(R.string.download_status_done))
+                            + " - " +getString(R.string.download_status_done))
                     .setProgress(0, 0, false);
             mBuilder.setAutoCancel(true);
             notificationManager.notify(download.getId(), mBuilder.build());

@@ -4,7 +4,7 @@ import android.graphics.drawable.Icon;
 import android.os.Build;
 import android.service.quicksettings.Tile;
 import android.service.quicksettings.TileService;
-import android.support.annotation.RequiresApi;
+import androidx.annotation.RequiresApi;
 
 import com.xlab.vbrowser.R;
 import com.xlab.vbrowser.z.Z;

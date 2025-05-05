@@ -10,8 +10,8 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.net.Uri
 import android.os.Build
-import android.support.annotation.VisibleForTesting
-import android.support.v4.content.ContextCompat
+import androidx.annotation.VisibleForTesting
+import androidx.core.content.ContextCompat
 import android.util.TypedValue
 
 import com.xlab.vbrowser.R

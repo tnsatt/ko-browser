@@ -6,9 +6,10 @@ import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
-import android.support.annotation.NonNull;
-import android.support.v4.util.ArrayMap;
-import android.support.v4.view.ViewCompat;
+import androidx.annotation.NonNull;
+
+import androidx.collection.ArrayMap;
+import androidx.core.view.ViewCompat;
 import android.view.View;
 import android.webkit.WebView;
 

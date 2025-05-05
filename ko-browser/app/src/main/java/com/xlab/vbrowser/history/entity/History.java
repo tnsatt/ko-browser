@@ -1,7 +1,10 @@
 package com.xlab.vbrowser.history.entity;
 
-import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.PrimaryKey;
+
+
+
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
 /**
  * Created by nguyenducthuan on 2/27/18.

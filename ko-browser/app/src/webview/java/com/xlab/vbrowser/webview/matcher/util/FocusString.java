@@ -2,7 +2,7 @@
  Copyright by MonnyLab */
 package com.xlab.vbrowser.webview.matcher.util;
 
-import android.support.annotation.CheckResult;
+import androidx.annotation.CheckResult;
 
 /**
  * A String wrapper utility that allows for efficient string reversal.

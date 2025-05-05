@@ -12,7 +12,7 @@ object CustomAutoComplete {
     private const val KEY_DOMAINS = "domains"
 
     suspend fun loadCustomAutoCompleteDomains(context: Context): Set<String> =
-            preferences(context).getStringSet(KEY_DOMAINS, HashSet())
+            preferences(context).getStringSet(KEY_DOMAINS, HashSet())!!
 
     fun saveDomains(context: Context, domains: Set<String>) {
         preferences(context)
