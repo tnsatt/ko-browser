@@ -46,9 +46,5 @@ public class Theme {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
     }
-    public static boolean isSystemDarkmode(Context context){
-        UiModeManager uiModeManager = (UiModeManager) context.getSystemService(context.UI_MODE_SERVICE);
-        boolean isSystemDarkmode = uiModeManager.getNightMode() == UiModeManager.MODE_NIGHT_YES;
-        return isSystemDarkmode;
-    }
+   
 }
