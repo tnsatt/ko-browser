@@ -37,53 +37,8 @@
         android:background="@android:color/black"
         android:alpha="0.5"
         android:visibility="gone" />
-    <FrameLayout
-        android:visibility="gone"
-        android:id="@+id/floatButtons"
-        android:layout_gravity="top"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <LinearLayout
-            android:layout_gravity="top|end"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-            <ImageButton
-                android:id="@+id/resize"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="0dp"
-                android:background="@drawable/round_button"
-                android:padding="4dp"
-                android:src="@drawable/ic_fullscreen"/>
-            <ImageButton
-                android:id="@+id/drag"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="0dp"
-                android:background="@drawable/round_button"
-                android:padding="4dp"
-                android:src="@drawable/ic_menu"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_gravity="top|start"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-            <ImageButton
-                android:id="@+id/close"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="0dp"
-                android:background="@drawable/round_button"
-                android:padding="4dp"
-                android:src="@drawable/ic_close"/>
-        </LinearLayout>
-    </FrameLayout>
+    <include
+        layout="@layout/layout_float_buttons"/>
 
     <FrameLayout android:id="@+id/lock_container"
         android:layout_width="match_parent"

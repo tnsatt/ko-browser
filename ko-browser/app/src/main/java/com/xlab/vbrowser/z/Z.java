@@ -13,14 +13,14 @@ import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.Window;
 
+import com.android.ui.UiUtils;
 import com.dom.lock.Lock;
 import com.dom.lock.PIN;
 import com.dom.ui.PinLockFragment;
 import com.xlab.vbrowser.R;
 import com.xlab.vbrowser.activity.MainActivity;
 import com.xlab.vbrowser.utils.UrlConstants;
-import com.xlab.vbrowser.z.activity.PinLockActivity;
-import com.xlab.vbrowser.z.module.DragView;
+import com.android.dom.DragView;
 
 public class Z {
     public static void openURLTop(String url, Context context){
@@ -68,16 +68,13 @@ public class Z {
             }
         }
     }
-    public static void setWindowFloating(Activity context, Window window){
-        DisplayMetrics metrics = new DisplayMetrics();
-        context.getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        int width = metrics.widthPixels;
-        int height = metrics.heightPixels;
-        window.setLayout((int) (0.75*width), (int) (0.75*height));
-        window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+    private static void setWindowFloating(Activity context, Window window){
+        UiUtils.setWindowFloating(context, window, 0.75F, 0.75F);
     }
     public static void setDrag(Activity context, View view){
-        new DragView(context, view);
+        if (Z.isFloating(context)) {
+            new DragView(context, view);
+        }
     }
     public static Boolean isLock(Activity context){
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
