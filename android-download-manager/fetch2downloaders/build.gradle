@@ -5,7 +5,7 @@ apply plugin: 'kotlin-android'
 //apply plugin: 'com.novoda.bintray-release'
 
 buildscript {
-    //apply from: '../versions.gradle'
+    apply from: '../versions.gradle'
     repositories {
         google()
         jcenter()
