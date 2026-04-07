@@ -18,6 +18,7 @@ buildscript {
 }
 
 android {
+    namespace "com.tonyodev.fetch2downloaders"
     compileSdkVersion library_compile_version
     buildToolsVersion library_build_tools_version
 
