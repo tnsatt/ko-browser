@@ -2,6 +2,7 @@
 **/.git/**
 *.pyc
 *.log
+*.aar
 venv/
 build/
 dist/
